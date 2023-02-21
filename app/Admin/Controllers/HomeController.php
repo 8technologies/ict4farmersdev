@@ -333,7 +333,7 @@ class HomeController extends Controller
                         $status = 'Closed';
                         $icon_path = "'/assets/icons/pin-closed.png'";
                     }else {
-                        $status = 'All farms Operational';
+                        $status = 'Operational';
                         $icon_path = "'/assets/icons/pin-open.png'";
                     }
 
