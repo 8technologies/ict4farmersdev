@@ -54,10 +54,10 @@ class GardenController extends AdminController
         $grid->column('name', __('Enterprise Name'))->sortable();
 
         $grid->column('administrator_id', __('Owner'))->display(function() {
-            return $this->farm->name;
+            return $this->farm ? $this->farm->owner->name : '';
         })->sortable();
         $grid->column('farm_id', __('Farm'))->display(function () {
-            return $this->farm->name;
+            return $this->farm ? $this->farm->name : '';
         })->sortable()->link(function () {
             return admin_url('farms/' . $this->farm_id);
         });
@@ -69,7 +69,7 @@ class GardenController extends AdminController
         $grid->column('plant_date', __('Started'));
 
         $grid->column('location_id', __('Subcounty'))->display(function () {
-            return $this->farm->location->get_name();
+            return $this->farm ? $this->farm->location->get_name() : '';
         })->sortable();
 
         // $grid->column('longitude', __('Longitude'));

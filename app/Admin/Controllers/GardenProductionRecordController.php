@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Models\Garden;
 use App\Models\GardenProductionRecord;
+use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
@@ -92,7 +93,7 @@ class GardenProductionRecordController extends AdminController
         $u = Auth::user();
         $form->select('garden_id', __('Select Enterprise'))
             ->options(
-                Garden::where('administrator_id', $u->id)->get()->pluck('name', 'id')
+                User::find($u->id)->enterprises->pluck('name', 'id')
             )
             ->rules('required');
 

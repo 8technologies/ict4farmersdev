@@ -47,7 +47,7 @@ class FinancialRecordController extends AdminController
             //$filter->equal('administrator_id', "Filter by user")->select(Administrator::all()->pluck('name', 'id'));
             $filter->select('garden_id', __('Select Enterprise'))
                 ->options(
-                    Garden::where('administrator_id', $u->id)->get()->pluck('name', 'id')
+                    \App\Models\User::find($u->id)->enterprises->pluck('name', 'id')
                 );
         });
 
@@ -127,7 +127,7 @@ class FinancialRecordController extends AdminController
         $u = Auth::user();
         $form->select('garden_id', __('Enterprise'))
             ->options(
-                Garden::where('administrator_id', $u->id)->get()->pluck('name', 'id')
+                \App\Models\User::find($u->id)->enterprises->pluck('name', 'id')
             )->rules('required');
         $form->hidden('created_by', __('created_by'))->default($u->id)->value($u->id);
         $form->select('type', __('Type'))->options([

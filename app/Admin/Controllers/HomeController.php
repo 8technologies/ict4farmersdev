@@ -75,10 +75,9 @@ class HomeController extends Controller
                     $column->append($box);
                 });
 
-                $row->column(3, function (Column $column) {
-
-                    $gardens = Garden::where('administrator_id', Admin::user()->id)
-                        ->count('id');
+                $row->column(3, function (Column $column) { 
+                    //get all gardens
+                    $gardens = User::find(Admin::user()->id)->enterprises()->count();
 
                     $box  = view('widgets.box-3', [
                         'title' => "My Enterprises",
@@ -310,10 +309,11 @@ class HomeController extends Controller
                     die();
                 }
                 $events = Utils::prepare_calendar_events(Admin::user()->id);
-                return $content
-                    ->view("admin.farmer.dashboard", [
-                        'events' => $events
-                    ]);
+                return redirect(admin_url("/maps"));
+                // return $content
+                //     ->view("admin.farmer.dashboard", [
+                //         'events' => $events
+                //     ]);
             }
             else if (
                 Admin::user()->isRole('agent')
