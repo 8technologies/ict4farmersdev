@@ -31,9 +31,6 @@ Admin::js('/assets/js/calender/main.js');
 Admin::css('/css/jquery-confirm.min.css');
 Admin::js('/js/jquery-confirm.min.js');
 
-Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
-Admin::js('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');
-
 Encore\Admin\Form::forget(['map', 'editor']);
 
 

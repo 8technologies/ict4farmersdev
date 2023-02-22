@@ -309,11 +309,11 @@ class HomeController extends Controller
                     die();
                 }
                 $events = Utils::prepare_calendar_events(Admin::user()->id);
-                return redirect(admin_url("/maps"));
-                // return $content
-                //     ->view("admin.farmer.dashboard", [
-                //         'events' => $events
-                //     ]);
+                // return redirect(admin_url("/maps"));
+                return $content
+                    ->view("admin.farmer.dashboard", [
+                        'events' => $events
+                    ]);
             }
             else if (
                 Admin::user()->isRole('agent')
