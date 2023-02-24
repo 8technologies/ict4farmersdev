@@ -211,5 +211,10 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Garden::class, Farm::class,'administrator_id','farm_id');
     }
+    //reports many pest cases
+    public function pest_reports()
+    {
+        return $this->hasMany(PestCase::class,'administrator_id');
+    }
 
 }

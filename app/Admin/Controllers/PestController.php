@@ -23,18 +23,18 @@ class PestController extends AdminController
      * @return Grid
      */
     protected function grid()
-    {
+    {   
         $grid = new Grid(new Pest());
 
-        $grid->column('id', __('Id'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        // $grid->column('id', __('Id'));
+        // $grid->column('created_at', __('Created at'));
+        // $grid->column('updated_at', __('Updated at'));
         $grid->column('name', __('Name'));
+        $grid->column('image', __('Image'))->image('', 100, 100);
         $grid->column('description', __('Description'));
         $grid->column('cause', __('Cause'));
         $grid->column('cure', __('Cure'));
-        $grid->column('image', __('Image'));
-        $grid->column('video', __('Video'));
+        // $grid->column('video', __('Video'));
 
         return $grid;
     }
@@ -71,12 +71,15 @@ class PestController extends AdminController
     {
         $form = new Form(new Pest());
 
-        $form->textarea('name', __('Name'));
+        $form->text('name', __('Name'));
         $form->textarea('description', __('Description'));
         $form->textarea('cause', __('Cause'));
         $form->textarea('cure', __('Cure'));
-        $form->textarea('image', __('Image'));
-        $form->textarea('video', __('Video'));
+        $form->image ('image', __('Image'))->uniqueName()->help('The maximum file size is 5MB.');
+        $form->file('video', __('Video'))->rules('mimes:mp4,mkv,avi,flv,wmv,3gp,webm,ts|max:5000',[
+            'mimes' => 'Video format is not supported',
+            'max' => 'Video size is too large'
+        ])->uniqueName()->help('The maximum file size is 5MB.');
 
         return $form;
     }

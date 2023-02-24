@@ -105,6 +105,11 @@ class Category extends Model
         return $this->hasMany(Product::class, "category_id");
     }
 
+    //has many questions asked about it
+    public function questions() {
+        return $this->hasMany(Question::class, 'category_id');
+    }
+
     use HasFactory;
 
     public static function boot()

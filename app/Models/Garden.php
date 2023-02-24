@@ -63,6 +63,12 @@ class Garden extends Model
         return $this->belongsTo(User::class,'administrator_id');
     }
 
+    //is infested by many pests
+    public function pestcases()
+    {
+        return $this->hasMany(PestCase::class,'garden_id');
+    }
+
     public function getCropCategoryNameAttribute()
     {
         if ($this->crop_category != null) {

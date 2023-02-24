@@ -65,7 +65,10 @@ class PolicyController extends AdminController
         $form = new Form(new Policy());
         $form->text('name', __('Name'));
         $form->textarea('description', __('Description'))->rows();
-        $form->file('path',__('Upload Document'),)->rules('mimes:doc,docx,pdf')
+        $form->file('path',__('Upload Document'))->uniqueName()->rules('mimes:doc,docx,pdf|max:5000', [
+            'mimes' => 'Only doc, docx, pdf files are allowed',
+            'max' => 'File size should be less than 5MB',
+        ])
         ->downloadable();
 
         return $form;
