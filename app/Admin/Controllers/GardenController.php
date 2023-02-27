@@ -45,7 +45,7 @@ class GardenController extends AdminController
                 $actions->disableEdit();
             });*/
         } else {
-            $grid->model()->where('administrator_id', Admin::user()->id);
+            $farmer_enterprises = \App\Models\User::find(Admin::user()->id)->enterprises;
             $grid->disableRowSelector();
         }
 
@@ -71,9 +71,6 @@ class GardenController extends AdminController
         $grid->column('location_id', __('Subcounty'))->display(function () {
             return $this->farm ? $this->farm->location->get_name() : '';
         })->sortable();
-
-        // $grid->column('longitude', __('Longitude'));
-        // $grid->column('latitude', __('Latitude'));
 
         return $grid;
     }

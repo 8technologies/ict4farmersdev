@@ -57,6 +57,8 @@ class QuestionController extends AdminController
     {
         $show = new Show(Question::findOrFail($id));
 
+        // return view('widgets.questions', compact('show'));
+
         $show->field('created_at', __('Asked on'))->as(function ($created_at) {
             return $created_at->format('d-m-Y H:i:s');
         });

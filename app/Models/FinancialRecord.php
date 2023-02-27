@@ -50,11 +50,6 @@ class FinancialRecord extends Model
 
     public function enterprise()
     {
-        $o = Garden::find($this->garden_id);
-        if ($o == null) {
-            $this->garden_id = 1;
-            $this->save();
-        }
         return $this->belongsTo(Garden::class, 'garden_id');
     }
  

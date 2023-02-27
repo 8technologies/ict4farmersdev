@@ -60,13 +60,25 @@ class Garden extends Model
     //belongs to a user
     public function owner()
     {
-        return $this->belongsTo(User::class,'administrator_id');
+        return $this->hasOneThrough(
+            User::class,
+            Farm::class,
+            'id', // Foreign key on farms table...
+            'id', // Foreign key on users table...
+            'farm_id', // Local key on gardens table...
+            'administrator_id' // Local key on farms table...
+        );
     }
 
     //is infested by many pests
     public function pestcases()
     {
         return $this->hasMany(PestCase::class,'garden_id');
+    }
+    //has many financial records
+    public function financialrecords()
+    {
+        return $this->hasMany(FinancialRecord::class,'garden_id');
     }
 
     public function getCropCategoryNameAttribute()

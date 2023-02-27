@@ -29,55 +29,39 @@ class FinancialRecordController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new FinancialRecord());
-
+        $farmer_enterprises = \App\Models\User::find(Admin::user()->id)->enterprises->pluck('id')->toArray();
         if (
             Admin::user()->isRole('administrator') ||
             Admin::user()->isRole('admin')
         ) {
-            /*$grid->actions(function ($actions) {
+            $grid->actions(function ($actions) {
                 $actions->disableEdit();
-            });*/
+            });
         } else {
-            $grid->model()->where('administrator_id', Admin::user()->id);
+            $grid->model()->whereIn('garden_id',$farmer_enterprises);
+
             $grid->disableRowSelector();
         }
+        $grid->model()->latest();
+
 
         $grid->filter(function ($filter) {
             $u = Auth::user();
-            //$filter->equal('administrator_id', "Filter by user")->select(Administrator::all()->pluck('name', 'id'));
             $filter->select('garden_id', __('Select Enterprise'))
                 ->options(
                     \App\Models\User::find($u->id)->enterprises->pluck('name', 'id')
                 );
         });
 
-        if (
-            Admin::user()->isRole('administrator') ||
-            Admin::user()->isRole('admin')
-        ) {
-            /*$grid->actions(function ($actions) {
-                $actions->disableEdit();
-            });*/
-        } else {
-            $grid->model()->where('administrator_id', Admin::user()->id);
-            $grid->disableRowSelector();
-        }
-
-        $grid->column('id', __('#Id'))->sortable();
         $grid->column('type', __('Type'));
         $grid->column('created_at', __('Created'))->sortable();
         $grid->column('garden_id', __('Enterprise'))->display(function () {
             return $this->enterprise->name;
         })->sortable();
 
-        $grid->column('administrator_id', __('Owner'))->display(function () {
-            return $this->owner->name;
-        })->sortable();
-
-
         $grid->column('created_by', __('Created by'))->display(function () {
             return $this->creator->name;
-        })->sortable();
+        })->sortable(); 
 
         $grid->column('description', __('Description'));
         $grid->column('amount', __('Amount'));
@@ -120,9 +104,7 @@ class FinancialRecordController extends AdminController
      * @return Form
      */
     protected function form()
-    {
-        //$form->number('administrator_id', __('Administrator id'));
-
+    {   
         $form = new Form(new FinancialRecord());
         $u = Auth::user();
         $form->select('garden_id', __('Enterprise'))
