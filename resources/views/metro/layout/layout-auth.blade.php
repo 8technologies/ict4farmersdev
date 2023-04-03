@@ -24,9 +24,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <center>
-                                    <a href="{{ url('/') }}" class="py-9 mb-5">
-                                        <img alt="Logo" src="{{ URL::asset('assets/images/logo.png') }}"
-                                            class="h-90px" />
+                                    <a href="{{ url("market") }}" class="py-9 mb-5">
+                                        <img alt="Logo" src="{{ url('assets/images/logo.png') }}" class="h-90px" />
                                     </a>
                                 </center>
 
@@ -45,7 +44,7 @@
 
 
                                 @if (session('success_message'))
-                                    <div class="alert alert-success">{{ session('success_message') }}</div>
+                                    <div class="alert alert-success">{{ session('success_message')}}</div>
                                 @endif
 
                             </div>
@@ -78,15 +77,36 @@
     <!--end::Root-->
     <!--end::Main-->
     <!--begin::Javascript-->
-    <script>
-        var hostUrl = "assets/";
-    </script>
+
     <!--begin::Global Javascript Bundle(used by all pages)-->
-    <script src="assets/plugins/global/plugins.bundle.js"></script>
-    <script src="assets/js/scripts.bundle.js"></script>
+    <script src="{{url('assets/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ url('assets/js/scripts.bundle.js') }}"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Page Custom Javascript(used by this page)-->
-    <script src="assets/js/custom/authentication/sign-in/general.js"></script>
+    <script src="{{ url('assets/js/custom/authentication/sign-in/general.js') }}"></script>
     <!--end::Page Custom Javascript-->
     <!--end::Javascript-->
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('input[name="password"]');
+        const confirmPassword = document.querySelector('input[name="password_confirmation"]');
+        const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+
+        togglePassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // toggle the eye slash icon
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        toggleConfirmPassword.addEventListener('click', function (e) {
+            // toggle the type attribute
+            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            confirmPassword.setAttribute('type', type);
+            // toggle the eye slash icon
+            this.classList.toggle('fa-eye-slash');
+        });
+
+    </script>
 </body>
