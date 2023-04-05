@@ -38,6 +38,7 @@ class MapController extends Controller
         $content->row('<div id="mapid" style="width: 100%; height: 500px;"></div>');
 
         Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
+        // Admin::headerJs('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js');
         Admin::headerJs('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');
         
         Admin::script("
