@@ -65,6 +65,13 @@
 
     <!-- Page loading styles -->
     <style>
+        .sticky-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px; /* Set the height of your footer */
+            background-color: #f5f5f5; /* Set the background color of your footer */
+        }
         .page-loading {
             position: fixed;
             top: 0;
@@ -228,10 +235,10 @@
                             <!-- dropdown ul -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    data-bs-toggle="dropdown" aaria-expanded="false">
                                     Policies
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu">
                                     @foreach ($policies as $policy)
                                         <li><a class="dropdown-item" href="{{ asset('uploads/'.$policy->path) }}" target="_blank">{{ $policy->name }}</a></li>
                                     @endforeach
@@ -259,13 +266,6 @@
             </div>
 
         </header>
-        <div class="fixed-top mt-5">
-            <div class="container px-3 mt-1">
-            <a href="tel:0800209003" style="text-decoration:none" class="navbar-brand">
-                <p>Toll Free: 0800 209 003</p>
-            </a>
-            </div>
-        </div>
 
         <!-- Hero -->
         <section class="overflow-hidden pt-5"
@@ -1134,14 +1134,22 @@
                     <i class="bx bxl-youtube"></i>
                 </a>
             </div>
-            <p class="nav d-block fs-sm text-center pt-5 mt-lg-4 mb-0">
+            <p class="nav d-block fs-sm text-center pt-5 mt-lg-4 mb-0 pb-5">
                 <span class="opacity-80">&copy; All rights reserved. Made by </span>
                 <a class="nav-link d-inline-block p-0" href="https://8technologies.net/" target="_blank"
                     rel="noopener">Eight Tech Consults</a>
             </p>
         </div>
+      
     </footer>
-
+    <div class="sticky-footer">
+        <div class="container">
+            <a href="tel:0800209003" style="text-decoration:none" class="navbar-brand">
+                <p>Toll Free: 0800 209 003</p>
+            </a>
+          {{-- <span class="text-muted">Place sticky footer content here.</span> --}}
+        </div>
+    </div>
 
     <!-- Back to top button -->
     <a href="#top" class="btn-scroll-top" data-scroll>
