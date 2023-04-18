@@ -13,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if($this->app->environment('production')) {
+            $this->app->bind('path.public', function() {
+                return realpath(base_path().'../');
+            });
+        }
     }
 
     /**
@@ -23,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if($this->app->environment('production')) {
+            \URL::forceScheme('https');
+        }
     }
 }

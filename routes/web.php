@@ -15,8 +15,7 @@ use App\Http\Controllers\BannersController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\ResetPasswordController;
-
-
+use Illuminate\Support\Facades\Artisan;
 
 Route::resource('dashboard/users', UsersController::class)->middleware(Authenticate::class);
 Route::resource('dashboard/banners', BannersController::class)->middleware(Authenticate::class);
@@ -84,3 +83,9 @@ Route::get('password/reset/{token}', function($token) {
     return view('metro.auth.reset_password',['token' => $token]);
 })->name('password.reset');
 Route::post('password/reset','App\Http\Controllers\Auth\ResetPasswordController@reset');
+
+Route::get('configs-setup', function() {
+    Artisan::call('optimize:clear');
+    Artisan::call('storage:link');
+    
+});
