@@ -25,6 +25,18 @@ class GardenProductionRecord extends Model
         return $g->name;
     }
 
+    public function setImagesAttribute($images)
+{
+    if (is_array($images)) {
+        $this->attributes['images'] = json_encode($images);
+    }
+}
+
+public function getImagesAttribute($images)
+{
+    return json_decode($images, true);
+}
+
 
     public function owner()
     {

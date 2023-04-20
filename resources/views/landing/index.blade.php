@@ -4,21 +4,6 @@
 <head>
     <meta charset="utf-8">
     <title>ICT4Farmers | Manage all your farm activities in one place.</title>
-
-    <script>
-        $(function() {
-            $('.lazy').Lazy({
-                // your configuration goes here
-                scrollDirection: 'vertical',
-                placeholder: '{{ url('no_image.jpg') }}',
-                effect: 'fadeIn',
-                visibleOnly: true,
-                onError: function(element) {
-                    console.log('error loading ' + element.data('src'));
-                }
-            });
-        });
-    </script>
     
     <!--Start of Tawk.to Script-->
     <script type="text/javascript">
@@ -342,7 +327,7 @@
             }
           }
         }'>
-                <div class="swiper-wrapper">
+                <div class="swiper-wrapper" data-swiper-autoplay="2000">
 
                     <!-- Item -->
                     <div class="swiper-slide py-3">
@@ -396,6 +381,14 @@
                     <div class="swiper-slide py-3">
                         <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
                             <img src="muhindo/img/brands/naro.png" class="d-block mx-auto my-2" width="154"
+                                alt="Brand">
+                        </a>
+                    </div>
+
+                      <!-- Item -->
+                      <div class="swiper-slide py-3">
+                        <a href="javascript:;" class="card card-body card-hover px-2 mx-2">
+                            <img src="muhindo/img/brands/comfarnet.png" class="d-block mx-auto my-2" width="154"
                                 alt="Brand">
                         </a>
                     </div>

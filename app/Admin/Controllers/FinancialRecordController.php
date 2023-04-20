@@ -80,7 +80,9 @@ class FinancialRecordController extends AdminController
         $show = new Show(FinancialRecord::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->filed('type', __('Type'));
+        $show->filed('type', __('Type'))->as(function () {
+            return $this->type;
+        });
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('garden_id', __('Garden'))->as(function () {
@@ -119,6 +121,8 @@ class FinancialRecordController extends AdminController
         $form->text('description', __('Description'))->rules('required');
         $form->text('amount', __('Amount'))
             ->rules('required| numeric ');
+        $form->hidden('administrator_id', __('Administrator id'))->default($u->id);
+
         return $form;
     }
 }

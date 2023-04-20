@@ -32,7 +32,7 @@ class GardenProductionRecordController extends AdminController
     {
         $grid = new Grid(new GardenProductionRecord());
 
-        $grid->model()->where('administrator_id', Admin::user()->id);
+        $grid->model()->where('administrator_id', Admin::user()->id)->orderBy('updated_at', 'desc');
 
         //$grid->column('id', __('Id'))->sortable();
         $grid->column('created_at', __('Created'))->sortable();
@@ -66,14 +66,16 @@ class GardenProductionRecordController extends AdminController
     {
         $show = new Show(GardenProductionRecord::findOrFail($id));
 
-        $show->field('id', __('Id'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
-        $show->field('garden_id', __('Garden id'));
-        $show->field('administrator_id', __('Administrator id'));
+        $show->field('garden_id', __('Garden'))->as(function () {
+            return $this->enterprise->name;
+        });
         $show->field('description', __('Description'));
-        $show->field('images', __('Images'));
-        $show->field('created_by_id', __('Created by id'));
+        $show->images()->image();
+        $show->field('created_by_id', __('Created by'))->as(function () {
+            return $this->owner->name;
+        });
 
         return $show;
     }
@@ -101,8 +103,7 @@ class GardenProductionRecordController extends AdminController
         $form->textarea('description', __('Record Description'))->rules('required');
 
         $form->hidden('administrator_id', __('Administrator id'))->default($u->id);
-
-        //$form->images('images', __('Images')); 
+        $form->multipleImage('images', __('Images'))->removable(); 
 
 
         return $form;

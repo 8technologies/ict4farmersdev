@@ -212,7 +212,7 @@ class AgentUsersController extends AdminController
         $grid->column('production_scale', __('Production scale'));
         $grid->column('number_of_dependants', __('Number of dependants'));
         //$grid->column('user_role', __('User role'));
-        $grid->column('access_to_credit', __('Access to credit'));
+        $grid->column('access_to_credit', __('Credit access'));
         $grid->column('experience', __('Experience'));
         //$grid->column('profile_is_complete', __('Profile is complete'));
 
@@ -436,7 +436,7 @@ class AgentUsersController extends AdminController
         $form->text('number_of_dependants', __('Number of dependants'))->attribute('type', 'number')
             ->required();
 
-        $form->select('access_to_credit', __('Production scale'))
+        $form->select('access_to_credit', __('Credit access'))
             ->options([
                 'No any access' => 'No any access',
                 'SACCO' => 'SACCO',

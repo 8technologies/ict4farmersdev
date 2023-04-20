@@ -77,7 +77,7 @@ Route::post('/reset-password-phone', [MainController::class, 'reset_password_pho
 Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
 
-// Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
+Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
 
 Route::get('password/reset/{token}', function($token) {
     return view('metro.auth.reset_password',['token' => $token]);

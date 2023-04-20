@@ -40,7 +40,7 @@ class GardenActivityController extends AdminController
     }
     public function calendar(Content $content)
     {
-        
+
         $events = Utils::prepare_calendar_events(Admin::user()->id);
 
         return $content
@@ -58,7 +58,7 @@ class GardenActivityController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new GardenActivity());
-
+        $grid->model()->orderBy('updated_at', 'desc');
         if (
             Admin::user()->isRole('administrator') ||
             Admin::user()->isRole('admin')
@@ -159,9 +159,9 @@ class GardenActivityController extends AdminController
         $form->text('name', __('Activity title'))->rules('required');
 
         $form->select('garden_id', 'Enterprise')
-            ->options(Garden::where([
-                'administrator_id' => $u->id
-            ])->get()->pluck('name', 'id'))
+            ->options(
+                User::find($u->id)->enterprises->pluck('name', 'id')
+            )
             ->rules('required');
 
 
