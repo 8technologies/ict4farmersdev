@@ -245,9 +245,10 @@ class CallCenterController extends Controller
             $current_call->call_duration = $duration_in_seconds;
             $current_call->agent_phone = $agent_called;
             $current_call->save();
+        }else {
+            return $response;
         }
 
-        return $response;
     }
 }
 
