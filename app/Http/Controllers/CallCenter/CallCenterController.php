@@ -25,7 +25,6 @@ class CallCenterController extends Controller
         $at = new Attribute();
         $at->name = json_encode($_POST);
         $at->type = json_encode($_GET);
-        $at->options = json_encode($request);
         $at->options = json_encode($request->dtmfDigits);
         $at->save();
         $session_id = $request->sessionId;
@@ -239,7 +238,7 @@ class CallCenterController extends Controller
 
 
         // update call when its done
-        if ($call_state == 'Completed') {
+        if ($is_active == 0) {
             // update the call to record the voice -------   getting the current call
 
             $current_call->recording_url = $recording_url;

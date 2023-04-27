@@ -94,7 +94,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('call_center_voice', [NewCallCenterController::class, 'call_center_voice']);
 Route::get('calls', [NewCallCenterController::class, 'call_center_voice']);
 Route::post('calls', [NewCallCenterController::class, 'call_center_voice']);
-Route::post('calls', [NewCallCenterController::class, 'call_center_voice']);
 Route::match(['get', 'post'], 'calls', [NewCallCenterController::class, 'call_center_voice']);
 
 

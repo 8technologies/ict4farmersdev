@@ -73,6 +73,11 @@ Route::post('/reset-password-phone', [MainController::class, 'reset_password_pho
 // Route::get('/reset-password-code', [MainController::class, 'reset_password_code']);
 // Route::post('/reset-password-code', [MainController::class, 'reset_password_code_post']);
 
+Route::get('configs-setup', function() {
+    Artisan::call('optimize:clear');
+    Artisan::call('storage:link');
+    
+});
 
 Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
@@ -84,8 +89,3 @@ Route::get('password/reset/{token}', function($token) {
 })->name('password.reset');
 Route::post('password/reset','App\Http\Controllers\Auth\ResetPasswordController@reset');
 
-Route::get('configs-setup', function() {
-    Artisan::call('optimize:clear');
-    Artisan::call('storage:link');
-    
-});
