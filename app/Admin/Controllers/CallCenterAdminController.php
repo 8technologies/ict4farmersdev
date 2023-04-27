@@ -36,9 +36,9 @@ class CallCenterAdminController extends AdminController
 
         $grid->model()->orderBy('id', 'desc');   // order by latest to be recorded
 
-        $grid->column("phone", __("Caller Phone"))->sortable();
+        $grid->column("caller_phone_nuber", __("Caller Phone"))->sortable();
         $grid->column("language", __("Language Selected"))->sortable();
-        $grid->column("agent_phone", __("Agent Phone"))->sortable();
+        $grid->column("agent_phone_number", __("Agent Phone"))->sortable();
 
         $grid->column('created_at', __('Date Recorded'))
             ->display(function ($item) {
