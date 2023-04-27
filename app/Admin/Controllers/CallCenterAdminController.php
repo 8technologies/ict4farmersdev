@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Call;
+use App\Models\CallModel;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -32,7 +32,7 @@ class CallCenterAdminController extends AdminController
     protected function grid()
     {
 
-        $grid = new Grid(new Call());
+        $grid = new Grid(new CallModel());
 
         $grid->model()->orderBy('id', 'desc');   // order by latest to be recorded
 
