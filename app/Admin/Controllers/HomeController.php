@@ -90,7 +90,7 @@ class HomeController extends Controller
                         'title' => "My Enterprises",
                         'icon' => url('assets/images/admin/enterprise.png'),
                         'count' => count($gardens),
-                        'link' => admin_url('garden-activities'),
+                        'link' => admin_url('gardens'),
                         'sub_title' => $garden_names
                     ]);
                     $column->append($box);
