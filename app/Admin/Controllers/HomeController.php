@@ -32,13 +32,13 @@ class HomeController extends Controller
                 $row->column(3, function (Column $column) {
 
                     $exp = FinancialRecord::where('administrator_id', Admin::user()->id)
-                        ->where('amount', '>', 0)
+                        ->where('type', 'expense')
                         ->sum('amount');
 
                     $inc = (FinancialRecord::where('administrator_id', Admin::user()->id)
-                        ->where('amount', '<', 0)
+                        ->where('type', 'income')
                         ->sum('amount'));
-                    $bal = $exp + $inc;
+                    $bal = $inc - $exp;
 
                     $inc = number_format($inc);
                     $exp = number_format($exp);
