@@ -48,6 +48,7 @@ class ProductController extends AdminController
 
         $grid->filter(function ($filter) {
             //$u = Auth::user();
+            $filter->disableIdFilter();
             $filter->like('name', 'Searh by keyword');
             $filter->equal('nature_of_offer', __('Filter by nature of offer'))
                 ->select(
