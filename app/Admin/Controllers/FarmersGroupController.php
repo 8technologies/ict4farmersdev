@@ -29,13 +29,13 @@ class FarmersGroupController extends AdminController
     {
         $grid = new Grid(new FarmersGroup());
 
-        $grid->column('id', __('Id'))->sortable('desc');
+        $grid->model()->orderBy('id', 'desc');   // order by latest to be recorded
         $grid->column('name', __('Name'));
-        $grid->column('organisation_id', __('Organisation'))->display(function ($org) {
-            $org = \App\Models\Organisation::find($org);
-            return $org->name;
+
+        $grid->column('organisation_id', __('Organisation'))->display(function () {
+            return $this->organisation->name;
         });
-        $grid->column('details', __('Details'));
+        $grid->column('website', __('Website'));
 
         return $grid;
     }
@@ -50,12 +50,13 @@ class FarmersGroupController extends AdminController
     {
         $show = new Show(FarmersGroup::findOrFail($id));
 
-        $show->field('id', __('Id'));
         $show->field('created_at', __('Created at'));
         $show->field('name', __('Name'));
-        $show->organisation('Organisation', function ($org) {
-            $org->name();
+        $show->field('organisation_id', __('Organisation'))->as(function () {
+            return $this->organisation->name;
         });
+        $show->field('website', __('Website'));
+        $show->field('acronym', __('Acronym'));
         $show->field('details', __('Details'));
 
         return $show;
@@ -71,38 +72,12 @@ class FarmersGroupController extends AdminController
         $form = new Form(new FarmersGroup());
 
         $form->text('name', __('Group Name'))->required();
-        $form->textarea('details', __('Details'));
         $form->select('organisation_id', __('Organisation'))->options(
             \App\Models\Organisation::all()->pluck('name', 'id')
-        )->required();
-
-        $form->hasMany('agents', function (NestedForm $f) {
-
-            $items = [];
-            /* foreach (Administrator::all() as $key => $f) {
-                if (!$f->isRole('agent')) {
-                    continue;
-                }
-                $items[$f->id] = $f->name . ", ID #" . $f->id;
-            } */
- 
-            $ajax_url = url(
-                '/api/ajax?'
-                    . "&search_by_1=name"
-                    . "&search_by_2=id"
-                    . "&model=User"
-            );
-            $f->select('administrator_id', "Select Agent")
-                ->options(function ($id) {
-                    $a = Administrator::find($id);
-                    if ($a) {
-                        return [$a->id => "#" . $a->id . " - " . $a->name];
-                    }
-                })
-                ->ajax($ajax_url)->rules('required');
-        });
-
-
+        );
+        $form->text('website', __('Website'))->required();
+        $form->text('acronym', __('Acronym'))->required();
+        $form->textarea('details', __('Details'))->required();
         return $form;
     }
 }

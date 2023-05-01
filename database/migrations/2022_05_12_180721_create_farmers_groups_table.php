@@ -17,6 +17,9 @@ class CreateFarmersGroupsTable extends Migration
             $table->id();
             $table->timestamps(); 
             $table->text('name')->nullable();
+            $table->string('website')->nullable();
+            $table->string('acroynm')->nullable();
+            $table->foreignId('organisation_id')->nullable()->constrained('organisations');
             $table->text('details')->nullable();
         });
     }

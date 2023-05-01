@@ -32,13 +32,13 @@ class HomeController extends Controller
                 $row->column(3, function (Column $column) {
 
                     $exp = FinancialRecord::where('administrator_id', Admin::user()->id)
-                        ->where('amount', '>', 0)
+                        ->where('type', 'expense')
                         ->sum('amount');
 
                     $inc = (FinancialRecord::where('administrator_id', Admin::user()->id)
-                        ->where('amount', '<', 0)
+                        ->where('type', 'income')
                         ->sum('amount'));
-                    $bal = $exp + $inc;
+                    $bal = $inc - $exp;
 
                     $inc = number_format($inc);
                     $exp = number_format($exp);
@@ -77,14 +77,21 @@ class HomeController extends Controller
 
                 $row->column(3, function (Column $column) { 
                     //get all gardens
-                    $gardens = User::find(Admin::user()->id)->enterprises()->count();
+                    $gardens = User::find(Admin::user()->id)->enterprises;
 
+                    //Group gardens by name and count eg 2 poultry, 3 piggery
+                    $garden_names = $gardens->groupBy('name')->map(function ($item, $key) {
+                        return count($item);
+                    })->map(function ($item, $key) {
+                        return $item . ' ' . Str::plural($key, $item);
+                    })->implode(', ');
+                    
                     $box  = view('widgets.box-3', [
                         'title' => "My Enterprises",
                         'icon' => url('assets/images/admin/enterprise.png'),
-                        'count' => $gardens,
-                        'link' => admin_url('garden-activities'),
-                        'sub_title' => '13 Maize gardens, 3 Poultry projetcs',
+                        'count' => count($gardens),
+                        'link' => admin_url('gardens'),
+                        'sub_title' => $garden_names
                     ]);
                     $column->append($box);
                 });

@@ -26,11 +26,13 @@ class MarketController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Market());
-
         $grid->column('id', __('Id'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
         $grid->column('name', __('Name'));
+        $grid->filter(function($filter){
+            $filter->disableIdFilter();
+        });
 
         return $grid;
     }

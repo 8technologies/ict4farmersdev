@@ -20,11 +20,10 @@
     
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"> 
 
-
     @if(!is_null($favicon = Admin::favicon()))
     <link rel="shortcut icon" href="{{$favicon}}">
     @endif
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     {!! Admin::css() !!}
 
     <script src="{{ Admin::jQuery() }}"></script>
@@ -55,6 +54,8 @@
         <div id="app">
         @yield('content')
         </div>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
         {!! Admin::script() !!}
         {!! Admin::html() !!}
     </div>

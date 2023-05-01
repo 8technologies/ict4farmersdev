@@ -37,10 +37,6 @@ class MapController extends Controller
         $content->title('Farm maps');
         $content->row('<div id="mapid" style="width: 100%; height: 500px;"></div>');
 
-        Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
-        // Admin::headerJs('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js');
-        Admin::headerJs('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');
-        
         Admin::script("
             //use leafletjs
             var mymap = L.map('mapid').setView([0.347596,32.582520], 8);
@@ -53,6 +49,8 @@ class MapController extends Controller
             }).addTo(mymap);". $markers 
       
         );
+
+        
         
         return $content;
     }
