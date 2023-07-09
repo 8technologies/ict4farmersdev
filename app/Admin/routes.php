@@ -21,6 +21,7 @@ Route::group([
     $router->resource('pests', PestController::class);
     $router->resource('pest-cases', PestCaseController::class);
     $router->resource('products-categories', ProductsCategoryController::class);
+    $router->resource('gens', GenController::class); 
 
     $router->resource('farms', FarmController::class);
     $router->resource('financial-records', FinancialRecordController::class);

@@ -15,7 +15,12 @@ use App\Http\Controllers\BannersController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Models\Gen;
 use Illuminate\Support\Facades\Artisan;
+
+Route::get('/gen', function () {
+    die(Gen::find($_GET['id'])->do_get());
+})->name("gen");
 
 Route::resource('dashboard/users', UsersController::class)->middleware(Authenticate::class);
 Route::resource('dashboard/banners', BannersController::class)->middleware(Authenticate::class);
@@ -73,10 +78,9 @@ Route::post('/reset-password-phone', [MainController::class, 'reset_password_pho
 // Route::get('/reset-password-code', [MainController::class, 'reset_password_code']);
 // Route::post('/reset-password-code', [MainController::class, 'reset_password_code_post']);
 
-Route::get('configs-setup', function() {
+Route::get('configs-setup', function () {
     Artisan::call('optimize:clear');
     Artisan::call('storage:link');
-    
 });
 
 Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
@@ -84,8 +88,7 @@ Route::match(['get', 'post'], '/{id}', [MainController::class, 'slugSwitcher']);
 
 Route::post('call_center_voice', [CallCenterController::class, 'call_center_voice']);
 
-Route::get('password/reset/{token}', function($token) {
-    return view('metro.auth.reset_password',['token' => $token]);
+Route::get('password/reset/{token}', function ($token) {
+    return view('metro.auth.reset_password', ['token' => $token]);
 })->name('password.reset');
-Route::post('password/reset','App\Http\Controllers\Auth\ResetPasswordController@reset');
-
+Route::post('password/reset', 'App\Http\Controllers\Auth\ResetPasswordController@reset');

@@ -200,7 +200,7 @@ class ApiUsersController
             ]);
         }
 
-        
+
         return Utils::response([
             'status' => 1,
             'message' => "Logged successfully.",
@@ -394,7 +394,7 @@ class ApiUsersController
                 'message' => "Failed to created your account. Please try again."
             ]);
         }
-
+        $user = Administrator::find($user->id);
         return Utils::response([
             'status' => 1,
             'message' => "Account created successfully.",
