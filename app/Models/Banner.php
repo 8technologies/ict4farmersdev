@@ -15,12 +15,7 @@ class Banner extends Model
     protected $table = 'banners';
     protected $appends = ['link'];
 
-    public function getImageAttribute($url)
-    {
-        $url = str_replace('storage/', "", $url);
-        $url = 'storage/' . $url;
-        return $url;
-    }
+
 
     public function getLinkAttribute()
     {
