@@ -32,6 +32,7 @@ class ApiProductsController
 
     public function wizard_items()
     {
+        return Utils::response(['message' => 'Success.', 'status' => 1, 'data' => []]);
         $user_id = ((int)($_GET['user_id']));
         if (!isset($_GET['user_id'])) {
             return Utils::response(['message' => 'User not found.', 'status' => 0, 'data' => null]);
