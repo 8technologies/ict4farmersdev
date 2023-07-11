@@ -30,7 +30,7 @@ Route::get('wizard-items', [ApiProductsController::class, 'wizard_items']);
 Route::get('app-version', function () {
     return [[
         'id' => 1,
-        'version' => '6', //
+        'version' => '7', //
     ]];
 });
 
