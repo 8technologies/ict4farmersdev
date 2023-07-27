@@ -27,12 +27,9 @@ class GenController extends AdminController
         $grid = new Grid(new Gen());
 
         $grid->model()->orderBy('id', 'desc');
-        $grid->column('id', __('Id'))->sortable(); 
+        $grid->column('id', __('Id'))->sortable();
         $grid->column('class_name', __('Class name'));
-        $grid->column('use_db_table', __('Use db table'));
         $grid->column('table_name', __('Table name'));
-        $grid->column('fields', __('Fields'));
-        $grid->column('file_id', __('File id'));
         $grid->column('gen', __('File'))->display(function () {
             return '<a target="_blank" href="' . url('gen?id=' . $this->id) . '">Generate</a>';
         });
@@ -77,8 +74,6 @@ class GenController extends AdminController
         ]);
         $form->text('table_name', __('Table name'));
         $form->text('end_point', __('end_point'));
-        $form->textarea('fields', __('Fields'));
-        $form->text('file_id', __('File ID'));
 
         return $form;
     }
