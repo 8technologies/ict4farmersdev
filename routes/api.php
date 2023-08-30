@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiChatsController;
 use App\Http\Controllers\ApiProductsController;
+use App\Http\Controllers\ApiShopController;
 use App\Http\Controllers\ApiUsersController;
 use App\Models\CropCategory;
 use App\Models\Pest;
@@ -96,6 +97,14 @@ Route::get('calls', [NewCallCenterController::class, 'call_center_voice']);
 Route::post('calls', [NewCallCenterController::class, 'call_center_voice']);
 Route::match(['get', 'post'], 'calls', [NewCallCenterController::class, 'call_center_voice']);
 
+
+Route::POST("product-create", [ApiShopController::class, "product_create"]);//==>2
+Route::get('products', [ApiShopController::class, 'products']);//==>1
+Route::post('products-delete', [ApiShopController::class, 'products_delete']);//==>4
+Route::post('chat-send', [ApiShopController::class, 'chat_send']);//==>5
+Route::post('chat-mark-as-read', [ApiShopController::class, 'chat_mark_as_read']);//==>8
+Route::get('chat-heads', [ApiShopController::class, 'chat_heads']);//==>6
+Route::get('chat-messages', [ApiShopController::class, 'chat_messages']);//==>7
 
 
 Route::get('ajax', function (Request $r) {
