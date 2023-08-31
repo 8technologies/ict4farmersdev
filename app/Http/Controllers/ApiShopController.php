@@ -30,7 +30,9 @@ class ApiShopController extends Controller
     
     public function chat_messages(Request $r)
     {
-        $u = auth('api')->user();
+        $administrator_id = Utils::get_user_id($r);
+        $u = Administrator::find($administrator_id);
+
         if ($u == null) {
             $administrator_id = Utils::get_user_id($r);
             $u = Administrator::find($administrator_id);
@@ -57,7 +59,9 @@ class ApiShopController extends Controller
 
     public function chat_heads(Request $r)
     {
-        $u = auth('api')->user();
+        $administrator_id = Utils::get_user_id($r);
+        $u = Administrator::find($administrator_id);
+
         if ($u == null) {
             $administrator_id = Utils::get_user_id($r);
             $u = Administrator::find($administrator_id);
