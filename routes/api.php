@@ -106,6 +106,7 @@ Route::post('chat-send', [ApiShopController::class, 'chat_send']);//==>5
 Route::post('chat-mark-as-read', [ApiShopController::class, 'chat_mark_as_read']);//==>8
 Route::get('chat-heads', [ApiShopController::class, 'chat_heads']);//==>6
 Route::get('chat-messages', [ApiShopController::class, 'chat_messages']);//==>7
+Route::get('api/{model}', [ApiResurceController::class, 'index']); 
 
 
 Route::get('ajax', function (Request $r) {
