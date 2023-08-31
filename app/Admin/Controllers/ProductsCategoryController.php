@@ -7,7 +7,7 @@ use App\Models\ProductCategory;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
-use Encore\Admin\Grid\Actions\Show;
+use Encore\Admin\Show;
 use Encore\Admin\Layout\Content;
 
 class ProductsCategoryController extends AdminController

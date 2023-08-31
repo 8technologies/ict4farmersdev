@@ -30,10 +30,9 @@ class Category extends Model
 
     protected $fillable = ['parent', 'order', 'name',];
 
-    public function attributes()
-    {
-        return $this->hasMany(Attribute::class);
-    }
+    protected $casts = [
+        'attributes' => 'json',
+    ];
 
     public static function get_subcategories()
     {
