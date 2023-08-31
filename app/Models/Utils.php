@@ -22,6 +22,31 @@ use function PHPUnit\Framework\fileExists;
 class Utils
 {
 
+    public static function get_user_id($request = null)
+    {
+        if ($request == null) {
+            return 0;
+        }
+        $u_id = (int)($request->user);
+        if ($u_id > 0) {
+            return $u_id;
+        }
+        $u_id = (int)($request->user_id);
+        if ($u_id > 0) {
+            return $u_id;
+        }
+
+        $header = (int)($request->header('user'));
+        if ($header < 1) {
+            $header = (int)($request->user);
+        }
+        if ($header < 1) {
+            return 0;
+        }
+        return $header;
+    }
+
+
     public static function prepare_calendar_events($administrator_id)
     {
         $events = [];

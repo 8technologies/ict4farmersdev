@@ -98,6 +98,7 @@ Route::post('calls', [NewCallCenterController::class, 'call_center_voice']);
 Route::match(['get', 'post'], 'calls', [NewCallCenterController::class, 'call_center_voice']);
 
 
+Route::POST("post-media-upload", [ApiShopController::class, 'upload_media']);//==>3<==
 Route::POST("product-create", [ApiShopController::class, "product_create"]);//==>2
 Route::get('products', [ApiShopController::class, 'products']);//==>1
 Route::post('products-delete', [ApiShopController::class, 'products_delete']);//==>4
