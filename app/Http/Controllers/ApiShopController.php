@@ -231,6 +231,7 @@ class ApiShopController extends Controller
         $pro->local_id = $r->id;
         $pro->summary = $r->data;
         $pro->category = $r->category_id;
+        $pro->category_id = $r->category_id;
         $pro->sub_category = $r->category_id;
         $pro->p_type = $r->p_type;
         $pro->keywords = $r->keywords;
@@ -238,6 +239,7 @@ class ApiShopController extends Controller
         $pro->status = 0;
         $pro->currency = 1; 
         $pro->user = $u->id;
+        $pro->user_id = $u->id;
         $pro->supplier = $u->id;
         $pro->in_stock = 1;
         $pro->rates = 1; 
