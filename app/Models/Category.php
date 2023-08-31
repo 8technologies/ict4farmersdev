@@ -55,13 +55,13 @@ class Category extends Model
         return $this->hasMany(Category::class, "parent");
     }
 
-    public function getImageAtrribute($img)
+  /*   public function getImageAtrribute($img)
     {
         if (Str::contains($img, 'storage/')) {
             $img = str_replace('storage/', '', $img);
         }
         return $img;
-    }
+    } */
     public function sub_categories()
     {
         return $this->hasMany(Category::class, "parent");
