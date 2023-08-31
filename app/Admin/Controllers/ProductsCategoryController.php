@@ -6,6 +6,7 @@ use App\Models\Category;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
+use Encore\Admin\Grid\Actions\Show;
 use Encore\Admin\Layout\Content;
 
 class ProductsCategoryController extends AdminController
@@ -77,5 +78,29 @@ class ProductsCategoryController extends AdminController
 
 
         return $form;
+    }
+
+    protected function detail($id)
+    {
+        $show = new Show(Category::findOrFail($id));
+
+        
+        $show->field('id', __('Id'));
+        $show->field('created_at', __('Created at'));
+        $show->field('updated_at', __('Updated at'));
+        $show->field('category', __('Category'));
+        $show->field('status', __('Status'));
+        $show->field('user', __('User'));
+        $show->field('date_created', __('Date created'));
+        $show->field('date_updated', __('Date updated'));
+        $show->field('url', __('Url'));
+        $show->field('default_amount', __('Default amount'));
+        $show->field('image', __('Image'));
+        $show->field('image_origin', __('Image origin'));
+        $show->field('banner_image', __('Banner image'));
+        $show->field('show_in_banner', __('Show in banner'));
+        $show->field('show_in_categories', __('Show in categories'));
+
+        return $show; 
     }
 }
