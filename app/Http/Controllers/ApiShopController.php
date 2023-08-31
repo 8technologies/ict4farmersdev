@@ -236,8 +236,7 @@ class ApiShopController extends Controller
         $pro->keywords = $r->keywords;
         $pro->metric = 1;
         $pro->status = 0;
-        $pro->currency = 1;
-        $pro->url = $u->url;
+        $pro->currency = 1; 
         $pro->user = $u->id;
         $pro->supplier = $u->id;
         $pro->in_stock = 1;
