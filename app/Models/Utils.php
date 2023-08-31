@@ -88,8 +88,13 @@ class Utils
                 $file_name = time() . "-" . rand(100000, 1000000) . "." . $ext;
                 $root_path = $_SERVER['DOCUMENT_ROOT'];
 
-                $destination = '/app.unffeict4farmers.org/public/storage' . $file_name;
+                $destination = $root_path.'/public/storage/' . $file_name;
+/* 
+            $root_path = $_SERVER['DOCUMENT_ROOT'];
 
+                $destination = '/app.unffeict4farmers.org/public/storage/' . $file_name;
+
+*/
                 $res = move_uploaded_file($file['tmp_name'], $destination);
                 if (!$res) {
                     continue;
