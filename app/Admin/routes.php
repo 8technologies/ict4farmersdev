@@ -21,7 +21,7 @@ Route::group([
     $router->resource('pests', PestController::class);
     $router->resource('pest-cases', PestCaseController::class);
     $router->resource('products-categories', ProductsCategoryController::class);
-    $router->resource('gens', GenController::class); 
+    $router->resource('gens', GenController::class);
 
     $router->resource('farms', FarmController::class);
     $router->resource('financial-records', FinancialRecordController::class);
@@ -34,7 +34,7 @@ Route::group([
     $router->resource('pests-listing', PestListingController::class);
     $router->resource('pest-cases-listing', PestCaseListingController::class);
     $router->resource('products', ProductController::class);
-    $router->resource('my–products', MyProductController::class);
+    $router->resource('my-products', MyProductController::class);
     $router->resource('resources', ResourceSharingController::class);
     $router->resource('questions', QuestionController::class);
 
@@ -50,11 +50,13 @@ Route::group([
     // $router->get('/call_center_voice', [CallCenterController::class, 'call_center_voice']);
     $router->resource('call_center_voice', CallCenterAdminController::class);
     $router->resource('call_center_agents', CallCenterAgentsController::class);
-     
+
     $router->resource('simple-tasks', SimpleTaskController::class);
     $router->resource('task-categories', TaskCategoryController::class);
     $router->resource('policies', PolicyController::class);
     $router->resource('organisations', OrganisationController::class);
 
     $router->get('maps', 'MapController@index')->name('maps');
+
+    $router->resource('product-categories', ProductCategoryController::class);
 });
