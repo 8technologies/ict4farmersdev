@@ -66,8 +66,7 @@ class ProductsCategoryController extends AdminController
             ->options($parents);
 
         $form->text('name', __('Name'))->required();
-
-        $form->image('image', __('Image'));
+ 
         $form->list('attributes', __('Category Attributes'))->required();
         $form->image('image', __('Main Photo'))->required();
         $form->image('banner_image', __('Banner image'));
