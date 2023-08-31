@@ -32,13 +32,9 @@ class ApiShopController extends Controller
     {
         $administrator_id = Utils::get_user_id($r);
         $u = Administrator::find($administrator_id);
-
+ 
         if ($u == null) {
-            $administrator_id = Utils::get_user_id($r);
-            $u = Administrator::find($administrator_id);
-        }
-        if ($u == null) {
-            return $this->error('User not found.');
+            return $this->error('User not found!');
         }
 
         if (isset($r->chat_head_id) && $r->chat_head_id != null) {

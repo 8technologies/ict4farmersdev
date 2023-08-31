@@ -40,6 +40,14 @@ class Utils
         if ($header < 1) {
             $header = (int)($request->user);
         }
+        $header = (int)($request->header('user_id'));
+        if ($header < 1) {
+            $header = (int)($request->user);
+        }
+        $header = (int)($request->header('user-id'));
+        if ($header < 1) {
+            $header = (int)($request->user);
+        }
         if ($header < 1) {
             return 0;
         }
