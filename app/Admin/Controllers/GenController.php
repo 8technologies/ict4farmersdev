@@ -67,13 +67,19 @@ class GenController extends AdminController
     {
         $form = new Form(new Gen());
 
-        $form->text('class_name', __('Class name'));
-        $form->radio('use_db_table', __('Use db table'))->options([
-            'Yes' => 'Yes',
-            'No' => 'No',
-        ]);
-        $form->text('table_name', __('Table name'));
-        $form->text('end_point', __('end_point'));
+        $form->text('class_name', __('Class Name'));
+        $tables = DB::select("SHOW TABLES");
+        $data = [];
+        foreach ($tables as $key => $table) {
+            //$tables[] = $table->Tables_in_ussd;
+            $db_name = 'Tables_in_' . env("DB_DATABASE");
+            $data[$table->$db_name] = $table->$db_name;
+        }
+        $form->select('table_name', __('Table name'))->options($data)->rules('required');
+        $form->text('end_point', __('end_point'))->rules('required');
+        $form->hidden('fields', __('Fields'))->default('');
+        $form->hidden('use_db_table', __('Fields'))->default('Yes');
+        $form->hidden('file_id', __('File ID'))->default('');
 
         return $form;
     }

@@ -66,8 +66,13 @@ class ProductsCategoryController extends AdminController
         $form->text('name', __('Name'))->required();
 
         $form->image('image', __('Image'));
-        $form->textarea('description', __('Details'));
+        $form->list('attributes', __('Category Attributes'))->required();
+        $form->image('image', __('Main Photo'))->required();
+        $form->image('banner_image', __('Banner image'));
 
+        $form->radio('show_in_banner', __('Show in banner'))->options(['Yes' => 'Yes', 'No' => 'No'])->required();
+        $form->radio('show_in_categories', __('Show in categories'))->options(['Yes' => 'Yes', 'No' => 'No'])->required();
+        $form->textarea('description', __('Details'));
 
 
 
