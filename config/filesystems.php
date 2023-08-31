@@ -33,15 +33,13 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => $_SERVER['DOCUMENT_ROOT'].'/storage',
-            'url' => env('APP_URL') . '/storage',
-            'visibility' => 'public',
+            'root' => storage_path('app'),
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => $_SERVER['DOCUMENT_ROOT'].'public/storage',
-            'url' => env('APP_URL') . 'public/storage',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
 
