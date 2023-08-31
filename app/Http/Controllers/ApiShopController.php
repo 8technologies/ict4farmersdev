@@ -240,9 +240,7 @@ class ApiShopController extends Controller
         $pro->user = $u->id;
         $pro->supplier = $u->id;
         $pro->in_stock = 1;
-        $pro->rates = 1;
-        $pro->date_added = Carbon::now();
-        $pro->date_updated = Carbon::now();
+        $pro->rates = 1; 
         $imgs = Image::where([
             'parent_id' => $pro->local_id
         ])->get();
