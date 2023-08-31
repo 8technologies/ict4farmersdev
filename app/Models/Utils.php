@@ -69,7 +69,7 @@ class Utils
                 $file_name = time() . "-" . rand(100000, 1000000) . "." . $ext;
                 $root_path = $_SERVER['DOCUMENT_ROOT'];
 
-                $destination = $root_path.'/public/storage/images/' . $file_name;
+                $destination = $root_path.'/ict4farmers/public/storage/images/' . $file_name;
 
                 $res = move_uploaded_file($file['tmp_name'], $destination);
                 if (!$res) {
