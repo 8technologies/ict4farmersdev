@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminRoleUser;
-use App\Models\Animal;
 use App\Models\BatchSession;
 use App\Models\ChatHead;
 use App\Models\ChatMessage;
@@ -27,12 +26,12 @@ class ApiShopController extends Controller
 
     use ApiResponser;
 
-    
+
     public function chat_messages(Request $r)
     {
         $administrator_id = Utils::get_user_id($r);
         $u = Administrator::find($administrator_id);
- 
+
         if ($u == null) {
             return $this->error('User not found!');
         }
@@ -51,7 +50,7 @@ class ApiShopController extends Controller
         return $this->success($messages, 'Success');
     }
 
-    
+
 
     public function chat_heads(Request $r)
     {
@@ -74,9 +73,10 @@ class ApiShopController extends Controller
         $chat_heads->append('product_owner_unread_messages_count');
         return $this->success($chat_heads, 'Success');
     }
- 
 
-    public function chat_mark_as_read(Request $r){
+
+    public function chat_mark_as_read(Request $r)
+    {
         $receiver = Administrator::find($r->receiver_id);
         if ($receiver == null) {
             return $this->error('Receiver not found.');
@@ -98,15 +98,15 @@ class ApiShopController extends Controller
     }
 
     public function chat_send(Request $r)
-    { 
-        
+    {
+
         $administrator_id = Utils::get_user_id($r);
         $sender = Administrator::find($administrator_id);
 
         if ($sender == null) {
             return $this->error('User not found.');
         }
- 
+
         if ($sender == null) {
             $administrator_id = Utils::get_user_id($r);
             $sender = Administrator::find($administrator_id);
@@ -204,7 +204,7 @@ class ApiShopController extends Controller
     }
 
 
-    
+
 
     public function product_create(Request $r)
     {
@@ -229,7 +229,7 @@ class ApiShopController extends Controller
         $pro->name = $r->name;
         $pro->feature_photo = 'no_image.jpg';
         $pro->description = $r->description;
-        $pro->price_1 = $r->price_1; 
+        $pro->price_1 = $r->price_1;
         $pro->price_2 = $r->price_2;
         $pro->local_id = $r->id;
         $pro->summary = $r->data;
@@ -240,12 +240,12 @@ class ApiShopController extends Controller
         $pro->keywords = $r->keywords;
         $pro->metric = 1;
         $pro->status = 0;
-        $pro->currency = 1; 
+        $pro->currency = 1;
         $pro->user = $u->id;
         $pro->user_id = $u->id;
         $pro->supplier = $u->id;
         $pro->in_stock = 1;
-        $pro->rates = 1; 
+        $pro->rates = 1;
         $imgs = Image::where([
             'parent_id' => $pro->local_id
         ])->get();
@@ -359,11 +359,12 @@ class ApiShopController extends Controller
                 $msg .= "Note not set. ";
             }
 
+
             $online_parent_id = ((int)($request->online_parent_id));
             if (
                 $online_parent_id > 0
             ) {
-                $animal = Animal::find($online_parent_id);
+                $animal = Product::find($online_parent_id);
                 if ($animal != null) {
                     $img->parent_endpoint =  'Animal';
                     $img->parent_id =  $animal->id;
@@ -373,6 +374,7 @@ class ApiShopController extends Controller
             } else {
                 $msg .= "Online_parent_id NOT set. => {$online_parent_id} ";
             }
+
 
             $img->save();
             $_images[] = $img;
