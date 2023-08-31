@@ -57,8 +57,8 @@ class ApiShopController extends Controller
         }
         if ($is_private) {
 
-            $u = auth('api')->user();
-            $administrator_id = $u->id;
+            $administrator_id = Utils::get_user_id($r);
+            $u = Administrator::find($administrator_id);
 
             if ($u == null) {
                 return $this->error('User not found.');
@@ -70,6 +70,7 @@ class ApiShopController extends Controller
         $msg = "";
 
         try {
+            $conditions = [];
             $items = $className::where($conditions)->get();
             $msg = "Success";
             $success = true;
