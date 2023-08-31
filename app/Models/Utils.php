@@ -37,26 +37,26 @@ class Utils
         }
 
         $header = (int)($request->user);
-        if ($header < 1) {
+        if ($header > 0) {
             $header = (int)($request->user);
         }
         $header = (int)($request->user_id);
-        if ($header < 1) {
+        if ($header > 0) {
             $header = (int)($request->user_id);
         }
 
         
         $header = (int)($request->header('user'));
-        if ($header < 1) {
+        if ($header > 0) {
             $header = (int)($request->user);
         }
         $header = (int)($request->header('user_id'));
-        if ($header < 1) {
+        if ($header > 0) {
             $header = (int)($request->user);
         }
-        
+
         $header = (int)($request->header('user-id'));
-        if ($header < 1) {
+        if ($header > 0) {
             $header = (int)($request->user);
         }
         if ($header < 1) {
