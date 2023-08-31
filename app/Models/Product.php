@@ -166,7 +166,7 @@ class Product extends Model
 
     protected $appends = [
         'price_text',
-        'seller_name', 
+        'seller_name',
         'seller_phone',
         'category_name',
         'city_name',
@@ -325,7 +325,7 @@ class Product extends Model
         return ((int)(str_replace(',', '', $this->quantity)));
     }
 
-    
+
 
 
     protected $fillable = [
