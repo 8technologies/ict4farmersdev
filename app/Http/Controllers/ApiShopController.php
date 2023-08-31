@@ -100,8 +100,8 @@ class ApiShopController extends Controller
     public function chat_send(Request $r)
     { 
         
-        $user_id = $r->user;
-        $sender = Administrator::find($user_id);
+        $administrator_id = Utils::get_user_id($r);
+        $sender = Administrator::find($administrator_id);
 
         if ($sender == null) {
             return $this->error('User not found.');
