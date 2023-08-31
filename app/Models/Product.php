@@ -325,6 +325,8 @@ class Product extends Model
         return ((int)(str_replace(',', '', $this->quantity)));
     }
 
+    
+
 
     protected $fillable = [
         'name',
@@ -341,5 +343,15 @@ class Product extends Model
         'attributes',
         'images',
         'city',
+    ];
+
+    public function getRatesAttribute()
+    {
+        $imgs = Image::where('parent_id', $this->id)->orwhere('product_id', $this->id)->get();
+        return json_encode($imgs);
+    }
+
+    protected $casts = [
+        'data' => 'json',
     ];
 }
