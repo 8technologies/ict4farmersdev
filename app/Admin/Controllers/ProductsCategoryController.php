@@ -26,7 +26,7 @@ class ProductsCategoryController extends AdminController
         $grid->column('image', __('thumnail'))
             ->display(function () {
 
-                return '<img width="100" src="' . url('storage/' . $this->image) . '" >';
+                return '<img width="100" src="' . url('public/storage/' . $this->image) . '" >';
             })
             ->sortable();
         $grid->column('name', __('Title'))->sortable();
