@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Models;
- 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
- 
- 
+
+
 
     public function getSlugAttribute($v)
     {
@@ -55,6 +55,13 @@ class Category extends Model
         return $this->hasMany(Category::class, "parent");
     }
 
+    public function getImageAtrribute($img)
+    {
+        if (Str::contains($img, 'storage/')) {
+            $img = str_replace('storage/', '', $img);
+        }
+        return $img;
+    }
     public function sub_categories()
     {
         return $this->hasMany(Category::class, "parent");
@@ -106,7 +113,8 @@ class Category extends Model
     }
 
     //has many questions asked about it
-    public function questions() {
+    public function questions()
+    {
         return $this->hasMany(Question::class, 'category_id');
     }
 
