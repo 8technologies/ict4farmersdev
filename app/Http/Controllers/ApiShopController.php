@@ -86,6 +86,69 @@ class ApiShopController extends Controller
         }
     }
 
+    public function chat_start(Request $r)
+    {
+        $sender = null;
+        if ($sender == null) {
+            $administrator_id = Utils::get_user_id($r);
+            $sender = Administrator::find($administrator_id);
+        }
+        if ($sender == null) {
+            return $this->error('User not found.');
+        }
+        $receiver = User::find($r->receiver_id);
+        if ($receiver == null) {
+            return $this->error('Receiver not found.');
+        }
+        $pro = Product::find($r->product_id);
+        if ($pro == null) {
+            return $this->error('Product not found.');
+        }
+        $product_owner = null;
+        $customer = null;
+
+        if ($pro->user == $sender->id) {
+            $product_owner = $sender;
+            $customer = $receiver;
+        } else {
+            $product_owner = $receiver;
+            $customer = $sender;
+        }
+
+        $chat_head = ChatHead::where([
+            'product_id' => $pro->id,
+            'product_owner_id' => $product_owner->id,
+            'customer_id' => $customer->id
+        ])->first();
+        if ($chat_head == null) {
+            $chat_head = ChatHead::where([
+                'product_id' => $pro->id,
+                'customer_id' => $product_owner->id,
+                'product_owner_id' => $customer->id
+            ])->first();
+        }
+
+        if ($chat_head == null) {
+            $chat_head = new ChatHead();
+            $chat_head->product_id = $pro->id;
+            $chat_head->product_owner_id = $product_owner->id;
+            $chat_head->customer_id = $customer->id;
+            $chat_head->product_name = $pro->name;
+            $chat_head->product_photo = $pro->feature_photo;
+            $chat_head->product_owner_name = $product_owner->name;
+            $chat_head->product_owner_photo = $product_owner->photo;
+            $chat_head->customer_name = $customer->name;
+            $chat_head->customer_photo = $customer->photo;
+            $chat_head->last_message_body = '';
+            $chat_head->last_message_time = Carbon::now();
+            $chat_head->last_message_status = 'sent';
+            $chat_head->save();
+        }
+
+        return $this->success($chat_head, 'Success');
+    }
+
+
 
 
 
