@@ -16,7 +16,27 @@ use Illuminate\Support\Facades\DB;
 
 class ApiChatsController
 {
-    public function send_sms(Request $request){
+    public function notification_send(Request $request)
+    {
+        try {
+
+            Utils::sendNotification(
+                'Simple Test Message',
+                '16308',
+                $headings = 'Test title',
+                data: [
+                    'id' => '1',
+                    'sender_id' => '1',
+                    'receiver_id' => '2',
+                    'chat_head_id' => '3',
+                ]
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+    public function send_sms(Request $request)
+    {
         $res = Utils::send_sms([
             'to' => '+256706638494',
             'message' => 'Test message'
@@ -24,7 +44,6 @@ class ApiChatsController
         echo "<pre>";
         print_r($res);
         die("Romina");
-
     }
     public function send_message(Request $request)
     {

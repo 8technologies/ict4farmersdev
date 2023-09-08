@@ -12,7 +12,7 @@
         "africastalking/africastalking": "^3.0",
         "barryvdh/laravel-dompdf": "^1.0",
         "barryvdh/laravel-snappy": "^1.0",
-        "berkayk/onesignal-laravel": "^1.0",
+        "berkayk/onesignal-laravel": "^2.0",
         "binarytorch/larecipe": "^2.5",
         "doctrine/dbal": "^3.3",
         "dompdf/dompdf": "^1.2",

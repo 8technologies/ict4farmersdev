@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\WizardItem as ModelsWizardItem;
+use Berkayk\OneSignal\OneSignalClient;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
 use GuzzleHttp\Client;
@@ -21,6 +22,48 @@ use function PHPUnit\Framework\fileExists;
 
 class Utils
 {
+ 
+    public static function sendNotification(
+        $msg,
+        $receiver,
+        $headings = 'ICT For Farmers',
+        $data = null,
+        $url = null,
+        $buttons = null,
+        $schedule = null,
+    ) {
+        try {
+            $client = new OneSignalClient(
+                env('ONESIGNAL_APP_ID'),
+                env('ONESIGNAL_REST_API_KEY'),
+                env('USER_AUTH_KEY')
+            );
+            $client->addParams(
+                [
+                    'android_channel_id' => '041bb082-4aa9-4e75-9843-ec1ca07f0f50',
+                    'large_icon' => env('APP_URL') . '/assets/images/logo.png',
+                    'small_icon' => 'logo',
+                ]
+            )
+                ->sendNotificationToExternalUser(
+                    $msg,
+                    "$receiver",
+                    $url = $url,
+                    $data = $data,
+                    $buttons = $buttons,
+                    $schedule = $schedule,
+                    $headings = $headings
+                );
+        } catch (\Throwable $th) {
+            //throw $th;
+            throw $th;
+        }
+
+
+        return;
+    }
+
+
 
     public static function get_user_id($request = null)
     {
@@ -45,7 +88,7 @@ class Utils
             $header = (int)($request->user_id);
         }
 
-        
+
         $header = (int)($request->header('user'));
         if ($header > 0) {
             $header = (int)($request->user);
@@ -66,7 +109,7 @@ class Utils
     }
 
 
-    
+
     public static function upload_images_1($files, $is_single_file = false)
     {
 
@@ -87,8 +130,8 @@ class Utils
                 $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
                 $file_name = time() . "-" . rand(100000, 1000000) . "." . $ext;
                 $root_path = $_SERVER['DOCUMENT_ROOT'];
-                $destination = $root_path.'/public/storage/' . $file_name;
-/* 
+                $destination = $root_path . '/public/storage/' . $file_name;
+                /* 
             $root_path = $_SERVER['DOCUMENT_ROOT'];
 
                 $destination = '/app.unffeict4farmers.org/public/storage/' . $file_name;
@@ -113,7 +156,7 @@ class Utils
     }
 
 
-    
+
 
     public static function prepare_calendar_events($administrator_id)
     {

@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'd17a2ffc7ab60f94e2104d45a0afa5f2e16eb8e9',
+        'reference' => 'a6242c21bbbe64341d689b0ed15d43b5f5afb35e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -47,8 +47,8 @@
             'dev_requirement' => false,
         ),
         'berkayk/onesignal-laravel' => array(
-            'pretty_version' => 'v1.10',
-            'version' => '1.10.0.0',
+            'pretty_version' => 'v2',
+            'version' => '2.0.0.0',
             'reference' => 'e37aaf474903789f20239949c73e20382bd623bf',
             'type' => 'library',
             'install_path' => __DIR__ . '/../berkayk/onesignal-laravel',
@@ -577,7 +577,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'd17a2ffc7ab60f94e2104d45a0afa5f2e16eb8e9',
+            'reference' => 'a6242c21bbbe64341d689b0ed15d43b5f5afb35e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1027,8 +1027,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -1484,9 +1484,9 @@
             'dev_requirement' => false,
         ),
         'symfony/psr-http-message-bridge' => array(
-            'pretty_version' => 'v2.2.0',
-            'version' => '2.2.0.0',
-            'reference' => '28a732c05bbad801304ad5a5c674cf2970508993',
+            'pretty_version' => 'v2.3.1',
+            'version' => '2.3.1.0',
+            'reference' => '581ca6067eb62640de5ff08ee1ba6850a0ee472e',
             'type' => 'symfony-bridge',
             'install_path' => __DIR__ . '/../symfony/psr-http-message-bridge',
             'aliases' => array(),
