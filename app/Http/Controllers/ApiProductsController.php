@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Farm;
+use App\Models\FarmerQuestion;
+use App\Models\FarmerQuestionAnswer;
 use App\Models\FinancialRecord;
 use App\Models\Garden;
 use App\Models\GardenActivity;
@@ -21,14 +23,17 @@ use App\Models\PostComment;
 use App\Models\Product;
 use App\Models\Question;
 use App\Models\Utils;
+use App\Traits\ApiResponser;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Throwable;
 
 class ApiProductsController
 {
 
 
+    use ApiResponser;
 
     public function wizard_items()
     {
@@ -1007,5 +1012,132 @@ class ApiProductsController
 
 
         return $items;
+    }
+
+    public function farmer_questions()
+    {
+        $data = FarmerQuestion::where([])->get();
+        $data->append(
+            [
+                'user_text',
+                'user_photo',
+                'district_text',
+                'answers_count'
+            ]
+        );
+        return $this->success($data, "Success");
+    }
+
+    public function farmer_question_answers()
+    {
+        $data = FarmerQuestionAnswer::where([])->get();
+        $data->append(
+            [
+                'user_text',
+                'user_photo',
+            ]
+        );
+        return $this->success($data, "Success");
+    }
+
+
+
+    public function farmer_questions_create(Request $r)
+    {
+        $u = Utils::get_user();
+        if ($u == null) return $this->error("User not found.");
+
+        if ($r->body == null && empty($_FILES)) return $this->error("Question is required.");
+        if ($r->category == null) return $this->error("Category is required.");
+
+        $images = [];
+        if (!empty($_FILES)) {
+            try {
+                $images = Utils::upload_images_2($_FILES, false);
+            } catch (Throwable $t) {
+                $images = [];
+            }
+        }
+
+        $f = new FarmerQuestion();
+        if (is_array($images)) {
+            if (isset($images[0])) {
+                if (Utils::isImageFile(Utils::docs_root() . '/storage/' . $images[0])) {
+                    $f->photo = '/' . $images[0];
+                } else {
+                    $f->audio = '/' . $images[0];
+                }
+            }
+            if (isset($images[1])) {
+                if (Utils::isImageFile(Utils::docs_root() . '/storage/' . $images[1])) {
+                    $f->photo = '/' . $images[1];
+                } else {
+                    $f->audio = $images[1];
+                }
+            }
+        }
+
+        $u = Utils::get_user();
+        if ($u == null) return $this->error("User not found.");
+        $f->user_id = $u->id;
+        $f->body = $r->body;
+        $f->category = $r->category;
+        $f->phone = $r->phone;
+        $f->sent_via = $r->sent_via;
+        $f->answered = 'no';
+        $f->video = $r->video;
+        $f->views = 0;
+        try {
+            $f->save();
+        } catch (\Throwable $t) {
+            return $this->error($t->getMessage());
+        }
+        return $this->success($f, "Question submitted successfully.");
+    }
+
+
+    public function farmer_answers_create(Request $r)
+    {
+        if ($r->body == null && empty($_FILES)) return $this->error("Question is required.");
+        if ($r->question_id == null) return $this->error("Question is required.");
+
+        $images = [];
+        if (!empty($_FILES)) {
+            try {
+                $images = Utils::upload_images_2($_FILES, false);
+            } catch (Throwable $t) {
+                $images = [];
+            }
+        }
+
+        $f = new FarmerQuestionAnswer();
+        if (is_array($images)) {
+            if (isset($images[0])) {
+                if (Utils::isImageFile(Utils::docs_root() . '/storage/images/' . $images[0])) {
+                    $f->photo = 'images/' . $images[0];
+                } else {
+                    $f->audio = 'images/' . $images[0];
+                }
+            }
+            if (isset($images[1])) {
+                if (Utils::isImageFile(Utils::docs_root() . '/storage/images/' . $images[1])) {
+                    $f->photo = 'images/' . $images[1];
+                } else {
+                    $f->audio = $images[1];
+                }
+            }
+        }
+
+        $u = Utils::get_user();
+        if ($u == null) return $this->error("User not found.");
+        $f->user_id = $u->id;
+        $f->body = $r->body;
+        $f->farmer_question_id = $r->question_id;
+        try {
+            $f->save();
+        } catch (\Throwable $t) {
+            return $this->error($t->getMessage());
+        }
+        return $this->success($f, "Answer submitted successfully.");
     }
 }

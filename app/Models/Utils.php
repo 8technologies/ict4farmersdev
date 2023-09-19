@@ -22,7 +22,7 @@ use function PHPUnit\Framework\fileExists;
 
 class Utils
 {
- 
+
     public static function sendNotification(
         $msg,
         $receiver,
@@ -110,6 +110,7 @@ class Utils
 
 
 
+
     public static function upload_images_1($files, $is_single_file = false)
     {
 
@@ -154,6 +155,136 @@ class Utils
 
         return $is_single_file ? $single_file : $uploaded_images;
     }
+
+
+
+
+    public static function upload_images_2($files, $is_single_file = false)
+    {
+
+        ini_set('memory_limit', '-1');
+        if ($files == null || empty($files)) {
+            return $is_single_file ? "" : [];
+        }
+        $uploaded_images = array();
+        foreach ($files as $file) {
+
+            if (
+                isset($file['name']) &&
+                isset($file['type']) &&
+                isset($file['tmp_name']) &&
+                isset($file['error']) &&
+                isset($file['size'])
+            ) {
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $file_name = time() . "-" . rand(100000, 1000000) . "." . $ext;
+                $destination = Utils::docs_root() . '/storage/' . $file_name;
+
+                try {
+                    $res = move_uploaded_file($file['tmp_name'], $destination);
+                    //die("successss ".$destination);
+                } catch (\Exception $e) {
+                    $res = false;
+                    die("failed " . $e->getMessage());
+                }
+
+                if (!$res) {
+                    continue;
+                }
+                //$uploaded_images[] = $destination;
+                $uploaded_images[] = $file_name;
+            }
+        }
+
+        $single_file = "";
+        if (isset($uploaded_images[0])) {
+            $single_file = $uploaded_images[0];
+        }
+
+
+        return $is_single_file ? $single_file : $uploaded_images;
+    }
+
+    public static function get_user()
+    {
+        $user_id = "";
+        $u = null;
+        if (isset($_GET['user_id'])) {
+            $user_id = $_GET['user_id'];
+            $u = Administrator::find($user_id);
+        }
+        if ($u == null) {
+            if (isset($_POST['user_id'])) {
+                $user_id = $_POST['user_id'];
+                $u = Administrator::find($user_id);
+            }
+        }
+        if ($u == null) {
+            $headers = getallheaders();
+            if (isset($headers['user_id'])) {
+                $user_id = $headers['user_id'];
+                $u = Administrator::find($user_id);
+            }
+        }
+        return $u;
+    }
+
+
+    public static function isImageFile($filename)
+    {
+        // Allowed image MIME types
+        $allowedTypes = array(
+            IMAGETYPE_JPEG,
+            IMAGETYPE_PNG,
+            IMAGETYPE_GIF,
+            IMAGETYPE_BMP,
+            IMAGETYPE_WEBP,
+            // Add any other image types you want to support
+        );
+
+        // Get the MIME type of the file
+        $imageType = exif_imagetype($filename);
+
+        // Check if the MIME type corresponds to an image
+        return in_array($imageType, $allowedTypes);
+    }
+
+
+
+
+    public static function docs_root()
+    {
+        $r = $_SERVER['DOCUMENT_ROOT'] . "";
+
+        if (!str_contains($r, 'home/')) {
+            $r = str_replace('/public', "", $r);
+            $r = str_replace('\public', "", $r);
+        }
+
+        if (!(str_contains($r, 'public'))) {
+            $r = $r . "/public";
+        }
+
+        $current_host = '';
+        if (isset($_SERVER['HTTP_HOST'])) {
+            $current_host = $_SERVER['HTTP_HOST'];
+        }
+
+        if ($current_host == 'localhost') {
+            $r = str_replace("/server.php", '', $_SERVER['SCRIPT_FILENAME']);
+            $r = $r . '/public';
+        }
+
+
+        /* 
+         "/home/ulitscom_html/public/storage/images/956000011639246-(m).JPG
+        
+        public_html/public/storage/images
+        */
+        return $r;
+    }
+
+
 
 
 

@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route; //new staff
 use App\Http\Controllers\CallCenter\NewCallCenterController;
 
 
+Route::get('farmer-questions', [ApiProductsController::class, 'farmer_questions']);
+Route::get('farmer_question_answers', [ApiProductsController::class, 'farmer_question_answers']); 
+Route::POST('farmer-questions-create', [ApiProductsController::class, 'farmer_questions_create']);
+Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']);
+
+
 Route::post('products', [ApiProductsController::class, 'create']);
 Route::post('gardens', [ApiProductsController::class, 'create_garden']);
 Route::post('farms', [ApiProductsController::class, 'create_farm']);
