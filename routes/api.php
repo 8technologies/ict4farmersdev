@@ -20,6 +20,11 @@ Route::get('farmer_question_answers', [ApiProductsController::class, 'farmer_que
 Route::POST('farmer-questions-create', [ApiProductsController::class, 'farmer_questions_create']);
 Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']);
 
+/* Route::get('permissions', [ApiProductsController::class, 'permissions']);
+Route::get('my-permissions', [ApiProductsController::class, 'my_permissions']);
+Route::get('roles', [ApiProductsController::class, 'roles']);
+ */
+
 
 Route::post('products', [ApiProductsController::class, 'create']);
 Route::post('gardens', [ApiProductsController::class, 'create_garden']);
