@@ -94,7 +94,7 @@ class NewCallCenterController extends Controller
                             $call->save();
                             $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                             $resp .= '<Say>Please wait as we connect you to Coffee agent.</Say>';
-                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256774610022,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256783784498,+256774610022,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                             $resp .= '</Response>';
                             return $resp;
                         } else  if ($dtmfDigits == 2) {
@@ -112,7 +112,7 @@ class NewCallCenterController extends Controller
                             $call->save();
                             $resp = '<?xml version="1.0" encoding="UTF-8"?><Response>';
                             $resp .= '<Say>Please wait as we connect you to Luganda Coffee agent.</Say>';
-                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256773813709,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
+                            $resp .= '<Dial record="true" sequential="true" phoneNumbers="+256778873661,+256789272217,agent1.farmercallcenter@ug.sip2.africastalking.com"/>';
                             $resp .= '</Response>';
                             return $resp;
                         } else  if ($dtmfDigits == 2) {
