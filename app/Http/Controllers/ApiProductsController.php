@@ -22,6 +22,7 @@ use App\Models\PostCategory;
 use App\Models\PostComment;
 use App\Models\Product;
 use App\Models\Question;
+use App\Models\User;
 use App\Models\Utils;
 use App\Traits\ApiResponser;
 use Encore\Admin\Auth\Database\Administrator;
@@ -498,10 +499,11 @@ class ApiProductsController
     }
     public function garden_activities_create(Request $r)
     {
-        if (!isset($_POST['administrator_id'])) {
+        $user = User::find($r->get('administrator_id'));
+        if ($user == null) {
             return Utils::response(['message' => 'User ID is required.', 'status' => 0]);
         }
-        $garden_id = ((int)($_POST['garden_id']));
+        $garden_id = $r->get('garden_id');
         $g = Garden::find($garden_id);
 
         if ($g == null) {
