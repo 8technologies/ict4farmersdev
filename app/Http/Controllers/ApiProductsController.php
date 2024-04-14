@@ -184,6 +184,7 @@ class ApiProductsController
     public function garden_production_record_create(Request $r)
     {
 
+        return Utils::response([]);
         if (!isset($_POST['garden_id'])) {
             return Utils::response(['message' => 'Garden ID is required.', 'status' => 0]);
         }

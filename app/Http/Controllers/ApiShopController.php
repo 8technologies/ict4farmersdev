@@ -405,13 +405,12 @@ class ApiShopController extends Controller
 
         if (
             !isset($request->parent_id) ||
-            $request->parent_id == null ||
-            ((int)($request->parent_id)) < 1
+            $request->parent_id == null
         ) {
 
             return Utils::response([
                 'status' => 0,
-                'message' => "Local parent ID is missing.",
+                'message' => "Local parent ID is missing. 1",
             ]);
         }
 
@@ -491,7 +490,7 @@ class ApiShopController extends Controller
             ) {
                 $animal = Product::find($online_parent_id);
                 if ($animal != null) {
-                    $img->parent_endpoint =  'Animal';
+                    $img->parent_endpoint =  'Product';
                     $img->parent_id =  $animal->id;
                 } else {
                     $msg .= "parent_id NOT not found => {$request->online_parent_id}.";
@@ -502,12 +501,13 @@ class ApiShopController extends Controller
 
 
             $img->save();
+            $img = Image::find($img->id);
             $_images[] = $img;
         }
         //Utils::process_images_in_backround();
         return Utils::response([
             'status' => 1,
-            'data' => json_encode($_POST),
+            'data' => $img,
             'message' => "File uploaded successfully.",
         ]);
     }
