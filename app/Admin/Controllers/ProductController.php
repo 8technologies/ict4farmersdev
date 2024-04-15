@@ -31,7 +31,7 @@ class ProductController extends AdminController
      */
     protected function grid()
     {
-        dd(storage_path('public/storage/')); 
+        
         $grid = new Grid(new Product());
 
         $grid->model()->where([
