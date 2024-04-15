@@ -109,7 +109,7 @@ class BannerWebController extends AdminController
 
         $form->text('name', __('Title'));
         $form->text('sub_title', __('Sub title'));
-        $form->image('image', __('Image'));
+        $form->image('image', __('Image'))->uniqueName();
         $form->hidden('clicks', __('Clicks'))->default(0);
         $form->hidden('parent_id', __('Clicks'))->default(0);
         $form->hidden('order', __('Clicks'))->default(0);
