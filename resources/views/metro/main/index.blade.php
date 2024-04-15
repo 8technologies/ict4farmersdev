@@ -102,7 +102,7 @@ shuffle($bgs);
 
                                 <a href="{{ $slide->link }}">
                                     <div class="my-slider"
-                                        style="background-image: url({{ $slide->image }});     background-size:     cover;
+                                        style="background-image: url({{ url('/public/storage/'.$slide->image) }});     background-size:     cover;
                                                                 background-repeat:   no-repeat;
                                                                 background-position: center center; ">
                                     </div>
