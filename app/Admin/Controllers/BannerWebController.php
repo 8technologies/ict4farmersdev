@@ -35,7 +35,7 @@ class BannerWebController extends AdminController
         ]);
 
         $grid->column('id', __('Id'))->sortable();
-        $grid->column('image', __('Image'))->image(url(""), 100, 100);
+        $grid->column('image', __('Image'))->image(url("/public/storage/"), 100, 100);
         $grid->column('name', __('Title'));
         $grid->column('sub_title', __('Sub-Title'));
         $grid->column('category_id', __('Category'));
