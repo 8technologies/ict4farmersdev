@@ -99,10 +99,10 @@ shuffle($bgs);
                                 }
                             @endphp
                             <div class="carousel-item  <?= $active ?>  ">
- 
+
                                 <a href="{{ $slide->link }}">
                                     <div class="my-slider"
-                                        style="background-image: url({{ url('/public/'.$slide->image) }});     background-size:     cover;
+                                        style="background-image: url({{ url('/public/storage/'.$slide->image) }});     background-size:     cover;
                                                                 background-repeat:   no-repeat;
                                                                 background-position: center center; ">
                                     </div>
