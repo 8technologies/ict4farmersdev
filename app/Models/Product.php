@@ -18,7 +18,7 @@ class Product extends Model
     use HasFactory;
 
     //fillables
-    
+
 
 
     public function getPriceTextAttribute()
@@ -359,6 +359,6 @@ class Product extends Model
 
     //hasmnany Image
     public function images(){
-        return $this->hasMany(Image::class,'parent_id');
+        return $this->hasMany(Image::class,'product_id');
     }
 }
