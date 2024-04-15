@@ -17,6 +17,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    //fillables
+    
 
 
     public function getPriceTextAttribute()
@@ -354,4 +356,9 @@ class Product extends Model
     protected $casts = [
         'data' => 'json',
     ];
+
+    //hasmnany Image
+    public function images(){
+        return $this->hasMany(Image::class,'parent_id');
+    }
 }

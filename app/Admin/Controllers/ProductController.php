@@ -2,10 +2,11 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\Category; 
+use App\Models\Category;
 use App\Models\Location;
 use App\Models\Product;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -21,7 +22,7 @@ class ProductController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Market place';
+    protected $title = 'Marketplace';
 
     /**
      * Make a grid builder.
@@ -31,18 +32,18 @@ class ProductController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Product());
-        
+
         $grid->model()->where([
             'type' => 'product',
         ]);
 
 
-        $grid->disableActions();
+        //$grid->disableActions();
         $grid->disableCreateButton();
         $grid->disableExport();
         $grid->actions(function ($actions) {
-            $actions->disableDelete();
-            $actions->disableEdit();
+            //$actions->disableDelete();
+            //$actions->disableEdit();
             $actions->disableView();
         });
 
@@ -96,7 +97,10 @@ class ProductController extends AdminController
             if ($this->category == null) {
                 return $category_id;
             }
-            return $this->category->name;
+            if ($this->category == null) {
+                return 'Category not found';
+            }
+            //return $this->category->name;
         })->sortable();
 
 
@@ -134,10 +138,10 @@ class ProductController extends AdminController
             })->sortable();
 
 
-            // if (Request::get('view') !== 'table') {
-            //     $grid->setView('admin.grid.card');
-            // }
-    
+        // if (Request::get('view') !== 'table') {
+        //     $grid->setView('admin.grid.card');
+        // }
+
 
 
         return $grid;
@@ -184,10 +188,31 @@ class ProductController extends AdminController
     protected function form()
     {
 
-        return "Download ICT4Farmers mobile App post your product.";
+        //return "Download ICT4Farmers mobile App post your product.";
 
         $form = new Form(new Product());
         $form->text('name', __('Name'));
+        $form->hasMany('images', 'images', function ($f) {
+            $u = Admin::user();
+            $f->image('src', 'Image');
+            $f->hidden('user_id')->default($u->id);
+            $f->hidden('parent_endpoint')->default('Product');
+            $f->hidden('note')->default('Product');
+            $f->hidden('p_type')->default('Product');
+            $f->hidden('size')->default(10);
+
+            /* 	
+name	
+		
+	
+administrator_id	
+	
+	
+	 
+            */
+        });
+
+        return $form;
         $form->number('category_id', __('Category id'));
         $form->number('user_id', __('User id'));
         $form->number('country_id', __('Country id'))->default(1);
