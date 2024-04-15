@@ -192,9 +192,11 @@ class ProductController extends AdminController
 
         $form = new Form(new Product());
         $form->text('name', __('Name'));
-        $form->image('feature_photo', 'Main Image')->uniqid();
-        $form->hasMany('images', 'images', function ($f) { 
+        $form->image('feature_photo', __('Main image'))->uniqueName();
+        
+        $form->hasMany('images', 'images', function ($f) {
             $u = Admin::user();
+            $f->image('src', 'Image')->uniqueName();
             $f->hidden('user_id')->default($u->id);
             $f->hidden('parent_endpoint')->default('Product');
             $f->hidden('note')->default('Product');
