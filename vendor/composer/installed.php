@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a6242c21bbbe64341d689b0ed15d43b5f5afb35e',
+        'reference' => '992c6e8498046671ef7cf07c0925bbe71c6f6861',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -532,6 +532,15 @@
                 0 => 'v8.83.27',
             ),
         ),
+        'jxlwqq/quill' => array(
+            'pretty_version' => '1.0.4',
+            'version' => '1.0.4.0',
+            'reference' => 'be5ab91840f25dfee4db0ea5c408943930912645',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../jxlwqq/quill',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'knplabs/knp-snappy' => array(
             'pretty_version' => 'v1.4.2',
             'version' => '1.4.2.0',
@@ -577,7 +586,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a6242c21bbbe64341d689b0ed15d43b5f5afb35e',
+            'reference' => '992c6e8498046671ef7cf07c0925bbe71c6f6861',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

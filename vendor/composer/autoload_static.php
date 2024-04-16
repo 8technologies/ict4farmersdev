@@ -28,9 +28,9 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '4e8671d7be9056dcd04ddd9e8e15f9cc' => __DIR__ . '/..' . '/encore/laravel-admin/src/helpers.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '0b47d6d4a00ca9112ba3953b49e7c9a4' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/helper.php',
-        '4e8671d7be9056dcd04ddd9e8e15f9cc' => __DIR__ . '/..' . '/encore/laravel-admin/src/helpers.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '9cdd7b9056abc3081735233ba9dd9c7f' => __DIR__ . '/..' . '/facade/flare-client-php/src/helpers.php',
@@ -155,6 +155,10 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'K' => 
         array (
             'Knp\\Snappy\\' => 11,
+        ),
+        'J' => 
+        array (
+            'Jxlwqq\\Quill\\' => 13,
         ),
         'I' => 
         array (
@@ -521,6 +525,10 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         array (
             0 => __DIR__ . '/..' . '/knplabs/knp-snappy/src/Knp/Snappy',
         ),
+        'Jxlwqq\\Quill\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jxlwqq/quill/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -785,6 +793,7 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'App\\Admin\\Controllers\\QuestionController' => __DIR__ . '/../..' . '/app/Admin/Controllers/QuestionController.php',
         'App\\Admin\\Controllers\\ResourceSharingController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ResourceSharingController.php',
         'App\\Admin\\Controllers\\SimpleTaskController' => __DIR__ . '/../..' . '/app/Admin/Controllers/SimpleTaskController.php',
+        'App\\Admin\\Controllers\\SystemUsersController' => __DIR__ . '/../..' . '/app/Admin/Controllers/SystemUsersController.php',
         'App\\Admin\\Controllers\\TaskCategoryController' => __DIR__ . '/../..' . '/app/Admin/Controllers/TaskCategoryController.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -846,6 +855,8 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'App\\Models\\CropCategoryActivity' => __DIR__ . '/../..' . '/app/Models/CropCategoryActivity.php',
         'App\\Models\\District' => __DIR__ . '/../..' . '/app/Models/District.php',
         'App\\Models\\Farm' => __DIR__ . '/../..' . '/app/Models/Farm.php',
+        'App\\Models\\FarmerQuestion' => __DIR__ . '/../..' . '/app/Models/FarmerQuestion.php',
+        'App\\Models\\FarmerQuestionAnswer' => __DIR__ . '/../..' . '/app/Models/FarmerQuestionAnswer.php',
         'App\\Models\\FarmersGroup' => __DIR__ . '/../..' . '/app/Models/FarmersGroup.php',
         'App\\Models\\FarmersGroupHasAgent' => __DIR__ . '/../..' . '/app/Models/FarmersGroupHasAgent.php',
         'App\\Models\\FinancialRecord' => __DIR__ . '/../..' . '/app/Models/FinancialRecord.php',
@@ -4143,6 +4154,9 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
         'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
+        'Jxlwqq\\Quill\\Editor' => __DIR__ . '/..' . '/jxlwqq/quill/src/Editor.php',
+        'Jxlwqq\\Quill\\Quill' => __DIR__ . '/..' . '/jxlwqq/quill/src/Quill.php',
+        'Jxlwqq\\Quill\\QuillServiceProvider' => __DIR__ . '/..' . '/jxlwqq/quill/src/QuillServiceProvider.php',
         'Knp\\Snappy\\AbstractGenerator' => __DIR__ . '/..' . '/knplabs/knp-snappy/src/Knp/Snappy/AbstractGenerator.php',
         'Knp\\Snappy\\Exception\\FileAlreadyExistsException' => __DIR__ . '/..' . '/knplabs/knp-snappy/src/Knp/Snappy/Exception/FileAlreadyExistsException.php',
         'Knp\\Snappy\\GeneratorInterface' => __DIR__ . '/..' . '/knplabs/knp-snappy/src/Knp/Snappy/GeneratorInterface.php',

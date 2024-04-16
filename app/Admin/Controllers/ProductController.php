@@ -22,7 +22,7 @@ class ProductController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Marketplace';
+    protected $title = 'Products';
 
     /**
      * Make a grid builder.
@@ -31,16 +31,19 @@ class ProductController extends AdminController
      */
     protected function grid()
     {
-        
+
         $grid = new Grid(new Product());
+
 
         $grid->model()->where([
             'type' => 'product',
         ]);
+        $grid->disableBatchActions();
+        $grid->model()->orderBy('id', 'desc');
 
 
         //$grid->disableActions();
-        $grid->disableCreateButton();
+        //$grid->disableCreateButton();
         $grid->disableExport();
         $grid->actions(function ($actions) {
             //$actions->disableDelete();
@@ -77,7 +80,7 @@ class ProductController extends AdminController
         //$grid->column('updated_at', __('Updated at'));
         $grid->column('id', __('Photo'))->display(function ($id) {
             return '<img width="40" src="' . $this->get_thumbnail() . '" ?>';
-        })->sortable();
+        })->sortable()->width(80);
 
         $grid->column('name', __('Product'))->display(function ($id) {
             return $this->get_name_short();
@@ -95,14 +98,14 @@ class ProductController extends AdminController
 
 
         $grid->column('category_id', __('Category'))->display(function ($category_id) {
-            if ($this->category == null) {
-                return $category_id;
+            $cat = Category::find($category_id);
+            if ($cat == null) {
+                return 'N/A';
             }
-            if ($this->category == null) {
-                return 'Category not found';
-            }
+            return $cat->name;
             //return $this->category->name;
-        })->sortable();
+        })->sortable()
+            ->required();
 
 
         $grid->column('city_id', __('Location'))
@@ -114,7 +117,19 @@ class ProductController extends AdminController
             })->sortable();
 
 
-        $grid->column('created_at', __('Posted'));
+        $grid->column('created_at', __('Posted'))->sortable();
+        $grid->column('status', __('Status'))->display(function ($status) {
+            $d = "";
+            if ($status == 1) {
+                $d = 'Active';
+                return '<span class="label label-success">' . $d . '</span>';
+            }
+            $d =  'Inactive';
+            return '<span class="label label-danger">' . $d . '</span>';
+        })->filter([
+            1 => 'Active',
+            0 => 'Inactive',
+        ])->sortable();
 
         //$grid->column('sub_category_id', __('Sub category id'));
         //$grid->column('fixed_price', __('Fixed price'));
@@ -133,7 +148,7 @@ class ProductController extends AdminController
 
                 $data = $call;
                 $link = 'https://play.google.com/store/apps/details?id=net.eighttechnologes.ict4farmers&hl=en&gl=US';
-                $data .=  '<br>OR<br><a href="' . $link . '" >Download ICT4FARMERS MOBILE APP to Send Message this seller</a>';
+                $data .=  ' OR<br><a target="_blank" href="' . $link . '" >Download THE APP</a>';
 
                 return $data;
             })->sortable();
@@ -168,7 +183,6 @@ class ProductController extends AdminController
         $show->field('city_id', __('City id'));
         $show->field('price', __('Price'));
         $show->field('slug', __('Slug'));
-        $show->field('status', __('Status'));
         $show->field('description', __('Description'));
         $show->field('quantity', __('Quantity'));
         $show->field('images', __('Images'));
@@ -188,13 +202,91 @@ class ProductController extends AdminController
      */
     protected function form()
     {
+        $u = Admin::user();
 
-        //return "Download ICT4Farmers mobile App post your product.";
+
 
         $form = new Form(new Product());
-        $form->text('name', __('Name'));
+
+        $form->radio('status', __('Status'))->options([
+            1 => 'Active',
+            0 => 'Inactive',
+            2 => 'Pending for approval',
+        ])->default(1);
+        //type of product
+        $form->radio('type', __('Type'))->options([
+            'product' => 'Product',
+            'service' => 'Service',
+        ])->default('product')
+            ->when('service', function (Form $form) {
+                $form->hidden('metric')->default('unit');
+                $form->hidden('nature_of_offer')->default('Service');
+            })->when('product', function (Form $form) {
+                $form->radio('nature_of_offer', __('Nature of offer'))->options([
+                    'For sale' => 'For sale',
+                    'For hire' => 'For hire',
+                ])->default('For sale');
+
+                $form->radio('metric', __('Unit of measure'))->options([
+                    'kg' => 'Kilogram',
+                    'g' => 'Gram',
+                    'l' => 'Litre',
+                    'ml' => 'Millilitre',
+                    'unit' => 'Unit',
+                ])->default('kg');
+            });
+
+
+
+        $form->text('name', __('Name of product'))->rules('required');
+        //price
+
+        $form->decimal('price', __('Price per Unit'))->rules('required')->required();
+        $form->decimal('quantity', __('Available quantity'));
+
         $form->image('feature_photo', __('Main image'))->uniqueName();
-        
+        $form->select('sub_category_id', __('Subcategory'))
+            ->options(Category::get_subcategories())
+            ->rules('required')->required();
+        //city_id
+        $form->select('city_id', __('Location'))
+            ->options(Location::get_subcounties())
+            ->rules('required')->required();
+
+        if ($form->isCreating()) {
+            $form->hidden('user_id')->default(Admin::user()->id);
+        } else {
+            //display the user_id field
+            $form->display('user_id', __('Owner ID'));
+        }
+
+        $form->quill('description', __('Product Description'));
+        //in_stock status
+
+
+
+        /*			
+	
+	
+		
+	
+local_id		
+currency	
+summary	
+price_1	
+price_2	
+feature_photo	
+rates	
+user	
+category	
+sub_category	
+supplier		
+keywords	
+p_type	
+	
+ 
+        */
+
         $form->hasMany('images', 'images', function ($f) {
             $u = Admin::user();
             $f->image('src', 'Image')->uniqueName();
@@ -204,12 +296,9 @@ class ProductController extends AdminController
             $f->hidden('p_type')->default('Product');
             $f->hidden('size')->default(10);
 
-            /* 	
-name	
-		
-	
-administrator_id	
-	
+            /*
+            name
+            administrator_id		
 	
 	 
             */
@@ -231,6 +320,12 @@ administrator_id
         $form->number('sub_category_id', __('Sub category id'));
         $form->text('fixed_price', __('Fixed price'))->default('Negotiable');
         $form->text('nature_of_offer', __('Nature of offer'))->default('For sale');
+
+        $form->radio('in_stock', __('In stock'))->options([
+            1 => 'Yes',
+            0 => 'No',
+        ])->default(1);
+
 
         return $form;
     }

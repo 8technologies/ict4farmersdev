@@ -52,7 +52,6 @@ class User extends Authenticatable
 
         self::creating(function ($m) {
 
-
             $phone_number = Utils::prepare_phone_number($m->phone_number);
             $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
             if ($phone_number_is_valid) {
@@ -61,6 +60,16 @@ class User extends Authenticatable
             } else {
                 if ($m->email != null) {
                     $m->username = $m->email;
+                }
+            }
+
+            if ($m->sub_county == null  || strlen($m->sub_county) < 1) {
+                $m->sub_county = $m->location_id;
+            }
+            if ($m->location_id == null || $m->location_id < 1) {
+                //if $m->sub_county
+                if ($m->sub_county != null) {
+                    $m->location_id = $m->sub_county;
                 }
             }
 
@@ -74,6 +83,34 @@ class User extends Authenticatable
                     }
                 }
             }
+
+
+            if ($m != null) {
+                if ($m->location_id != null) {
+                    $loc = Location::find($m->location_id);
+                    if ($loc != null) {
+                        if ($loc->parent != null) {
+                            $m->district = $loc->parent;
+                        }
+                    }
+                }
+            }
+
+
+            $n = $m->first_name . " " . $m->last_name;
+            if (strlen(trim($n)) > 1) {
+                $m->name = trim($n);
+            }
+            $m->username = $m->email;
+            if ($m->password == null || strlen($m->password) < 2) {
+                $m->password = password_hash('4321', PASSWORD_DEFAULT);
+            }
+            if (strlen($m->username) < 3) {
+                $m->username = $m->phone_number;
+                $m->email = $m->phone_number;
+            }
+
+            $m = self::prepare($m);
             return $m;
         });
 
@@ -109,25 +146,25 @@ class User extends Authenticatable
                 }
             }
 
-            if ($m->first_name != null) {
-                if (strlen($m->first_name) > 3) {
-                    $m->profile_is_complete = 1;
-                }
+            $m->profile_is_complete = 0;
+            if (
+                ($m->first_name != null) &&
+                (($m->gender != null) && (strlen($m->gender) > 1))
+            ) {
+                $m->profile_is_complete = 1;
             }
 
-
-            if ($m != null) {
-                if ($m->location_id != null) {
-                    $loc = Location::find($m->location_id);
-                    if ($loc != null) {
-                        if ($loc->parent != null) {
-                            $m->district = $loc->parent;
-                        }
-                    }
-                }
+            if ($m->gender == 'm' || $m->gender == 'M') {
+                $m->gender = 'Male';
+            } elseif ($m->gender == 'f' || $m->gender == 'F') {
+                $m->gender = 'Female';
             }
+
+            $m = self::prepare($m);
+
             return $m;
         });
+
 
         self::updated(function ($model) {
             // ... code here
@@ -142,6 +179,53 @@ class User extends Authenticatable
         });
     }
 
+    //prepare
+    public static function prepare($m)
+    {
+
+        if ($m->sub_county == null  || strlen($m->sub_county) < 1) {
+            $m->sub_county = $m->location_id;
+        }
+        if ($m->location_id == null || $m->location_id < 1) {
+            //if $m->sub_county
+            if ($m->sub_county != null) {
+                $m->location_id = $m->sub_county;
+            }
+        }
+
+        if ($m != null) {
+            if ($m->location_id != null) {
+                $loc = Location::find($m->location_id);
+                if ($loc != null) {
+                    if ($loc->parent != null) {
+                        $m->district = $loc->parent;
+                        $dis = Location::find($loc->parent);
+                        if ($dis != null) {
+                            $m->district_text = $dis->name;
+                            $m->sub_county_text = $loc->name;
+                        }
+                    }
+                }
+            }
+        }
+
+        $n = $m->first_name . " " . $m->last_name;
+        if (strlen(trim($n)) > 1) {
+            $m->name = trim($n);
+        }
+        $m->username = $m->email;
+        if ($m->password == null || strlen($m->password) < 2) {
+            $m->password = password_hash('4321', PASSWORD_DEFAULT);
+        }
+        if (strlen($m->username) < 3) {
+            $m->username = $m->phone_number;
+            $m->email = $m->phone_number;
+        }
+
+
+
+        return $m;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -168,8 +252,8 @@ class User extends Authenticatable
 
     public function getFacebookAttribute()
     {
-        
-        if($this->original['gender'] != 'Male' || $this->original['gender'] != 'Female'){
+
+        if ($this->original['gender'] != 'Male' || $this->original['gender'] != 'Female') {
             $this->original['gender'] = 'Male';
         }
         return json_encode($this->original);
@@ -180,12 +264,16 @@ class User extends Authenticatable
         if ($avatar == null) {
             return url('no_image.jpg');
         }
-        return url($avatar);
+        $path = env('STORAGE_BASE_PATH') . '/' . $avatar;
+        if (!file_exists($path)) {
+            return url('no_image.jpg');
+        }
+        return $avatar;
     }
 
     public function getGenderAttribute($g)
     {
-        if($g != 'Male' || $g != 'Female'){
+        if ($g != 'Male' || $g != 'Female') {
             $g = 'Male';
         }
         return $g;
@@ -209,12 +297,11 @@ class User extends Authenticatable
     //has many enterprises/ gardens
     public function enterprises()
     {
-        return $this->hasManyThrough(Garden::class, Farm::class,'administrator_id','farm_id');
+        return $this->hasManyThrough(Garden::class, Farm::class, 'administrator_id', 'farm_id');
     }
     //reports many pest cases
     public function pest_reports()
     {
-        return $this->hasMany(PestCase::class,'administrator_id');
+        return $this->hasMany(PestCase::class, 'administrator_id');
     }
-
 }

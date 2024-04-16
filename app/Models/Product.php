@@ -44,7 +44,52 @@ class Product extends Model
     }
 
 
+    //static prepare
+    public static function prepare($m)
+    {
+        $sub = Category::find($m->sub_category_id);
+        if ($sub != null) {
+            $m->category_id = $sub->parent;
+            $cat = Category::find($m->category_id);
+            if ($cat != null) {
+                $m->category = $cat->name;
+            } else {
+                $m->category = $sub->name;
+            }
+            $m->sub_category = $sub->name;
+        } else {
+            $m->category_id = 1;
+            $m->sub_category_id = 1;
+        }
+        $dis = Location::find($m->city_id);
+        if ($dis != null) {
+            $m->country_id = $dis->parent;
+        } else {
+            $m->country_id = 1;
+            $m->city_id = 1;
+        }
 
+        if ($m->price == null || strlen($m->price) < 1) {
+            $m->price = ($m->price_1);
+            $m->price_2 = ($m->price_1);
+        }
+
+        try {
+            $m->price = abs((int)($m->price));
+        } catch (\Exception $e) {
+            //dd($e);
+        }
+        try {
+            $m->quantity = abs((int)($m->quantity));
+        } catch (\Exception $e) {
+            //dd($e);
+        }
+
+        $m->price = ($m->price);
+        $m->price_1 = $m->price;
+        $m->price_2 = $m->price;
+        return $m;
+    }
 
     public static function boot()
     {
@@ -52,8 +97,21 @@ class Product extends Model
 
         self::creating(function ($p) {
             $p->slug = Utils::make_slug($p->name);
-            $p->status = 1;
+            $vendor = User::find($p->user_id);
+            if ($vendor == null) {
+                throw new \Exception("Vendor not found");
+            }
+            if ($vendor->vendor_status == 'Approved') {
+                $p->status = 1;
+            } else {
+                $p->status = 2;
+            }
 
+            $p = Product::prepare($p);
+            return $p;
+        });
+        self::updating(function ($p) {
+            $p = Product::prepare($p);
             return $p;
         });
 
@@ -138,13 +196,12 @@ class Product extends Model
     {
 
         $thumbnail = url('no_image.jpg');
-        if ($this->thumbnail != null) {
-            if (strlen($this->thumbnail) > 3) {
-                $thumb = json_decode($this->thumbnail);
-                if (isset($thumb->thumbnail)) {
-                    $thumbnail = url('/storage/' . $thumb->thumbnail);
-                }
+        if ($this->feature_photo != null && strlen($this->feature_photo) > 3) {
+            $path = storage_path('app/public/' . $this->feature_photo);
+            if (file_exists($path)) {
+                return url('storage/' . $this->feature_photo);
             }
+            return url('public/storage/' . $this->feature_photo);
         }
         return $thumbnail;
     }
@@ -358,7 +415,8 @@ class Product extends Model
     ];
 
     //hasmnany Image
-    public function images(){
-        return $this->hasMany(Image::class,'product_id');
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'product_id');
     }
 }

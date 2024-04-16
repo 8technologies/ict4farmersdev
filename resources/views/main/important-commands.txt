@@ -10,3 +10,16 @@ ssh root@unffeict4farmers.org
 ssh unffeict4farmers@68.65.122.216
 
 ssh unffeict4farmers@unffeict4farmers.org
+
+
+
+php artisan make:migration add_statuses_to_users --table=users
+php artisan make:migration seed_settings_menus
+php artisan admin:make FarmerController --model=App\\Models\\Farmers\\Farmer
+php artisan admin:make SystemUsersController --model=App\\Models\\User
+
+php artisan make:model MarketInfoMessageCampaign -m
+
+php artisan make:seeder OnlineCourseStudentBatchImporter
+
+ 

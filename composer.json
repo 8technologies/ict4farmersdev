@@ -19,6 +19,7 @@
         "encore/laravel-admin": "1.*",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "jxlwqq/quill": "^1.0",
         "laravel-admin-ext/chartjs": "^1.0",
         "laravel-admin-ext/latlong": "1.x",
         "laravel/framework": "^8.54",
