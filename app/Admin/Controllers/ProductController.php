@@ -104,8 +104,8 @@ class ProductController extends AdminController
             }
             return $cat->name;
             //return $this->category->name;
-        })->sortable()
-            ->required();
+        })->sortable();
+
 
 
         $grid->column('city_id', __('Location'))
@@ -245,7 +245,7 @@ class ProductController extends AdminController
         $form->decimal('quantity', __('Available quantity'));
 
         $form->image('feature_photo', __('Main image'))->uniqueName();
-        $form->select('sub_category_id', __('Subcategory'))
+        $form->select('sub_category_id', __('Product Category'))
             ->options(Category::get_subcategories())
             ->rules('required')->required();
         //city_id
