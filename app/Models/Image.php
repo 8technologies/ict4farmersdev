@@ -64,7 +64,8 @@ class Image extends Model
         $path = env('STORAGE_BASE_PATH') . '/' . $this->src;
         //filename
         if (!file_exists($path)) {
-            die('File not found. => ' . $this->src);
+            echo ('<br>File not found. => ' . $this->src." <==== <br>");
+            return; 
         }
         $filename = basename($this->src);
         $path_optimized = env('STORAGE_BASE_PATH') . '/thumb_' . $filename;
@@ -81,5 +82,6 @@ class Image extends Model
         $this->size = $size;
         $this->thumbnail = 'thumb_' . $filename;
         $this->save();
+        dd($this->thumbnail);
     }
 }

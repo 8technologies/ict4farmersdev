@@ -24,8 +24,7 @@ Route::get('/gen', function () {
 
 //process thumnails
 Route::get('/process-thumbnails', function () {
-    $images = \App\Models\Image::where('thumbnail', null)->get();
-    $images[] = \App\Models\Image::where('thumbnail', '')->get();
+    $images = \App\Models\Image::where('thumbnail', null)->orwhere('thumbnail', '')->get();
     foreach ($images as $image) {
         $image->processThumbnail();
         echo $image->id . " done<br>";
