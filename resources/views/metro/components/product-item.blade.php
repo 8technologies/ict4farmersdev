@@ -4,6 +4,7 @@ $_title = isset($title) ? $title : 'No title';
 //$item->name = 'Sexy Bikini Satin Fabric Three Piece Swimsuit Pure Color Customized Swimwear Bathing Suit';
 $_img = isset($item) ? $item->get_thumbnail() : 'no_image.jpg';
 $_link = isset($item) ? url($item->slug) : 'javascript:;';
+
 @endphp 
 
 <div class="">

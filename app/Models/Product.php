@@ -206,14 +206,69 @@ class Product extends Model
     {
 
         $thumbnail = url('no_image.jpg');
-        if ($this->feature_photo != null && strlen($this->feature_photo) > 3) {
-            $path = storage_path('app/public/' . $this->feature_photo);
-            if (file_exists($path)) {
-                return url('storage/' . $this->feature_photo);
-            }
-            return url('public/storage/' . $this->feature_photo);
+        $hasPic = false;
+        if ($this->feature_photo == null || strlen($this->feature_photo) < 2) {
+            $hasPic = false;
+        } else {
+            $hasPic = true;
         }
-        return $thumbnail;
+        if ($this->feature_photo == 'no_image.jpg') {
+            $hasPic = false;
+        }
+
+        //img path 
+        $path = env('STORAGE_BASE_PATH') . '/' . $this->feature_photo;
+        if (!file_exists($path)) {
+            $hasPic = false;
+        } else {
+            $hasPic = true;
+        }
+
+        //thumbnail path
+        $thumb_path  = env('STORAGE_BASE_PATH') . '/' . $this->thumbnail;
+        if (!file_exists($thumb_path)) {
+            if ($hasPic) {
+                $thumb_path  = env('STORAGE_BASE_PATH') . '/thumb_' . $this->feature_photo;
+                try {
+                    $thumbnail = Utils::create_thumbail(
+                        array(
+                            "source" =>  $path,
+                            "target" => $thumb_path,
+                        )
+                    );
+                    //
+                    if (!file_exists($thumb_path)) {
+                        $hasPic = false;
+                    } else {
+                        $this->thumbnail = 'thumb_' . $this->feature_photo;
+                        try {
+                            $this->save();
+                        } catch (\Throwable $th) {
+                            //throw $th;
+                        }
+                    }
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+        }
+
+        $thumb_link = "";
+        //check if $this->thumbnail exists
+        if ($this->thumbnail != null && strlen($this->thumbnail) > 2) {
+            $thumbnail = env('STORAGE_BASE_PATH') . '/' . $this->thumbnail;
+            if (file_exists($thumbnail)) {
+                $thumb_link = url('public/storage/' . $this->thumbnail);
+                return $thumb_link;
+            }
+        }
+
+        if ($hasPic) {
+            $thumb_link = url('public/storage/' . $this->feature_photo);
+        } else {
+            $thumb_link = url('public/storage/no_image.jpg');
+        }
+        return $thumb_link;
     }
 
     public function get_images()
