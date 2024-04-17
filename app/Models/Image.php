@@ -58,13 +58,13 @@ class Image extends Model
     public function processThumbnail()
     {
         if ($this->src == null || strlen($this->src) < 2) {
-            echo('<br>src is null<br>');
+            $this->delete(); 
             return $this->src;
         }
         $path = env('STORAGE_BASE_PATH') . '/' . $this->src;
         //filename
         if (!file_exists($path)) {
-            echo ('<br>File not found. => ' . $this->src." <==== <br>");
+            $this->delete();  
             return; 
         }
         $filename = basename($this->src);
