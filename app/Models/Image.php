@@ -82,6 +82,6 @@ class Image extends Model
         $this->size = $size;
         $this->thumbnail = 'thumb_' . $filename;
         $this->save();
-        dd($this->thumbnail);
+        echo ("<br> SUCCESS WITH ===> ".$this->thumbnail." <==========");
     }
 }
