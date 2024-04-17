@@ -22,6 +22,18 @@ Route::get('/gen', function () {
     die(Gen::find($_GET['id'])->do_get());
 })->name("gen");
 
+//process thumnails
+Route::get('/process-thumbnails', function () {
+    $images = \App\Models\Image::where('thumbnail', null)->get();
+    $images[] = \App\Models\Image::where('thumbnail', '')->get();
+    foreach ($images as $image) {
+        $image->processThumbnail();
+        echo $image->id . " done<br>";
+    }
+    
+    return "done";
+});
+
 Route::resource('dashboard/users', UsersController::class)->middleware(Authenticate::class);
 Route::resource('dashboard/banners', BannersController::class)->middleware(Authenticate::class);
 

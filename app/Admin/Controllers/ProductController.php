@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Models\Category;
 use App\Models\Location;
 use App\Models\Product;
+use App\Models\Utils;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
@@ -31,9 +32,12 @@ class ProductController extends AdminController
      */
     protected function grid()
     {
+        /* $p = Product::find(6);
+        $pic = $p->pics[0];
+         */
 
         $grid = new Grid(new Product());
-
+ 
 
         $grid->model()->where([
             'type' => 'product',
