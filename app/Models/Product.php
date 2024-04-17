@@ -232,7 +232,7 @@ class Product extends Model
 
         foreach ($this->pics as $key => $img) {
             $images[] = $img;
-        } 
+        }
         return $images;
     }
 
@@ -438,5 +438,56 @@ class Product extends Model
     public function pics()
     {
         return $this->hasMany(Image::class, 'product_id');
+    }
+
+
+    public function processThumbnail()
+    {
+        if ($this->feature_photo == 'no_image.jpg') {
+            $this->thumbnail = 'no_image.jpg';
+            $this->save();
+            return;
+        }
+
+        $hasImage = false;
+        if ($this->feature_photo == null || strlen($this->feature_photo) < 2) {
+            $hasImage = false;
+        } else {
+            $hasImage = true;
+        }
+
+        if ($hasImage) {
+            $path = env('STORAGE_BASE_PATH') . '/' . $this->feature_photo;
+            if (!file_exists($path)) {
+                $hasImage = false;
+            } else {
+                $hasImage = true;
+            }
+        }
+
+        if ($hasImage) {
+            $filename = basename($this->feature_photo);
+            $thumb_name = 'thumb_' . $filename;
+            $path_optimized = env('STORAGE_BASE_PATH') . '/' . $thumb_name;
+            $thumbnail = Utils::create_thumbail(
+                array(
+                    "source" =>  $path,
+                    "target" => $path_optimized,
+                )
+            );
+            if (!file_exists($path_optimized)) {
+                $this->feature_photo == 'no_image.jpg';
+                $this->thumbnail = 'no_image.jpg';
+                $this->save();
+                return;
+            } else {
+                $this->thumbnail = $thumb_name;
+                $this->save();
+            }
+        } else {
+            $this->feature_photo == 'no_image.jpg';
+            $this->thumbnail = 'no_image.jpg';
+            $this->save();
+        }
     }
 }

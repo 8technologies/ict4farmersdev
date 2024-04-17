@@ -58,14 +58,14 @@ class Image extends Model
     public function processThumbnail()
     {
         if ($this->src == null || strlen($this->src) < 2) {
-            $this->delete(); 
+            $this->delete();
             return $this->src;
         }
         $path = env('STORAGE_BASE_PATH') . '/' . $this->src;
         //filename
         if (!file_exists($path)) {
-            $this->delete();  
-            return; 
+            $this->delete();
+            return;
         }
         $filename = basename($this->src);
         $path_optimized = env('STORAGE_BASE_PATH') . '/thumb_' . $filename;
@@ -82,6 +82,5 @@ class Image extends Model
         $this->size = $size;
         $this->thumbnail = 'thumb_' . $filename;
         $this->save();
-        echo ("<br> SUCCESS WITH ===> ".$this->thumbnail." <==========");
     }
 }

@@ -16,6 +16,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Gen;
+use App\Models\Product;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/gen', function () {
@@ -29,7 +30,12 @@ Route::get('/process-thumbnails', function () {
         $image->processThumbnail();
         echo $image->id . " done<br>";
     }
-    
+
+    $producs = \App\Models\Product::where('thumbnail', null)->orwhere('thumbnail', '')->get();
+    foreach ($producs as $product) {
+        $product->processThumbnail();
+        echo $product->id . " done<br>";
+    }
     return "done";
 });
 
