@@ -89,6 +89,26 @@ class Product extends Model
         $m->price = ($m->price);
         $m->price_1 = $m->price;
         $m->price_2 = $m->price;
+
+        if ($m->feature_photo != null && strlen($m->feature_photo) > 2) {
+            $imagePath = env('STORAGE_BASE_PATH') . '/' . $m->feature_photo;
+            //check if file exists
+            if (!file_exists($imagePath)) {
+                $m->feature_photo = 'no_image.jpg';
+                $m->thumbnail = 'no_image.jpg';
+            } else {
+                $opt_path = env('STORAGE_BASE_PATH') . '/thumb_' . $m->feature_photo;
+                $original_path = env('STORAGE_BASE_PATH') . '/' . $m->feature_photo;
+                $thumbnail = Utils::create_thumbail(
+                    array(
+                        "source" =>  $original_path,
+                        "target" => $opt_path,
+                    )
+                );
+                $m->thumbnail = 'thumb_' . $m->feature_photo;
+            }
+        }
+
         return $m;
     }
 
