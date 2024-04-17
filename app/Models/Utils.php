@@ -876,7 +876,7 @@ class Utils
         ) {
             $slug .= rand(100, 1000);
         }
-
+        $slug = 'product-' . $slug;
         return $slug;
     }
 

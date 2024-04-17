@@ -11,8 +11,8 @@ use App\Models\Chat;
 $slug = request()->segment(1);
 $pro = Product::where('slug', $slug)->firstOrFail();
 if ($pro) {
-    if (!$pro->user) {
-        dd('User not found.');
+    if (!$pro->owner) {
+        dd('owner not found.');
     }
 }
 $products = [];

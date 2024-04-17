@@ -18,8 +18,8 @@ if ($pro == null) {
 }
 
 if ($pro) {
-    if (!$pro->user) {
-        dd('User not found.');
+    if (!$pro->owner) {
+        dd('owner not found.');
     }
 } else {
     die("Product not found. Maybe it's already deleted.");
@@ -83,8 +83,8 @@ foreach ($products as $key => $p) {
     <div class="col-12">
         <ol class="breadcrumb text-muted fs-6 fw-bold">
             <li class="breadcrumb-item pe-3"><a href="{{ url('') }}" class="pe-3">Home</a></li>
-            <li class="breadcrumb-item pe-3"><a href="{{ url($pro->category->slug) }}"
-                    class="pe-3">{{ $pro->category->name }}</a></li>
+            <li class="breadcrumb-item pe-3"><a href="{{ url($pro->pro_category->slug) }}"
+                    class="pe-3">{{ $pro->pro_category->name }}</a></li>
             <li class="breadcrumb-item px-3 text-muted">{{ $pro->name }}</li>
         </ol>
     </div>
@@ -96,6 +96,7 @@ foreach ($products as $key => $p) {
             <div class="carousel-inner slider-arrow">
                 @foreach ($images as $img)
                     @php
+                    
                         $active = '';
                         if (!$first_seen) {
                             $active = ' active ';
@@ -104,9 +105,9 @@ foreach ($products as $key => $p) {
                     @endphp
                     <div class="carousel-item  <?= $active ?>  ">
 
-                        <a class="d-block overlay" data-fslightbox="gallery" href="{{ $img->src }}">
+                        <a class="d-block overlay" data-fslightbox="gallery" href="{{ url('public/storage/'. $img->src) }}">
                             <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded">
-                                <img class="d-block w-100" src="{{ $img->thumbnail }}" alt="Product photo">
+                                <img class="d-block w-100" src="{{ url('public/storage/'. $img->thumbnail) }}" alt="Product photo">
                             </div>
                             <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
                                 <i class="bi bi-eye-fill text-white fs-3x"></i>

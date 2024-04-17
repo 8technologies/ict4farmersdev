@@ -105,7 +105,7 @@ class ProductController extends AdminController
             return $cat->name;
             //return $this->category->name;
         })->sortable();
-
+    
 
 
         $grid->column('city_id', __('Location'))

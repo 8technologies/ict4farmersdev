@@ -55,6 +55,7 @@ class Product extends Model
                 $m->category = $cat->name;
             } else {
                 $m->category = $sub->name;
+                $m->category_id = 1;
             }
             $m->sub_category = $sub->name;
         } else {
@@ -138,8 +139,13 @@ class Product extends Model
         });
     }
 
-    public function user()
+    public function owner()
     {
+        $u = User::find($this->user_id);
+        if ($u == null) {
+            $this->user_id = 1;
+            $this->save();
+        }
         return $this->belongsTo(User::class, 'user_id');
     }
 
@@ -154,12 +160,16 @@ class Product extends Model
     }
 
 
-    public function category()
+    public function pro_category()
     {
         $c = Category::find($this->category_id);
         if ($c == null) {
-            $this->category_id = 1;
-            $this->save();
+            $this->sub_category_id = 1;
+            try {
+                $this->save();
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         }
         return $this->belongsTo(Category::class, "category_id");
     }
@@ -219,8 +229,13 @@ class Product extends Model
                 }
             }
         }
+
+        foreach ($this->pics as $key => $img) {
+            $images[] = $img;
+        } 
         return $images;
     }
+
 
 
     protected $appends = [
@@ -416,6 +431,11 @@ class Product extends Model
 
     //hasmnany Image
     public function images()
+    {
+        return $this->hasMany(Image::class, 'product_id');
+    }
+    //hasmnany Image
+    public function pics()
     {
         return $this->hasMany(Image::class, 'product_id');
     }

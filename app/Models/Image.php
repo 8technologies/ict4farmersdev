@@ -26,4 +26,18 @@ class Image extends Model
         'note',
         'p_type'
     ];
+
+
+    //getter for thumbnail
+    public function getThumbnailAttribute($value)
+    {
+        if ($value == null || strlen($value) < 2) {
+            return $this->src;
+        }
+        $path = env('STORAGE_BASE_PATH') . '/' . $value;
+        if (!file_exists($path)) {
+            return $this->src;
+        }
+        return $value;
+    }
 }
