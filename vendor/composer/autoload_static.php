@@ -27,8 +27,8 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'c7a3c339e7e14b60e06a2d7fcce9476b' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Events/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '4e8671d7be9056dcd04ddd9e8e15f9cc' => __DIR__ . '/..' . '/encore/laravel-admin/src/helpers.php',
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '0b47d6d4a00ca9112ba3953b49e7c9a4' => __DIR__ . '/..' . '/yajra/laravel-datatables-oracle/src/helper.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
@@ -187,6 +187,7 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         ),
         'E' => 
         array (
+            'Encore\\Summernote\\' => 18,
             'Encore\\Chartjs\\' => 15,
             'Encore\\Admin\\Latlong\\' => 21,
             'Encore\\Admin\\' => 13,
@@ -594,6 +595,10 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'Facade\\FlareClient\\' => 
         array (
             0 => __DIR__ . '/..' . '/facade/flare-client-php/src',
+        ),
+        'Encore\\Summernote\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel-admin-ext/summernote/src',
         ),
         'Encore\\Chartjs\\' => 
         array (
@@ -1998,6 +2003,9 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'Encore\\Admin\\Widgets\\Widget' => __DIR__ . '/..' . '/encore/laravel-admin/src/Widgets/Widget.php',
         'Encore\\Chartjs\\Chartjs' => __DIR__ . '/..' . '/laravel-admin-ext/chartjs/src/Chartjs.php',
         'Encore\\Chartjs\\ChartjsServiceProvider' => __DIR__ . '/..' . '/laravel-admin-ext/chartjs/src/ChartjsServiceProvider.php',
+        'Encore\\Summernote\\Editor' => __DIR__ . '/..' . '/laravel-admin-ext/summernote/src/Editor.php',
+        'Encore\\Summernote\\Summernote' => __DIR__ . '/..' . '/laravel-admin-ext/summernote/src/Summernote.php',
+        'Encore\\Summernote\\SummernoteServiceProvider' => __DIR__ . '/..' . '/laravel-admin-ext/summernote/src/SummernoteServiceProvider.php',
         'Facade\\FlareClient\\Api' => __DIR__ . '/..' . '/facade/flare-client-php/src/Api.php',
         'Facade\\FlareClient\\Concerns\\HasContext' => __DIR__ . '/..' . '/facade/flare-client-php/src/Concerns/HasContext.php',
         'Facade\\FlareClient\\Concerns\\UsesTime' => __DIR__ . '/..' . '/facade/flare-client-php/src/Concerns/UsesTime.php',

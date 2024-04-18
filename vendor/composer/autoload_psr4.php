@@ -95,6 +95,7 @@ return array(
     'Facade\\Ignition\\' => array($vendorDir . '/facade/ignition/src'),
     'Facade\\IgnitionContracts\\' => array($vendorDir . '/facade/ignition-contracts/src'),
     'Facade\\FlareClient\\' => array($vendorDir . '/facade/flare-client-php/src'),
+    'Encore\\Summernote\\' => array($vendorDir . '/laravel-admin-ext/summernote/src'),
     'Encore\\Chartjs\\' => array($vendorDir . '/laravel-admin-ext/chartjs/src'),
     'Encore\\Admin\\Latlong\\' => array($vendorDir . '/laravel-admin-ext/latlong/src'),
     'Encore\\Admin\\' => array($vendorDir . '/encore/laravel-admin/src'),

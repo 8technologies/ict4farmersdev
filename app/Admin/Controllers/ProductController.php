@@ -264,7 +264,7 @@ class ProductController extends AdminController
             $form->display('user_id', __('Owner ID'));
         }
 
-        $form->text('description', __('Product Description'));
+        $form->summernote('description', __('Product Description'));
         //in_stock status
 
 

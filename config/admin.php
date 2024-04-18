@@ -406,7 +406,17 @@ return [
     |
     */
     'extensions' => [
+        'summernote' => [
 
+            //Set to false if you want to disable this extension
+            'enable' => true,
+
+            // Editor configuration
+            'config' => [
+                'lang'   => 'en-EN',
+                'height' => 200,
+            ]
+        ],
         'quill' => [
             // If the value is set to false, this extension will be disabled
             'enable' => true,
