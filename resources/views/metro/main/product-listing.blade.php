@@ -24,7 +24,12 @@ $all_cats = Category::all();
 //ifempty, product-listing.blade
 
 if (empty($products)) {
-    $products = Product::where([])->orderBy('id', 'desc')->paginate($per_page)->withQueryString();
+    $products = Product::where([
+        'status' => 1,
+    ])
+        ->orderBy('id', 'desc')
+        ->paginate($per_page)
+        ->withQueryString();
 }
 
 /*  for ($i=1; $i < 100; $i++) { 
