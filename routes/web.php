@@ -21,11 +21,19 @@ use App\Models\Utils;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/mail-test', function () {
+    Utils::send_sms([
+        'to' => '+256783204665',
+        'message' => '$sms_to_admin'
+    ]); 
     $data['body'] = 'Simple message';
     //$data['view'] = 'mails/mail-1';
     $data['data'] = $data['body'];
     $data['name'] = 'Muhindo mubaraka';
-    $data['email'] = "mubahood360@gmail.com";
+    $data['email'] = [
+        'tukundanen@yahoo.com',
+        'mubs0x@gmail.com',
+        'isaac@8technologies.net',
+    ];
     $data['subject'] = "Some title " . env('APP_NAME');
     try {
         Utils::mail_sender($data);

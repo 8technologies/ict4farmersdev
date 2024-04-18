@@ -776,6 +776,7 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'App\\Admin\\Controllers\\GardenProductionRecordController' => __DIR__ . '/../..' . '/app/Admin/Controllers/GardenProductionRecordController.php',
         'App\\Admin\\Controllers\\GenController' => __DIR__ . '/../..' . '/app/Admin/Controllers/GenController.php',
         'App\\Admin\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Admin/Controllers/HomeController.php',
+        'App\\Admin\\Controllers\\InquiryMessagesController' => __DIR__ . '/../..' . '/app/Admin/Controllers/InquiryMessagesController.php',
         'App\\Admin\\Controllers\\MapController' => __DIR__ . '/../..' . '/app/Admin/Controllers/MapController.php',
         'App\\Admin\\Controllers\\MarketController' => __DIR__ . '/../..' . '/app/Admin/Controllers/MarketController.php',
         'App\\Admin\\Controllers\\MyProductController' => __DIR__ . '/../..' . '/app/Admin/Controllers/MyProductController.php',

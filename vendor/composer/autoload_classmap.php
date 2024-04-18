@@ -40,6 +40,7 @@ return array(
     'App\\Admin\\Controllers\\GardenProductionRecordController' => $baseDir . '/app/Admin/Controllers/GardenProductionRecordController.php',
     'App\\Admin\\Controllers\\GenController' => $baseDir . '/app/Admin/Controllers/GenController.php',
     'App\\Admin\\Controllers\\HomeController' => $baseDir . '/app/Admin/Controllers/HomeController.php',
+    'App\\Admin\\Controllers\\InquiryMessagesController' => $baseDir . '/app/Admin/Controllers/InquiryMessagesController.php',
     'App\\Admin\\Controllers\\MapController' => $baseDir . '/app/Admin/Controllers/MapController.php',
     'App\\Admin\\Controllers\\MarketController' => $baseDir . '/app/Admin/Controllers/MarketController.php',
     'App\\Admin\\Controllers\\MyProductController' => $baseDir . '/app/Admin/Controllers/MyProductController.php',

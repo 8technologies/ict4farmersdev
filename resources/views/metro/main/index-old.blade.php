@@ -157,7 +157,7 @@ shuffle($bgs);
             <div class="row mt-1 mb-5">
                 <div class="col-12 mt-2">
                     <p class="fw-normal fs-6  m-0  text-gray-700 ">Haven't found what you are looking for?</p>
-                    <a href="#" class="border border-primary btn btn-light-primary d-block">Post Your Request Now</a>
+                    <a href="{{ url('inquiry') }}" class="border border-primary btn btn-light-primary d-block">Submit Your Request Now</a>
                 </div>
             </div>
         </div>

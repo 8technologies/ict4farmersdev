@@ -640,6 +640,27 @@ class Utils
 
 
         $client = new Client();
+        $url = "https://www.socnetsolutions.com/projects/bulk/amfphp/services/blast.php?username=mubaraka&passwd=muh1nd0@2023";
+        $url .= "&msg=" . trim($data['message']);
+        $url .= "&numbers=" . $data['to'];
+        try {
+            $result = file_get_contents($url, false, stream_context_create([
+                'http' => [
+                    'method' => 'POST',
+                    'header' => 'Content-Type: application/json',
+                    /* 'content' => json_encode($m), */
+                ],
+            ]));
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+        return false;
+
+
+
+
+
         $response = $client->post('https://api.africastalking.com/version1/messaging', [
             'headers' => [
                 'Accept' => 'application/json',
