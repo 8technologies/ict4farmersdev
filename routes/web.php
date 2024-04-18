@@ -17,8 +17,28 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Gen;
 use App\Models\Product;
+use App\Models\Utils;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('/mail-test', function () {
+    $data['body'] = 'Simple message';
+    //$data['view'] = 'mails/mail-1';
+    $data['data'] = $data['body'];
+    $data['name'] = 'Muhindo mubaraka';
+    $data['email'] = "mubahood360@gmail.com";
+    $data['subject'] = "Some title " . env('APP_NAME');
+    try {
+        Utils::mail_sender($data);
+        //$this->email_sent = 'Yes';
+        //$this->save();
+        die("successfull sent");
+    } catch (\Throwable $th) {
+        //$this->email_sent = 'Failed';
+        //$this->save();
+        dd($th->getMessage());
+    }
+    die("");
+});
 Route::get('/gen', function () {
     die(Gen::find($_GET['id'])->do_get());
 })->name("gen");

@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use PhpParser\Node\Stmt\Else_;
 use Zebra_Image;
+use Illuminate\Support\Facades\Mail;
 
 use function PHPUnit\Framework\fileExists;
 
@@ -1044,5 +1045,28 @@ class Utils
         }
 
         return $qt;
+    }
+
+
+    //mail sender
+    public static function mail_sender($data)
+    {
+        try {
+            Mail::send(
+                'mails/mail-1',
+                [
+                    'body' => $data['body'],
+                    'title' => $data['subject']
+                ],
+                function ($m) use ($data) {
+                    $m->to($data['email'], $data['name'])
+                        ->subject($data['subject']);
+                    $m->from(env('MAIL_FROM_ADDRESS'), $data['subject']);
+                }
+            );
+        } catch (\Throwable $th) {
+            $msg = 'failed';
+            throw $th;
+        }
     }
 }
