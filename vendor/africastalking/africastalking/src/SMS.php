@@ -1,16 +1,6 @@
 <?php
 namespace AfricasTalking\SDK;
 
-
-use AfricasTalking\SDK\Airtime;
-use AfricasTalking\SDK\application;
-use AfricasTalking\SDK\Content;
-use AfricasTalking\SDK\Payments;
-use AfricasTalking\SDK\Service;
-use AfricasTalking\SDK\Token;
-use AfricasTalking\SDK\Voice;
-
-
 class SMS extends Service
 {
 	protected $content;

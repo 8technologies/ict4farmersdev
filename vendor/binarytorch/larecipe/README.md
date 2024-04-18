@@ -27,15 +27,6 @@
 
 ![LaRecipe Screenshot](https://larecipe.saleem.dev/images/screenshot.png#)
 
-## Official tools and assets support
-
-| Title | v1.x | v2.x |
-| :- | :-: | :-: |
-| [LaRecipe Dark Theme](https://larecipe.saleem.dev/packages/binarytorch/larecipe-dark-theme) | ❌ | ✅ |
-| [LaRecipe RTL Support](https://larecipe.saleem.dev/packages/binarytorch/larecipe-rtl) | ❌ | ✅ |
-| [LaRecipe Feedback](https://larecipe.saleem.dev/packages/binarytorch/larecipe-feedback) | ❌ | ✅ |
-| [LaRecipe Swagger](https://larecipe.saleem.dev/packages/binarytorch/larecipe-swagger) | ❌ | ✅ |
-
 ## Getting Started
 
 ☝️ Install the package via composer.
@@ -51,6 +42,30 @@ Visit your app domain with `/docs` endpoint. That's it.
 #### See [full documentation](https://larecipe.saleem.dev/)
 
 
+## 🩷 Sponsors
+
+## JetBrains
+Thank you, JetBrains for sponsoring the license ❤️
+
+<a href="https://www.jetbrains.com/community/opensource/#support" target="__blank">
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png?_gl=1*18f1z4q*_ga*MTI4MDYwODYzNy4xNjUyMzU3ODM3*_ga_9J976DJZ68*MTY2MTg3NDM2NC4xMi4xLjE2NjE4NzUxNTAuMC4wLjA.&_ga=2.85008921.1685901777.1661797034-1280608637.1652357837" width="250px" />
+</a>
+
+Support this project by becoming a sponsor. [[Become a sponsor](https://github.com/sponsors/saleem-hadad)]
+
+--- 
+
+Get $200 DigitalOcean Credit
+
+[![DigitalOcean Referral Badge](https://web-platforms.sfo2.cdn.digitaloceanspaces.com/WWW/Badge%201.svg)](https://www.digitalocean.com/?refcode=64aee93d49da&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
+
+## Official tools and assets support
+
+- [LaRecipe Dark Theme](https://larecipe.saleem.dev/packages/binarytorch/larecipe-dark-theme)
+- [LaRecipe RTL Support](https://larecipe.saleem.dev/packages/binarytorch/larecipe-rtl)
+- [LaRecipe Feedback](https://larecipe.saleem.dev/packages/binarytorch/larecipe-feedback)
+- [LaRecipe Swagger](https://larecipe.saleem.dev/packages/binarytorch/larecipe-swagger)
+
 ## Used by
 
 * [Zino](https://zino.binarytorch.com.my/1.0/installation) - 🤖 Custom Arduino library made for humans.
@@ -60,20 +75,7 @@ App Templates.
 * [AddChat](https://addchat-docs.classiebit.com/docs/1.0/introduction) - All-in-one multi-purpose Chat Widget For Laravel & Codeigniter websites.
 * [RoadLeagues](https://roadleagues.com/docs/1.0/overview) - A cycling league management system with an API to allow data distrubution externally.
 * [Raileo](https://raileo.com/docs/1.0/overview) - Raileo helps you to monitor your website's uptime, performance and SEO
-* Put your docs here 😍👌
-
-
-
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/larecipe#sponsor)]
-
-## JetBrains
-Thank you, JetBrains for sponsoring the license ❤️
-
-<a href="https://www.jetbrains.com/community/opensource/#support" target="__blank">
-<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png?_gl=1*18f1z4q*_ga*MTI4MDYwODYzNy4xNjUyMzU3ODM3*_ga_9J976DJZ68*MTY2MTg3NDM2NC4xMi4xLjE2NjE4NzUxNTAuMC4wLjA.&_ga=2.85008921.1685901777.1661797034-1280608637.1652357837" width="250px" />
-</a>
+* Add your docs here 😍👌
 
 ## Contributors
 

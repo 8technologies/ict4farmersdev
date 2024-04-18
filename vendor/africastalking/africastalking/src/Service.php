@@ -1,15 +1,6 @@
 <?php
 namespace AfricasTalking\SDK;
 
-
-use AfricasTalking\SDK\Airtime;
-use AfricasTalking\SDK\application;
-use AfricasTalking\SDK\Content;
-use AfricasTalking\SDK\Payments;
-use AfricasTalking\SDK\SMS;
-use AfricasTalking\SDK\Token;
-use AfricasTalking\SDK\Voice;
-
 abstract class Service 
 {
 	protected $client;

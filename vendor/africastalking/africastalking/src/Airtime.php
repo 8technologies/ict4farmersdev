@@ -1,14 +1,6 @@
 <?php
 
 namespace AfricasTalking\SDK;
-use AfricasTalking\SDK\Airtime;
-use AfricasTalking\SDK\application;
-use AfricasTalking\SDK\Content;
-use AfricasTalking\SDK\Payments;
-use AfricasTalking\SDK\Service;
-use AfricasTalking\SDK\SMS;
-use AfricasTalking\SDK\Token;
-use AfricasTalking\SDK\Voice;
 
 class Airtime extends Service
 {
@@ -48,6 +40,10 @@ class Airtime extends Service
 			'username' 		=> $this->username,
 			'recipients' 	=> json_encode($parameters['recipients'])
 		];
+
+        if (isset($options['maxNumRetry']) && is_numeric($options['maxNumRetry']) && $options['maxNumRetry'] > 0) {
+            $data['maxNumRetry'] = $options['maxNumRetry'];
+        }
 
         $requestOptions = [
             'form_params' => $data,

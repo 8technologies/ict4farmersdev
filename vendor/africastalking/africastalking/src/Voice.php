@@ -2,16 +2,6 @@
 
 namespace AfricasTalking\SDK;
 
-
-use AfricasTalking\SDK\Airtime;
-use AfricasTalking\SDK\application;
-use AfricasTalking\SDK\Content;
-use AfricasTalking\SDK\Payments;
-use AfricasTalking\SDK\Service;
-use AfricasTalking\SDK\SMS;
-use AfricasTalking\SDK\Token;
-
-
 class Voice extends Service
 {
     private $xmlString;
@@ -88,12 +78,15 @@ class Voice extends Service
             return $this->error('callFrom must be in the format \'+2XXYYYYYYYYY\'');
         }
 
-
         $requestData = [
             'username' => $this->username,
             'to' => $options['to'],
             'from' => $options['from']
         ];
+
+        if (isset($options['clientRequestId']) && !empty($options['clientRequestId'])) {
+            $requestData['clientRequestId'] = (string) $options['clientRequestId'];
+        }
 
 		$response = $this->client->post('call', ['form_params' => $requestData ] );
 
@@ -388,11 +381,13 @@ class Voice extends Service
         }
         
         // Check if trimSilence is set
-        if (isset($options['trimSilence']) || !is_bool($options['trimSilence'])) {
+        if (!isset($options['trimSilence']) || !is_bool($options['trimSilence'])) {
             $trimSilence = false;
         } else {
             $trimSilence = $options['trimSilence'];
         }
+        
+
         // change trimSilence to true or false string
         $trimSilence ? $trimSilence = "true" : $trimSilence ="false";
         
