@@ -3,7 +3,7 @@ use App\Models\Banner;
 use App\Models\User;
 use App\Models\Category;
 $show_logo = true;
-$u = auth()->user();
+$u = Admin::user();
 if ($u == null) {
     $u = new User();
 }
@@ -48,8 +48,8 @@ foreach ($banners_all as $key => $value) {
 $is_dashboard = false;
 $is_logged_in = false;
 $dashboard_segs = ['dashboard'];
-
-if (Auth::check()) {
+$u = Admin::user();
+if ($u != null) {
     $is_logged_in = true;
 } else {
     $is_logged_in = false;
@@ -183,7 +183,7 @@ if (in_array($seg_1, $dashboard_segs)) {
                                 <i class="bi bi-chat fs-4 text-primary"></i></a> --}}
                         @else
                             <a href="{{ url('login') }}" class="btn btn-primary btn-sm bg" style="margin-left: .8rem">
-                                Log in here to access your dashboard</a>
+                                Login here to access your dashboard</a>
 
 
                             {{-- <a href="{{ url('login?submit_to=admin') }}"
