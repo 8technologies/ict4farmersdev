@@ -139,7 +139,7 @@ shuffle($bgs);
                 @foreach (Banner::whereBetween('id', [41, 43])->get() as $item)
                     <div class="col-6 col-md-4 mt-4">
                         <a href="{{ $slide->link }}">
-                            <div class=" my-banner p-4 lazy" data-src="{{ $item->image }}"
+                            <div class=" my-banner p-4 lazy" data-src="{{ url('public/storage/' . $item->image) }}"
                                 style="background-image: url({{ url('no_image.jpg') }});     background-size:     cover;
                                                         background-repeat:   no-repeat;
                                                         background-position: center center; ">
@@ -167,7 +167,7 @@ shuffle($bgs);
                 <a href="{{ $item->link }}">
                     <div class="row mt-1 mb-5">
                         <div class="col-5">
-                            <div class="  my-banner-product lazy" data-src="{{ $item->image }}"
+                            <div class="  my-banner-product lazy" data-src="{{ url('public/storage/' . $item->image) }}"
                                 style="background-image: url({{ url('no_image.jpg') }});     background-size:     cover;
                                                     background-repeat:   no-repeat;
                                                     background-position: center center; ">
