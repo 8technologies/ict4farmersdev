@@ -865,6 +865,7 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'App\\Models\\GardenProductionRecord' => __DIR__ . '/../..' . '/app/Models/GardenProductionRecord.php',
         'App\\Models\\Gen' => __DIR__ . '/../..' . '/app/Models/Gen.php',
         'App\\Models\\Image' => __DIR__ . '/../..' . '/app/Models/Image.php',
+        'App\\Models\\InquiryMessage' => __DIR__ . '/../..' . '/app/Models/InquiryMessage.php',
         'App\\Models\\Location' => __DIR__ . '/../..' . '/app/Models/Location.php',
         'App\\Models\\Market' => __DIR__ . '/../..' . '/app/Models/Market.php',
         'App\\Models\\MenuItem' => __DIR__ . '/../..' . '/app/Models/MenuItem.php',

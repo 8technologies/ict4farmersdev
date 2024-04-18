@@ -32,7 +32,7 @@ class AgentUsersController extends AdminController
     {
         $grid = new Grid(new User());
 
-        $u = Auth::user();
+        $u = Admin::user();
         /* $group_id = 0;
         foreach (FarmersGroupHasAgent::all() as $key => $g) {
             if ($g->administrator_id == $u->id) {

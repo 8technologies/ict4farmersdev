@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\Utils;
 use Carbon\Carbon;
 use Encore\Admin\Auth\Database\Administrator;
+use Encore\Admin\Facades\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -39,12 +40,78 @@ class MainController extends Controller
     {
         // get policy names and path
         $policies = \App\Models\Policy::all();
-        return view('landing.index',compact('policies'));
+        return view('landing.index', compact('policies'));
     }
 
     public function market(Request  $request)
     {
         return view('metro.main.index');
+    }
+    public function inquiry_post(Request  $r)
+    {
+
+        //validate
+
+        if (!isset($r->name) || strlen($r->name) < 2) {
+            $errors['name'] = "Please enter your name.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+        if (!isset($r->email) || strlen($r->email) < 2) {
+            $errors['email'] = "Please enter your email.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+        if (!isset($r->subject) || strlen($r->subject) < 2) {
+            $errors['subject'] = "Please enter subject.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+        if (!isset($r->details) || strlen($r->details) < 2) {
+            $errors['details'] = "Please enter details.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+
+        $u = Admin::user();
+        $inquiry = new \App\Models\InquiryMessage();
+        if ($u != null) {
+            $inquiry->customer_id = $u->id;
+            $inquiry->customer_phone = $u->phone_number;
+        }
+
+        //check if phone is set
+        if (isset($r->phone) && strlen($r->phone) > 4) {
+            $inquiry->customer_phone = $r->phone;
+        }
+        $inquiry->customer_name = $r->name;
+        $inquiry->customer_email = $r->email;
+        $inquiry->subject = $r->subject;
+        $inquiry->message = $r->details;
+        $inquiry->response = null;
+        $inquiry->status = "pending";
+
+        try {
+            $inquiry->save();
+            $success_url = url('inquiry?success=success');
+            return redirect($success_url);
+        } catch (\Exception $e) {
+            $errors['details'] = "Failed to submit inquiry. Please try again.";
+            return Redirect::back()
+                ->withErrors($errors)
+                ->withInput();
+        }
+    }
+    public function inquiry(Request  $request)
+    {
+        return view('metro.main.inquiry');
     }
 
     public function slugSwitcher(Request  $request)
@@ -105,7 +172,7 @@ class MainController extends Controller
         if ($cat) {
             return view('metro.main.product-listing');
         }
-        
+
         return abort('404');
     }
 
@@ -359,7 +426,7 @@ class MainController extends Controller
         $phone_or_email = $r->email;
         //check if phone_or_email is an email
         $is_email = filter_var($phone_or_email, FILTER_VALIDATE_EMAIL);
-        if($is_email) {
+        if ($is_email) {
 
             //send password reset link
             $u = User::where('email', $phone_or_email)->first();
@@ -370,10 +437,9 @@ class MainController extends Controller
                     ->withInput();
             }
             $this->sendResetLinkEmail($r);
-            session()->flash('success_message',"We have just sent to you an email with a password reset link.");
+            session()->flash('success_message', "We have just sent to you an email with a password reset link.");
             return Redirect::back();
-
-        }else{
+        } else {
             $phone_number = Utils::prepare_phone_number($r->email);
             $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
             if (!$phone_number_is_valid) {
@@ -393,17 +459,17 @@ class MainController extends Controller
                     ->withErrors($errors)
                     ->withInput();
             }
-    
-    
+
+
             Utils::session_start();
             $_SESSION['user_id'] = $u->id;
-    
+
             $u->verification_code = rand(1000, 9999) . "";
             $resp = Utils::send_sms([
                 'to' => $phone_number,
                 'message' => 'Your ICT4Farmers password reset code is ' . $u->verification_code
             ]);
-    
+
             if (!$resp) {
                 $errors['phone_number'] = "We have failed to send a verification code to your number. 
                 Please contact us on +256 780 602550 and we help reset your password.";
@@ -411,15 +477,13 @@ class MainController extends Controller
                     ->withErrors($errors)
                     ->withInput();
             }
-    
+
             $u->save();
             $errors['success'] = "We have just sent to you an SMS with a password reset code on your number {$phone_number}.";
             return redirect(url('reset-password-code'))
                 ->withErrors($errors)
                 ->withInput();
-    
         }
-
     }
 
     // public function reset_password_code_post(Request $r)

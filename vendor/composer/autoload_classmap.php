@@ -129,6 +129,7 @@ return array(
     'App\\Models\\GardenProductionRecord' => $baseDir . '/app/Models/GardenProductionRecord.php',
     'App\\Models\\Gen' => $baseDir . '/app/Models/Gen.php',
     'App\\Models\\Image' => $baseDir . '/app/Models/Image.php',
+    'App\\Models\\InquiryMessage' => $baseDir . '/app/Models/InquiryMessage.php',
     'App\\Models\\Location' => $baseDir . '/app/Models/Location.php',
     'App\\Models\\Market' => $baseDir . '/app/Models/Market.php',
     'App\\Models\\MenuItem' => $baseDir . '/app/Models/MenuItem.php',

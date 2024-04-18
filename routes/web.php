@@ -44,6 +44,8 @@ Route::resource('dashboard/banners', BannersController::class)->middleware(Authe
 
 Route::get('/', [MainController::class, 'index']);
 Route::get('/market', [MainController::class, 'market']);
+Route::get('/inquiry', [MainController::class, 'inquiry']);
+Route::post('/inquiry', [MainController::class, 'inquiry_post']);
 
 Route::get('/banner/{id}', [MainController::class, 'index']);
 Route::get('dashboard/profile', [UsersController::class, 'edit'])->middleware(Authenticate::class);

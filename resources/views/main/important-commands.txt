@@ -1,5 +1,4 @@
 php artisan make:component Alert --inline
-php artisan make:component Supplier
 
 php artisan admin:make PostCategoryController --model=App\\Models\\PostCategory
 
@@ -16,9 +15,9 @@ ssh unffeict4farmers@unffeict4farmers.org
 php artisan make:migration add_statuses_to_users --table=users
 php artisan make:migration seed_settings_menus
 php artisan admin:make FarmerController --model=App\\Models\\Farmers\\Farmer
-php artisan admin:make SystemUsersController --model=App\\Models\\User
+php artisan admin:make InquiryMessagesController --model=App\\Models\\InquiryMessage
 
-php artisan make:model MarketInfoMessageCampaign -m
+php artisan make:model InquiryMessage -m
 
 php artisan make:seeder OnlineCourseStudentBatchImporter
 

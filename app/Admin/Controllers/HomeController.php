@@ -312,14 +312,19 @@ class HomeController extends Controller
                 Admin::user()->isRole('administrator')
             ) {
                 if (!isset($_GET['refreshed'])) {
-                    header('Location: ' . admin_url('?refreshed=1'));
-                    die();
+                    //header('Location: ' . admin_url('?refreshed=1'));
+                    //die();
                 }
                 $events = Utils::prepare_calendar_events(Admin::user()->id);
+                //pending for vendor
+                $vendor_requests = User::where([
+                    'vendor_status' => 'Requested',
+                ])->count();
                 // return redirect(admin_url("/maps"));
                 return $content
                     ->view("admin.farmer.dashboard", [
-                        'events' => $events
+                        'events' => $events,
+                        'vendor_requests' => $vendor_requests,
                     ]);
             }
             else if (
@@ -372,8 +377,8 @@ class HomeController extends Controller
                 Admin::user()->isRole('basic-user')
             ) {
                 if (!isset($_GET['refreshed'])) {
-                    header('Location: ' . admin_url('?refreshed=1'));
-                    die();
+                    //header('Location: ' . admin_url('?refreshed=1'));
+                    //die();
                 }
                 $events = Utils::prepare_calendar_events(Admin::user()->id);
                 return $content

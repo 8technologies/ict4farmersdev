@@ -56,6 +56,7 @@ Route::group([
     $router->resource('policies', PolicyController::class);
     $router->resource('organisations', OrganisationController::class);
     $router->resource('system-users', SystemUsersController::class);
+    $router->resource('inquiry-messages', InquiryMessagesController::class);
 
     $router->get('maps', 'MapController@index')->name('maps');
     

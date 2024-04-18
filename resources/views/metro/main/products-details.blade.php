@@ -1,51 +1,51 @@
 @php
-use App\Models\Product;
-use App\Models\Attribute;
-use App\Models\Utils;
-use Illuminate\Support\Str;
-use App\Models\Category;
-use App\Models\Chat;
+    use App\Models\Product;
+    use App\Models\Attribute;
+    use App\Models\Utils;
+    use Illuminate\Support\Str;
+    use App\Models\Category;
+    use App\Models\Chat;
 
-$slug = request()->segment(1);
-$pro = Product::where('slug', $slug)->first();
+    $slug = request()->segment(1);
+    $pro = Product::where('slug', $slug)->first();
 
-if ($pro == null) {
-    $pro = Product::where('id', $slug)->first();
-}
-
-if ($pro == null) {
-    die("Product not found. Maybe it's already deleted.");
-}
-
-if ($pro) {
-    if (!$pro->owner) {
-        dd('owner not found.');
+    if ($pro == null) {
+        $pro = Product::where('id', $slug)->first();
     }
-} else {
-    die("Product not found. Maybe it's already deleted.");
-}
 
-$products = [];
-$conds['category_id'] = 1;
-$products = Product::where($conds)->paginate(4);
+    if ($pro == null) {
+        die("Product not found. Maybe it's already deleted.");
+    }
 
-$images = $pro->get_images();
-$description = $pro->description;
+    if ($pro) {
+        if (!$pro->owner) {
+            dd('owner not found.');
+        }
+    } else {
+        die("Product not found. Maybe it's already deleted.");
+    }
 
-$pro->init_attributes();
-$attributes = json_decode($pro->attributes);
-if ($attributes == null) {
-    $attributes = [];
-}
+    $products = [];
+    $conds['category_id'] = 1;
+    $products = Product::where($conds)->paginate(4);
 
-$url = $_SERVER['REQUEST_URI'];
+    $images = $pro->get_images();
+    $description = $pro->description;
 
-$is_logged_in = false;
+    $pro->init_attributes();
+    $attributes = json_decode($pro->attributes);
+    if ($attributes == null) {
+        $attributes = [];
+    }
 
-$user = Auth::user();
-$message_link = url('/register');
-$message_text = 'CHAT WITH SUPPLIER';
-if ($user != null) {
+    $url = $_SERVER['REQUEST_URI'];
+
+    $is_logged_in = false;
+
+    $user = Admin::user();
+    $message_link = url('/inquiry?product_id=' . $pro->id);
+    $message_text = 'SEND INQUIRY MESSAGE';
+    /* if ($user != null) {
     if (isset($user->id)) {
         $is_logged_in = true;
         if ($pro->user_id == $user->id) {
@@ -56,19 +56,19 @@ if ($user != null) {
             $message_link = url('dashboard/chats/' . $chat_thred);
         }
     }
-}
-$first_seen = false;
+} */
+    $first_seen = false;
 
-$products = [];
-$products = Product::all();
+    $products = [];
+    $products = Product::all();
 
-$recomended = [];
-foreach ($products as $key => $p) {
-    if (count($recomended) < 6) {
-        $recomended[] = $p;
-        continue;
+    $recomended = [];
+    foreach ($products as $key => $p) {
+        if (count($recomended) < 6) {
+            $recomended[] = $p;
+            continue;
+        }
     }
-}
 
 @endphp
 
@@ -96,7 +96,7 @@ foreach ($products as $key => $p) {
             <div class="carousel-inner slider-arrow">
                 @foreach ($images as $img)
                     @php
-                    
+
                         $active = '';
                         if (!$first_seen) {
                             $active = ' active ';
@@ -105,9 +105,11 @@ foreach ($products as $key => $p) {
                     @endphp
                     <div class="carousel-item  <?= $active ?>  ">
 
-                        <a class="d-block overlay" data-fslightbox="gallery" href="{{ url('public/storage/'. $img->src) }}">
+                        <a class="d-block overlay" data-fslightbox="gallery"
+                            href="{{ url('public/storage/' . $img->src) }}">
                             <div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded">
-                                <img class="d-block w-100" src="{{ url('public/storage/'. $img->thumbnail) }}" alt="Product photo">
+                                <img class="d-block w-100" src="{{ url('public/storage/' . $img->thumbnail) }}"
+                                    alt="Product photo">
                             </div>
                             <div class="overlay-layer card-rounded bg-dark bg-opacity-25 shadow">
                                 <i class="bi bi-eye-fill text-white fs-3x"></i>
@@ -134,9 +136,6 @@ foreach ($products as $key => $p) {
                 @endforeach
             </div>
         </div>
-
-
-
     </div>
     <div class="col-md-5 bg-white pt-5">
 
@@ -214,8 +213,11 @@ foreach ($products as $key => $p) {
                 product suppliers. Press the <b>Chat with supplier</b> button to start a coversation with supplier of
                 this product.
             </p>
+            <a href="{{ $message_link }}" class="btn  btn-danger btn-lg rounded-0 d-block btn-active-light-primary"><i
+                    class="las la-comment-dots fs-2 me-2"></i>
+                {{ $message_text }}</a>
 
-            @if ($is_logged_in)
+            {{--  @if ($is_logged_in)
                 <a href="{{ $message_link }}"
                     class="btn  btn-danger btn-lg rounded-0 d-block btn-active-light-primary"><i
                         class="las la-comment-dots fs-2 me-2"></i>
@@ -225,7 +227,7 @@ foreach ($products as $key => $p) {
                     class="btn  btn-danger btn-lg rounded-0 d-block btn-active-light-primary"><i
                         class="las la-comment-dots fs-2 me-2"></i>
                     CHAT WITH SUPPLIER</a>
-            @endif
+            @endif --}}
             <div class="my-5"></div>
 
             <a data-bs-toggle="modal" data-bs-target="#kt_modal_1"

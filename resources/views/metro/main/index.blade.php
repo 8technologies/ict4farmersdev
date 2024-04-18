@@ -102,7 +102,7 @@ shuffle($bgs);
 
                                 <a href="{{ $slide->link }}">
                                     <div class="my-slider"
-                                        style="background-image: url({{ url('/public/storage/'.$slide->image) }});     background-size:     cover;
+                                        style="background-image: url({{ url('/public/storage/' . $slide->image) }});     background-size:     cover;
                                                                 background-repeat:   no-repeat;
                                                                 background-position: center center; ">
                                     </div>
@@ -191,71 +191,35 @@ shuffle($bgs);
         </div>
     </div>
 
-
     @php
-    $banners = Banner::whereBetween('id', [48, 56])->get();
+        $banners = Banner::whereBetween('id', [48, 56])->get();
     @endphp
     @include('metro.components.section-grouped-banners', [
         'items' => $banners,
     ])
 
     @php
-    $banners = Banner::whereBetween('id', [57, 66])->get();
+        $banners = Banner::whereBetween('id', [57, 66])->get();
     @endphp
     @include('metro.components.section-grouped-banners', [
         'items' => $banners,
     ])
 
     @php
-    $banners = Banner::whereBetween('id', [48, 56])->get();
+        $banners = Banner::whereBetween('id', [48, 56])->get();
     @endphp
     @include('metro.components.section-grouped-banners', [
         'items' => $banners,
     ])
 
 
-    <div class="row bg-white mt-8 p-10"
-        style="background-image: url(https://www.micstatic.com/mic-search/img/home-2019/easy-sourcing.jpg?_v=1655724759401);     background-size:     cover;
-        background-repeat:   no-repeat;
-        background-position: center center; height: 34rem; ">
-        <div class="d-none d-md-block col-5  fw-bold fs-3 py-1 m-0 px-3 text-gray-900">
-            <h2 class="h1 display-4 mb-4">EASY SOURCING</h2>
-            <p>{{ env('APP_NAME') }} is Uganda's largest online Farmers marketplace, connecting buyers with farmers.</p>
-            <p>One request, multiple quotes</p>
-            <p>Verified suppliers matching</p>
-            <p>Quotes comparison and sample request</p>
-        </div>
-        <div class="d-none d-md-block col-1"></div>
-        <div class="col-12 col-md-6 bg-white p-5 p-md-10">
-            <h2 class="ps-0  display-6 fw-normal">Tell us what you need</h2>
-            <form action="">
-                <div class="form-group">
-                    <input type="text" class="form-control border border-primary" placeholder="Product name or keyword">
-                </div>
-                <div class="form-group mt-4">
-                    <textarea name="" placeholder="Product description" id="data" class="form-control border border-primary "
-                        rows="3"></textarea>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group  mt-4">
-                            <input type="email" class="form-control border border-primary" placeholder="Email address">
-                        </div>
-                    </div>
-                    <div class="col-md-6 mt-4">
-                        <div class="form-group">
-                            <input type="name" class="form-control border border-primary" placeholder="Full name">
-                        </div>
-                    </div>
-                </div>
+    <center>
+        <a href="#" class="border border-primary btn btn-primary mt-5 mb-2 text-center">Browese All Products</a>
+    </center>
 
-                <a href="#" class="border border-primary btn btn-primary mt-3">Post Your Request</a>
 
-            </form>
+    @include('metro.components.inquiry-section')
 
-        </div>
-
-    </div>
 
     {{-- <h2 class="display-6 text-center fw-normal my-5 my-md-10">Sourcing Solutions & Tailored Services</h2>
 
