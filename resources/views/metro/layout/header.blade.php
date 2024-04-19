@@ -164,6 +164,9 @@ if (in_array($seg_1, $dashboard_segs)) {
                 <!--begin::Theme mode-->
                 <div class="d-none d-md-flex align-items-center ms-1 ms-lg-3">
                     <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
+                        <a href="{{ url('market') }}" class="btn btn-danger btn-sm bg"
+                                style="margin-left: .8rem">Marketplace</a>
+
 
                         @if ($is_logged_in)
                             <a href="{{ url('admin') }}" class="btn btn-primary btn-sm bg"
