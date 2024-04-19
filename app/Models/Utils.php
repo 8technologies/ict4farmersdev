@@ -873,7 +873,7 @@ class Utils
 
         $chat->thread = Chat::get_chat_thread_id($chat->sender, $chat->receiver, $chat->product_id);
 
-        if (!$chat->save()) {x
+        if (!$chat->save()) {
             return "Failed to save message.";
         }
 
