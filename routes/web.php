@@ -31,11 +31,10 @@ Route::get('/mail-test', function () {
         $hasApp2 = false;
     }
     if ($hasApp2) {
-        die("App2");
-    } else {
-        die("App1");
+        //redirect to https://app.unffeict4farmers.org/market
+        header("Location: https://app.unffeict4farmers.org/market");
+        die();
     }
-    dd($link);
     die("Mail test");
     Utils::send_sms([
         'to' => '+256783204665',
