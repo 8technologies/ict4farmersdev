@@ -50,7 +50,7 @@ class MainController extends Controller
             //redirect to https://app.unffeict4farmers.org/market
             header("Location: https://app.unffeict4farmers.org/market");
             die();
-        } 
+        }
         // get policy names and path
         $policies = \App\Models\Policy::all();
         return view('landing.index', compact('policies'));
@@ -129,6 +129,19 @@ class MainController extends Controller
 
     public function slugSwitcher(Request  $request)
     {
+        $link = url()->current();
+        //check if link conats app2
+        $hasApp2 = false;
+        if (strpos($link, 'app2') !== false) {
+            $hasApp2 = true;
+        } else {
+            $hasApp2 = false;
+        }
+        if ($hasApp2) {
+            //redirect to https://app.unffeict4farmers.org/market
+            header("Location: https://app.unffeict4farmers.org/market");
+            die();
+        } 
         //echo "<pre>"; 
         //dd($request);
         if (
