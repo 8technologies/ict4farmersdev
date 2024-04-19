@@ -206,7 +206,7 @@ shuffle($bgs);
         'items' => $banners,
     ])
 
-{{--     @php
+    {{--     @php
         $banners = Banner::whereBetween('id', [48, 56])->get();
     @endphp
     @include('metro.components.section-grouped-banners', [
@@ -215,7 +215,8 @@ shuffle($bgs);
  --}}
 
     <center>
-        <a href="#" class="border border-primary btn btn-primary mt-5 mb-2 text-center">Browese All Products</a>
+        <a href="{{ url('product-listing') }}" class="border border-primary btn btn-primary mt-5 mb-2 text-center">Browese
+            All Products</a>
     </center>
 
 
