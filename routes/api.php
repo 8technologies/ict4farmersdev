@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route; //new staff
 
 
 use App\Http\Controllers\CallCenter\NewCallCenterController;
-
+use Database\Factories\ProductFactory;
 
 Route::get('farmer-questions', [ApiProductsController::class, 'farmer_questions']);
 Route::get('farmer_question_answers', [ApiProductsController::class, 'farmer_question_answers']); 
@@ -54,6 +54,9 @@ Route::get('financial-records', [ApiProductsController::class, 'get_financial_re
 
 Route::get('crop-categories', function () {
     return CropCategory::all();
+});
+Route::get('api/Category', function () {
+    return ProductFactory::all();
 });
 
 Route::get('users-1', function () {
