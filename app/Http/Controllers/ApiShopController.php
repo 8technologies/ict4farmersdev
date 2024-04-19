@@ -311,7 +311,9 @@ class ApiShopController extends Controller
 
     public function products()
     {
-        return $this->success(Product::where([])->orderby('id', 'desc')->get(), 'Success');
+        return $this->success(Product::where([
+            'status' => 1
+        ])->orderby('id', 'desc')->get(), 'Success');
     }
 
     public function products_delete(Request $r)

@@ -951,6 +951,11 @@ class ApiProductsController
             //$items = Product::paginate($per_page)->orderBy('id', 'DESC')->withQueryString()->items();
         }
 
+        //filter products only with status 1
+        $items = $items->filter(function ($item) {
+            return $item->status == 1;
+        });
+
         return $items;
     }
 
