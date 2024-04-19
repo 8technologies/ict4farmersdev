@@ -21,10 +21,26 @@ use App\Models\Utils;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/mail-test', function () {
+    //current link
+    $link = url()->current();
+    //check if link conats app2
+    $hasApp2 = false;
+    if (strpos($link, 'app2') !== false) {
+        $hasApp2 = true;
+    } else {
+        $hasApp2 = false;
+    }
+    if ($hasApp2) {
+        die("App2");
+    } else {
+        die("App1");
+    }
+    dd($link);
+    die("Mail test");
     Utils::send_sms([
         'to' => '+256783204665',
         'message' => '$sms_to_admin'
-    ]); 
+    ]);
     $data['body'] = 'Simple message';
     //$data['view'] = 'mails/mail-1';
     $data['data'] = $data['body'];
