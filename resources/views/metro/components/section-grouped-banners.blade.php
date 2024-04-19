@@ -3,33 +3,6 @@ use App\Models\Banner;
 $main_item = new Banner();
 
 $_things = ['Baby Clothes', 'Sports Wear', 'Belt', 'Gloves', 'Sweaters', 'Hoodies', 'Bikini', 'T-Shirt', 'Swim wear', 'Jacket', 'Dresses', 'Pants & Trousers', 'Winter Apparel'];
-
-/* foreach ($_things as $key => $v) {
-    $x = Banner::where([
-        'name' => $v,
-    ])->first();
-
-    if ($y != null) {
-        //$y = new Banner();
-        $y->section = 'web';
-        $y->position = '#';
-        $y->name = $v;
-        $y->title = $v;
-        $y->type = 1;
-        $y->product_id = 1;
-        $y->parent_id = 0;
-        $y->category_id = 1;
-        $y->order = 1;
-        $y->clicks = 1;
-        $y->sub_title = $v;
-        $y->image = 'storage/wear_'.rand(1,14).".png";
-
-       // $y->save();
-    
-    } 
-	
-
-} */
 if (isset($items[0])) {
     $main_item = $items[0];
     unset($items[0]);
@@ -37,7 +10,7 @@ if (isset($items[0])) {
 
 ?><div class="row bg-white mt-8">
     <div class=" d-md-block col-12 col-md-3 p-5"
-        style="background-image: url({{ $main_item->image }});     background-size:     cover;
+        style="background-image: url({{ url('/public/storage').'/'.$main_item->image }});     background-size:     cover;
     background-repeat:   no-repeat;
     background-position: center center; height: 32rem; ">
         <h2 class="ps-0  display-5 fw-bolder">{{ $main_item->name }}</h2>
@@ -47,7 +20,7 @@ if (isset($items[0])) {
         <div class="row">
             @foreach ($items as $item)
                 <a href="{{ $item->link }}" class="col-6 col-md-3 border border-secondary"
-                    style="background-image: url({{ $item->image }});     background-size:     cover;
+                    style="background-image: url({{ url('/public/storage').'/'.$item->image }});     background-size:     cover;
             background-repeat:   no-repeat;
             background-position: center center; height: 16rem; ">
                     <div class="row">
