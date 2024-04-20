@@ -380,11 +380,11 @@ class ApiShopController extends Controller
         //$r->price_1;
         if ($r->type == null || strlen($r->type) < 2) {
             //update the app
-            return $this->error('You have old version of the app. Please update the app from the play store now.');
+            return $this->error('You have old version of the app. Please update the app from the play store.');
         }
 
         //$r->category_id
-        if ($r->category_id == null || strlen($r->category_id) < 1) {
+        if ($r->sub_category_id == null || strlen($r->sub_category_id) < 1) {
             return $this->error('You have old version of the app. Please update the app from the play store now.');
         }
         $cat = Category::find($r->sub_category_id);
