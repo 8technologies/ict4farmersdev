@@ -898,8 +898,30 @@ class Utils
         ) {
             $slug .= rand(100, 1000);
         }
-        $slug = 'product-' . $slug. '-' . rand(1000, 100000); 
+        $slug = 'product-' . $slug . '-' . rand(1000, 100000);
         return $slug;
+    }
+
+
+    public static function upload_file_2($file)
+    {
+        if (!isset($file['tmp_name'])) {
+            return "";
+        }
+        $path = env('STORAGE_BASE_PATH');
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $file_name = time() . "-" . Utils::make_slug($file['name']) . "." . $ext;
+        $destination = $path . '/' . $file_name;
+        $res = null;
+        try {
+            $res = move_uploaded_file($file['tmp_name'], $destination);
+        } catch (\Exception $e) {
+            $res = false;
+        }
+        if (!$res) {
+            return "";
+        }
+        return $file_name;
     }
 
 
@@ -912,6 +934,7 @@ class Utils
         $path = Storage::putFile('/public/storage', $file['tmp_name']);
         return $path;
     }
+
     public static function upload_images($files)
     {
 

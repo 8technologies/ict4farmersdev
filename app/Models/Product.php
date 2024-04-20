@@ -26,10 +26,10 @@ class Product extends Model
         return config('app.currency') . " " . number_format((int)($this->price));
     }
 
-    public function getCreatedAtAttribute($value)
+    /*   public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->diffForHumans();
-    }
+    } */
 
 
     public function getQuantityAttribute($value)
@@ -120,13 +120,20 @@ class Product extends Model
             $p->slug = Utils::make_slug($p->name);
             $vendor = User::find($p->user_id);
             if ($vendor == null) {
-                throw new \Exception("Vendor not found");
+                $vendor = User::find($p->user);
+                if ($vendor == null) {
+                    throw new \Exception("Vendor not found");
+                }
             }
+            $p->user = $vendor->id;
+            $p->user_id = $vendor->id;
             if ($vendor->vendor_status == 'Approved') {
                 $p->status = 1;
             } else {
                 $p->status = 2;
             }
+
+
 
             $p = Product::prepare($p);
             return $p;
@@ -359,20 +366,11 @@ class Product extends Model
     {
 
         $name = "-";
-        $cat = Category::find($this->category_id);
+        $cat = Category::find($this->sub_category_id);
         if ($cat == null) {
-            return "-";
-        } else {
-            if (
-                isset($cat->parent) &&
-                ($cat->parent > 0)
-            ) {
-                $name = $cat->name;
-                $_cat = Category::find($cat->parent);
-                if ($_cat != null) {
-                    $name = $_cat->name . ", " . $cat->name;
-                }
-            }
+            return "";
+        } else { 
+            $name = $cat->name;
         }
         return $name;
     }

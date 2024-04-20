@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AdminRoleUser;
 use App\Models\BatchSession;
+use App\Models\Category;
 use App\Models\ChatHead;
 use App\Models\ChatMessage;
 use App\Models\DrugStockBatch;
@@ -309,11 +310,16 @@ class ApiShopController extends Controller
 
 
 
-    public function products()
+    public function products(Request $r)
     {
-        return $this->success(Product::where([
+        $user_id = Utils::get_user_id($r);
+        $items = Product::where([
             'status' => 1
-        ])->orderby('id', 'desc')->get(), 'Success');
+        ])->orwhere([
+            'user' => $user_id
+        ])->get();
+
+        return $this->success($items, 'Success');
     }
 
     public function products_delete(Request $r)
@@ -351,40 +357,87 @@ class ApiShopController extends Controller
             return $this->error('Local parent ID is missing.');
         }
 
+        $isEdit = false;
 
-        $pro = new Product();
+        $pro = Product::find($r->id);
+        if ($pro != null) {
+            $isEdit = true;
+        } else {
+            $pro = new Product();
+        }
+
+        if ($r->name == null || strlen($r->name) < 3) {
+            return $this->error('Name is missing.');
+        }
+        //$r->description
+        if ($r->description == null || strlen($r->description) < 3) {
+            return $this->error('Description is missing.');
+        }
+        //$r->price_1;
+        if ($r->price_1 == null || strlen($r->price_1) < 1) {
+            return $this->error('Price 1 is missing.');
+        }
+        //$r->price_1;
+        if ($r->type == null || strlen($r->type) < 2) {
+            //update the app
+            return $this->error('You have old version of the app. Please update the app from the play store now.');
+        }
+
+        //$r->category_id
+        if ($r->category_id == null || strlen($r->category_id) < 1) {
+            return $this->error('You have old version of the app. Please update the app from the play store now.');
+        }
+        $cat = Category::find($r->sub_category_id);
+        if ($cat == null) {
+            return $this->error('Category not found.');
+        }
+        $pro->sub_category_id = $cat->id;
+        $pro->category = $cat->type;
         $pro->name = $r->name;
-        $pro->feature_photo = 'no_image.jpg';
         $pro->description = $r->description;
         $pro->price_1 = $r->price_1;
         $pro->price_2 = $r->price_2;
         $pro->local_id = $r->id;
         $pro->summary = $r->data;
-        $pro->category = $r->category_id;
-        $pro->category_id = $r->category_id;
-        $pro->sub_category = $r->category_id;
+        $pro->sub_category = $r->sub_category_id;
+        $pro->type = $r->type;
         $pro->p_type = $r->p_type;
         $pro->keywords = $r->keywords;
-        $pro->metric = 1;
+        $pro->metric = $r->metric;
         $pro->status = 0;
+        if ($u->vendor_status == 'Approved') {
+            $pro->status = 1;
+        } else {
+            $pro->status = 2;
+        }
         $pro->currency = 1;
         $pro->user = $u->id;
         $pro->user_id = $u->id;
         $pro->supplier = $u->id;
-        $pro->in_stock = 1;
         $pro->rates = 1;
+        $pro->in_stock = 1;
         $imgs = Image::where([
             'parent_id' => $pro->local_id
         ])->get();
         if ($imgs->count() > 0) {
-            $pro->feature_photo = $imgs[0]->src;
+            if ($pro->feature_photo == 'no_image.jpg' || strlen($pro->feature_photo) < 3) {
+                $pro->feature_photo = $imgs[0]->src;
+            }
+        } else {
+            $pro->feature_photo = 'no_image.jpg';
         }
         if ($pro->save()) {
             foreach ($imgs as $key => $img) {
                 $img->product_id = $pro->id;
                 $img->save();
             }
-            return $this->success(null, $message = "Submitted successfully!", 200);
+            $pro->processThumbnail();
+            $msg = "Submitted uploaded successfully!";
+            if ($isEdit) {
+                $msg = "Submitted updated successfully!";
+            }
+            $pro = Product::find($pro->id);
+            return $this->success($pro, $message = $msg, 200);
         } else {
             return $this->error('Failed to upload product.');
         }

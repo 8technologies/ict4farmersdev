@@ -146,19 +146,7 @@ class User extends Authenticatable
                 }
             }
 
-            $m->profile_is_complete = 0;
-            if (
-                ($m->first_name != null) &&
-                (($m->gender != null) && (strlen($m->gender) > 1))
-            ) {
-                $m->profile_is_complete = 1;
-            }
 
-            if ($m->gender == 'm' || $m->gender == 'M') {
-                $m->gender = 'Male';
-            } elseif ($m->gender == 'f' || $m->gender == 'F') {
-                $m->gender = 'Female';
-            }
 
             $m = self::prepare($m);
 
@@ -213,16 +201,6 @@ class User extends Authenticatable
         if (strlen(trim($n)) > 1) {
             $m->name = trim($n);
         }
-        $m->username = $m->email;
-        if ($m->password == null || strlen($m->password) < 2) {
-            $m->password = password_hash('4321', PASSWORD_DEFAULT);
-        }
-        if (strlen($m->username) < 3) {
-            $m->username = $m->phone_number;
-            $m->email = $m->phone_number;
-        }
-
-
 
         return $m;
     }
@@ -239,6 +217,11 @@ class User extends Authenticatable
         'username',
         'phone_number',
     ];
+    //appends
+    protected $appends = [
+        'facebook',
+        'location_text',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -253,9 +236,6 @@ class User extends Authenticatable
     public function getFacebookAttribute()
     {
 
-        if ($this->original['gender'] != 'Male' || $this->original['gender'] != 'Female') {
-            $this->original['gender'] = 'Male';
-        }
         return json_encode($this->original);
     }
 
@@ -271,13 +251,6 @@ class User extends Authenticatable
         return $avatar;
     }
 
-    public function getGenderAttribute($g)
-    {
-        if ($g != 'Male' || $g != 'Female') {
-            $g = 'Male';
-        }
-        return $g;
-    }
 
     /**
      * The attributes that should be cast.
@@ -299,9 +272,17 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Garden::class, Farm::class, 'administrator_id', 'farm_id');
     }
-    //reports many pest cases
-    public function pest_reports()
+
+    //getter for location_text 
+    public function getLocationTextAttribute()
     {
-        return $this->hasMany(PestCase::class, 'administrator_id');
+        if ($this->location_id == null) {
+            return "";
+        }
+        $loc = Location::find($this->location_id);
+        if ($loc == null) {
+            return "";
+        }
+        return $loc->get_name();
     }
 }

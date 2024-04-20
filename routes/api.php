@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Route; //new staff
 use App\Http\Controllers\CallCenter\NewCallCenterController;
 use Database\Factories\ProductFactory;
 
+Route::get('api/{model}', [ApiShopController::class, 'index']);
 Route::get('farmer-questions', [ApiProductsController::class, 'farmer_questions']);
-Route::get('farmer_question_answers', [ApiProductsController::class, 'farmer_question_answers']); 
+Route::get('farmer_question_answers', [ApiProductsController::class, 'farmer_question_answers']);
 Route::POST('farmer-questions-create', [ApiProductsController::class, 'farmer_questions_create']);
 Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']);
 
@@ -93,6 +94,10 @@ Route::post('threads', [ApiChatsController::class, 'threads']);
 //User related end points
 Route::get('users', [ApiUsersController::class, 'index']);
 Route::post('users-update', [ApiUsersController::class, 'update']);
+Route::post('users-account-update', [ApiUsersController::class, 'users_account_update']);
+Route::post('users-vendor-update', [ApiUsersController::class, 'users_vendor_update']);
+Route::post('users-farmer-update', [ApiUsersController::class, 'users_farmer_update']);
+
 Route::post('users-login', [ApiUsersController::class, 'login']);
 Route::get('users-profile', [ApiUsersController::class, 'users_profile']);
 Route::post('verify-phone', [ApiUsersController::class, 'verify_phone']);
@@ -113,16 +118,16 @@ Route::post('calls', [NewCallCenterController::class, 'call_center_voice']);
 Route::match(['get', 'post'], 'calls', [NewCallCenterController::class, 'call_center_voice']);
 
 
-Route::POST("post-media-upload", [ApiShopController::class, 'upload_media']);//==>3<==
-Route::POST("product-create", [ApiShopController::class, "product_create"]);//==>2
-Route::get('products', [ApiShopController::class, 'products']);//==>1
-Route::post('products-delete', [ApiShopController::class, 'products_delete']);//==>4
-Route::post('chat-send', [ApiShopController::class, 'chat_send']);//==>5
-Route::post('chat-mark-as-read', [ApiShopController::class, 'chat_mark_as_read']);//==>8
-Route::get('chat-heads', [ApiShopController::class, 'chat_heads']);//==>6
-Route::get('chat-messages', [ApiShopController::class, 'chat_messages']);//==>7
-Route::get('api/{model}', [ApiShopController::class, 'index']); 
-Route::POST('chat-start', [ApiShopController::class, 'chat_start']); 
+Route::POST("post-media-upload", [ApiShopController::class, 'upload_media']); //==>3<==
+Route::POST("product-create", [ApiShopController::class, "product_create"]); //==>2
+Route::get('products', [ApiShopController::class, 'products']); //==>1
+Route::post('products-delete', [ApiShopController::class, 'products_delete']); //==>4
+Route::post('chat-send', [ApiShopController::class, 'chat_send']); //==>5
+Route::post('chat-mark-as-read', [ApiShopController::class, 'chat_mark_as_read']); //==>8
+Route::get('chat-heads', [ApiShopController::class, 'chat_heads']); //==>6
+Route::get('chat-messages', [ApiShopController::class, 'chat_messages']); //==>7
+Route::get('api/{model}', [ApiShopController::class, 'index']);
+Route::POST('chat-start', [ApiShopController::class, 'chat_start']);
 
 
 Route::get('ajax', function (Request $r) {

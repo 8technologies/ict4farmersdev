@@ -208,6 +208,385 @@ class ApiUsersController
         ]);
     }
 
+    public function users_account_update(Request $r)
+    {
+
+        $user_id = (int) ($r->user_id ? $r->user_id : 0);
+        $u = User::find($user_id);
+        if ($u == null) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Failed to find account with ID {$user_id}",
+                'data' => null
+            ]);
+        }
+
+
+        $u->first_name = $r->first_name;
+        $u->last_name = $r->last_name;
+        $u->email = $r->email;
+        $u->gender = $r->gender;
+
+        if ($r->change_password == 'Yes' && $r->password_1 != null && strlen($r->password_1) > 3) {
+            $u->password = Hash::make($r->password_1);
+        }
+
+        $phone = Utils::prepare_phone_number($r->phone_number);
+        if (!Utils::phone_number_is_valid($phone)) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Please provide valid uganda phone number. $phone is invalid.",
+                'data' => null
+            ]);
+        }
+        $other_user = User::find($phone);
+        if ($other_user != null) {
+            if ($other_user->id != $u->id) {
+                return Utils::response([
+                    'status' => 0,
+                    'message' => "Phone number $phone already used by other user.",
+                    'data' => null
+                ]);
+            }
+        }
+        $u->phone_number = $phone;
+        $u->username = $phone;
+        $email = $r->email;
+        //validate email
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $other_user = User::where('email', $email)->first();
+            if ($other_user != null) {
+                if ($other_user->id != $u->id) {
+                    return Utils::response([
+                        'status' => 0,
+                        'message' => "Email $email already used by other user.",
+                        'data' => null
+                    ]);
+                }
+            }
+            //check using username
+            $other_user = User::where('username', $email)->first();
+            if ($other_user != null) {
+                if ($other_user->id != $u->id) {
+                    return Utils::response([
+                        'status' => 0,
+                        'message' => "Email $email already used by other user.",
+                        'data' => null
+                    ]);
+                }
+            }
+            $u->email = $email;
+        }
+
+
+        $avatar = '';
+        if (isset($_FILES)) {
+            if ($_FILES != null) {
+                if (count($_FILES) > 0) {
+                    if (isset($_FILES['profile_pic'])) {
+                        if ($_FILES['profile_pic'] != null) {
+                            if (isset($_FILES['profile_pic']['tmp_name'])) {
+                                try {
+                                    $avatar = Utils::upload_file_2($_FILES['profile_pic']);
+                                    if ($avatar != null) {
+                                        if (strlen($avatar) > 3) {
+                                            $u->avatar = $avatar;
+                                        }
+                                    }
+                                } catch (\Exception $e) {
+                                    return Utils::response([
+                                        'status' => 0,
+                                        'message' => "Failed to upload profile picture because of " . $e->getMessage(),
+                                        'data' => null
+                                    ]);
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        try {
+            $u->save();
+            $u = User::find($u->id);
+            return Utils::response([
+                'status' => 1,
+                'message' => "Account updated successfully.",
+                'data' => $u
+            ]);
+        } catch (\Exception $e) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Failed to update account because of " . $e->getMessage(),
+                'data' => null
+            ]);
+        }
+    }
+
+
+    public function users_vendor_update(Request $r)
+    {
+
+        $user_id = (int) ($r->user_id ? $r->user_id : 0);
+        $u = User::find($user_id);
+        if ($u == null) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Failed to find account with ID {$user_id}",
+                'data' => null
+            ]);
+        }
+
+
+        if ($r->is_a_vendor != 'Yes' && $r->is_a_vendor != 'No') {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Is a vendor field is missing.",
+                'data' => null
+            ]);
+        }
+
+        if ($r->want_to_be_enroled_vendor != 'Yes' && $r->want_to_be_enroled_vendor != 'No') {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Want to be a vendor field is missing.",
+                'data' => null
+            ]);
+        }
+
+
+        $u->is_a_vendor = $r->is_a_vendor;
+        $isNew = false;
+        $phone_number = "";
+
+        if ($u->want_to_be_enroled_vendor != "Yes") {
+            if ($r->want_to_be_enroled_vendor == 'Yes') {
+                $u->vendor_status = 'Requested';
+                $phone_number = Utils::prepare_phone_number($u->phone_number);
+                $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+                if ($phone_number_is_valid) {
+                    $isNew = true;
+                }
+            }
+        }
+
+        $u->want_to_be_enroled_vendor = $r->want_to_be_enroled_vendor;
+        if ($r->want_to_be_enroled_vendor == 'Yes') {
+            $u->business_name = $r->date_of_birth;
+            $u->location_id = $r->location_id;
+            $u->about = $r->about;
+            $u->business_address = $r->business_address;
+            $u->business_category = $r->business_category;
+            $u->business_phone_number = $r->business_phone_number;
+        }
+
+
+        $avatar = '';
+        if (isset($_FILES)) {
+            if ($_FILES != null) {
+                if (count($_FILES) > 0) {
+                    if (isset($_FILES['profile_pic'])) {
+                        if ($_FILES['profile_pic'] != null) {
+                            if (isset($_FILES['profile_pic']['tmp_name'])) {
+                                try {
+                                    $avatar = Utils::upload_file_2($_FILES['profile_pic']);
+                                    if ($avatar != null) {
+                                        if (strlen($avatar) > 3) {
+                                            $u->avatar = $avatar;
+                                        }
+                                    }
+                                } catch (\Exception $e) {
+                                    return Utils::response([
+                                        'status' => 0,
+                                        'message' => "Failed to upload profile picture because of " . $e->getMessage(),
+                                        'data' => null
+                                    ]);
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        try {
+            $u->save();
+            $u = User::find($u->id);
+
+            $u->save();
+            if ($isNew) {
+                $msg = "Your ICT4Farmers vendor registration request has been received, we are going to review and get back to you shortly.";
+                Utils::send_sms([
+                    'to' => $phone_number,
+                    'message' => $msg
+                ]);
+                $review_link = admin_url('system-users/' . $u->id . '/edit');
+                $mail_body = <<<EOD
+                    <p>Dear Admin,</p>
+                    <p>New vendor registration request from {$u->name}.</p>
+                    <p>Business Name: {$u->business_name}</p>
+                    <p>Business Address: {$u->business_address}</p>
+                    <p>Business Phone Number: {$u->business_phone_number}</p>
+                    <p>Business Category: {$u->business_category}</p>
+                    <p>Location: {$u->location_id}</p>
+                    <p>Phone Number: {$u->phone_number}</p>
+                    <p>Email: {$u->email}</p>
+                    <p>Click <a href="{$review_link}">here</a> to review this request.</p>
+                    <p>Thank you.</p>
+                EOD;
+                $data['email'] = [
+                    'tukundanen@yahoo.com',
+                    'mubs0x@gmail.com',
+                    'isaac@8technologies.net',
+                    'botim822@gmail.com',
+                    'mbabaziisaac@gmail.com',
+                ];
+                $date = date('Y-m-d');
+                $data['subject'] = env('APP_NAME') . " - New Vendor Registration Request: " . $u->business_name . " at " . $date;
+                $data['body'] = $mail_body;
+                $data['data'] = $data['body'];
+                $data['name'] = 'Admin';
+                try {
+                    Utils::mail_sender($data);
+                } catch (\Throwable $th) {
+                }
+            }
+
+            return Utils::response([
+                'status' => 1,
+                'message' => "Account updated successfully.",
+                'data' => $u
+            ]);
+        } catch (\Exception $e) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Failed to update account because of " . $e->getMessage(),
+                'data' => null
+            ]);
+        }
+    }
+
+
+
+    public function users_farmer_update(Request $r)
+    {
+
+        $user_id = (int) ($r->user_id ? $r->user_id : 0);
+        $u = User::find($user_id);
+        if ($u == null) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Failed to find account with ID {$user_id}",
+                'data' => null
+            ]);
+        }
+        if ($r->is_a_farmer != 'Yes' && $r->is_a_farmer != 'No') {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Is a farmer field is missing.",
+                'data' => null
+            ]);
+        }
+        if ($r->want_to_be_enroled_farmer != 'Yes' && $r->want_to_be_enroled_farmer != 'No') {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Want to be a farmer field is missing.",
+                'data' => null
+            ]);
+        }
+
+        $isNew = false;
+        $phone_number = "";
+        if ($u->want_to_be_enroled_farmer != "Yes") {
+            $u->farmer_status = 'Requested';
+            $phone_number = Utils::prepare_phone_number($u->phone_number);
+            $phone_number_is_valid = Utils::phone_number_is_valid($phone_number);
+            if ($phone_number_is_valid) {
+                $isNew = true;
+            }
+        }
+
+        $u->want_to_be_enroled_farmer = $r->want_to_be_enroled_farmer;
+        $u->is_a_farmer = $r->is_a_farmer;
+        if ($r->want_to_be_enroled_farmer == 'Yes') {
+            $u->date_of_birth = $r->date_of_birth;
+            $u->location_id = $r->location_id;
+            $u->marital_status = $r->marital_status;
+            $u->sector = $r->sector;
+            $u->production_scale = $r->production_scale;
+            $u->experience = $r->experience;
+            $u->education = $r->education;
+            $u->access_to_credit = $r->access_to_credit;
+            $u->latitude = $r->latitude;
+            $u->longitude = $r->longitude;
+            $u->about = $r->about;
+        }
+
+        try {
+            $msg = "Your ICT4Farmers farmer registration request has been received, we are going to review and get back to you shortly.";
+            $u->save();
+            if ($isNew) {
+                Utils::send_sms([
+                    'to' => $phone_number,
+                    'message' => $msg
+                ]);
+            }
+            //mail to admin for review
+            $review_link = admin_url('system-users/' . $u->id . '/edit');
+            $mail_body = <<<EOD
+                <p>Dear Admin,</p>
+                <p>New farmer registration request from {$u->name}.</p>
+                <p>Date of Birth: {$u->date_of_birth}</p>
+                <p>Location: {$u->location_id}</p>
+                <p>Marital Status: {$u->marital_status}</p>
+                <p>Sector: {$u->sector}</p>
+                <p>Production Scale: {$u->production_scale}</p>
+                <p>Experience: {$u->experience}</p>
+                <p>Education: {$u->education}</p>
+                <p>Access to Credit: {$u->access_to_credit}</p>
+                <p>Latitude: {$u->latitude}</p>
+                <p>Longitude: {$u->longitude}</p>
+                <p>About: {$u->about}</p>
+                <p>Phone Number: {$u->phone_number}</p>
+                <p>Email: {$u->email}</p>
+                <p>Click <a href="{$review_link}">here</a> to review this request.</p>
+                <p>Thank you.</p>
+            EOD;
+            $data['email'] = [
+                'tukundanen@yahoo.com',
+                'mubs0x@gmail.com',
+                'isaac@8technologies.net',
+                'botim822@gmail.com',
+                'mbabaziisaac@gmail.com',
+            ];
+            $date = date('Y-m-d');
+            $data['subject'] = env('APP_NAME') . " - New Farmer Registration Request: " . $u->name . " at " . $date;
+            $data['body'] = $mail_body;
+            $data['data'] = $data['body'];
+            $data['name'] = 'Admin';
+            try {
+                Utils::mail_sender($data);
+            } catch (\Throwable $th) {
+            }
+
+            $u = User::find($u->id);
+            return Utils::response([
+                'status' => 1,
+                'message' => $msg,
+                'data' => $u
+            ]);
+        } catch (\Exception $e) {
+            return Utils::response([
+                'status' => 0,
+                'message' => "Failed to update account because of " . $e->getMessage(),
+                'data' => null
+            ]);
+        }
+    }
+
+
+
     public function update(Request $request)
     {
 

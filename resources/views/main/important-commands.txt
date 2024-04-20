@@ -22,3 +22,7 @@ php artisan make:model InquiryMessage -m
 php artisan make:seeder OnlineCourseStudentBatchImporter
 
  
+ALTER TABLE `users` ADD `is_a_farmer` VARCHAR(55) NULL DEFAULT 'No';
+ALTER TABLE `users` ADD `is_a_vendor` VARCHAR(55) NULL DEFAULT 'No';
+ALTER TABLE `users` ADD `want_to_be_enroled_farmer` VARCHAR(55) NULL DEFAULT 'No';
+ALTER TABLE `users` ADD `want_to_be_enroled_vendor` VARCHAR(55) NULL DEFAULT 'No';

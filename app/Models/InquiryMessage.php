@@ -34,6 +34,8 @@ class InquiryMessage extends Model
                 $data['email'] = [
                     'tukundanen@yahoo.com',
                     'mubs0x@gmail.com',
+                    'mbabaziisaac@gmail.com',
+                    'botim822@gmail.com',
                     'isaac@8technologies.net',
                 ];
                 $date = date('Y-m-d');
