@@ -416,15 +416,22 @@ class ApiShopController extends Controller
         $pro->supplier = $u->id;
         $pro->rates = 1;
         $pro->in_stock = 1;
-        $imgs = Image::where([
-            'parent_id' => $pro->local_id
-        ])->get();
-        if ($imgs->count() > 0) {
+
+        if ($isEdit) {
             if ($pro->feature_photo == 'no_image.jpg' || strlen($pro->feature_photo) < 3) {
-                $pro->feature_photo = $imgs[0]->src;
+                foreach ($pro->pics as $key => $img) {
+                    $pro->feature_photo = $img->src;
+                }
             }
         } else {
-            $pro->feature_photo = 'no_image.jpg';
+            $imgs = Image::where([
+                'parent_id' => $pro->local_id
+            ])->get();
+            if ($imgs->count() > 0) {
+                $pro->feature_photo = $imgs[0]->src;
+            } else {
+                $pro->feature_photo = 'no_image.jpg';
+            }
         }
         if ($pro->save()) {
             foreach ($imgs as $key => $img) {
