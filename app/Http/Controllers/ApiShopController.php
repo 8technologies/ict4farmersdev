@@ -416,7 +416,9 @@ class ApiShopController extends Controller
         $pro->supplier = $u->id;
         $pro->rates = 1;
         $pro->in_stock = 1;
-
+        $imgs = Image::where([
+            'parent_id' => $pro->local_id
+        ])->get();
         if ($isEdit) {
             if ($pro->feature_photo == 'no_image.jpg' || strlen($pro->feature_photo) < 3) {
                 foreach ($pro->pics as $key => $img) {
@@ -424,9 +426,7 @@ class ApiShopController extends Controller
                 }
             }
         } else {
-            $imgs = Image::where([
-                'parent_id' => $pro->local_id
-            ])->get();
+
             if ($imgs->count() > 0) {
                 $pro->feature_photo = $imgs[0]->src;
             } else {
