@@ -190,6 +190,7 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
             'Encore\\Summernote\\' => 18,
             'Encore\\Chartjs\\' => 15,
             'Encore\\Admin\\Latlong\\' => 21,
+            'Encore\\Admin\\Helpers\\' => 21,
             'Encore\\Admin\\' => 13,
             'Egulias\\EmailValidator\\' => 23,
         ),
@@ -607,6 +608,10 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'Encore\\Admin\\Latlong\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel-admin-ext/latlong/src',
+        ),
+        'Encore\\Admin\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src',
         ),
         'Encore\\Admin\\' => 
         array (
@@ -1951,6 +1956,14 @@ class ComposerStaticInit6610ade2b3586dfbab7a590c0b52e757
         'Encore\\Admin\\Grid\\Tools\\QuickSearch' => __DIR__ . '/..' . '/encore/laravel-admin/src/Grid/Tools/QuickSearch.php',
         'Encore\\Admin\\Grid\\Tools\\Selector' => __DIR__ . '/..' . '/encore/laravel-admin/src/Grid/Tools/Selector.php',
         'Encore\\Admin\\Grid\\Tools\\TotalRow' => __DIR__ . '/..' . '/encore/laravel-admin/src/Grid/Tools/TotalRow.php',
+        'Encore\\Admin\\Helpers\\Controllers\\RouteController' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/Controllers/RouteController.php',
+        'Encore\\Admin\\Helpers\\Controllers\\ScaffoldController' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/Controllers/ScaffoldController.php',
+        'Encore\\Admin\\Helpers\\Controllers\\TerminalController' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/Controllers/TerminalController.php',
+        'Encore\\Admin\\Helpers\\Helpers' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/Helpers.php',
+        'Encore\\Admin\\Helpers\\HelpersServiceProvider' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/HelpersServiceProvider.php',
+        'Encore\\Admin\\Helpers\\Scaffold\\ControllerCreator' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/Scaffold/ControllerCreator.php',
+        'Encore\\Admin\\Helpers\\Scaffold\\MigrationCreator' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/Scaffold/MigrationCreator.php',
+        'Encore\\Admin\\Helpers\\Scaffold\\ModelCreator' => __DIR__ . '/..' . '/laravel-admin-ext/helpers/src/Scaffold/ModelCreator.php',
         'Encore\\Admin\\Latlong\\Extension' => __DIR__ . '/..' . '/laravel-admin-ext/latlong/src/Extension.php',
         'Encore\\Admin\\Latlong\\Latlong' => __DIR__ . '/..' . '/laravel-admin-ext/latlong/src/Latlong.php',
         'Encore\\Admin\\Latlong\\LatlongServiceProvider' => __DIR__ . '/..' . '/laravel-admin-ext/latlong/src/LatlongServiceProvider.php',
