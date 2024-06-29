@@ -20,6 +20,7 @@
 
 use App\Models\Utils;
 use Encore\Admin\Facades\Admin;
+Utils::system_boot();
 
 /* $output = shell_exec('ls');
 

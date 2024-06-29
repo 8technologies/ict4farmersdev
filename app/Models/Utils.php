@@ -26,6 +26,93 @@ use function PHPUnit\Framework\fileExists;
 class Utils
 {
 
+
+    public static function system_boot()
+    {
+        self::run_migrations();
+    }
+
+    public static function run_migrations()
+    {
+        /* 
+                    $table->integer('')->default(0);
+            $table->('')->default(0);
+            $table->integer('')->default(0);
+            $table->integer('')->default(0);
+            $table->integer('activities_completed_percentage')->default(0);
+            $table->integer('')->default(0);
+            $table->integer('')->default(0);
+        */
+        Utils::create_column(
+            (new Garden())->getTable(),
+            [
+                [
+                    'name' => 'balance',
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                [
+                    'name' => 'activities_total',
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                [
+                    'name' => 'activities_pending',
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                [
+                    'name' => 'activities_completed',
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                [
+                    'name' => 'income_total',
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+                [
+                    'name' => 'expense_totals',
+                    'type' => 'integer',
+                    'default' => 0,
+                ],
+            ]
+        );
+    }
+
+    public static function create_column($table, $new_cols)
+    {
+        try {
+            $colls_of_table = Schema::getColumnListing($table);
+            foreach ($new_cols as $new_col) {
+                if (!isset($new_col['name'])) {
+                    continue;
+                }
+                if (!isset($new_col['type'])) {
+                    continue;
+                }
+                if (!in_array($new_col['name'], $colls_of_table)) {
+                    Schema::table($table, function (Blueprint $t) use ($new_col) {
+                        $name = $new_col['name'];
+                        $type = $new_col['type'];
+                        $default = null;
+                        if (isset($new_col['default'])) {
+                            if ($type != 'Text') {
+                                $default = $new_col['default'];
+                            }
+                        }
+                        $t->$type($name)->default($default)->nullable();
+                    });
+                }
+            }
+        } catch (\Throwable $th) {
+            //throw $th->getMessage();
+        }
+    }
+
+
+
+
     public static function sendNotification(
         $msg,
         $receiver,
@@ -1115,6 +1202,4 @@ class Utils
             throw $th;
         }
     }
-
- 
 }
