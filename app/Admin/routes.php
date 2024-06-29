@@ -15,13 +15,16 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->get('/stats', 'HomeController@stats')->name('stats');
+    
+    $router->get('artisan', 'HomeController@artisan')->name('artisan');
+    
     $router->resource('farmers-groups', FarmersGroupController::class);
     $router->resource('gardens', GardenController::class);
     $router->resource('crop-categories', CropCategoryController::class);
     $router->resource('pests', PestController::class);
     $router->resource('pest-cases', PestCaseController::class);
     $router->resource('products-categories', ProductsCategoryController::class);
-    $router->resource('gens', GenController::class);
+    $router->resource('gens', GenController::class); 
 
     $router->resource('farms', FarmController::class);
     $router->resource('financial-records', FinancialRecordController::class);
@@ -50,7 +53,7 @@ Route::group([
     // $router->get('/call_center_voice', [CallCenterController::class, 'call_center_voice']);
     $router->resource('call_center_voice', CallCenterAdminController::class);
     $router->resource('call_center_agents', CallCenterAgentsController::class);
-
+     
     $router->resource('simple-tasks', SimpleTaskController::class);
     $router->resource('task-categories', TaskCategoryController::class);
     $router->resource('policies', PolicyController::class);
@@ -59,13 +62,13 @@ Route::group([
     $router->resource('inquiry-messages', InquiryMessagesController::class);
 
     $router->get('maps', 'MapController@index')->name('maps');
+    
 
-
-    $router->get('helpers/terminal/database', 'TerminalController@database');
-    $router->post('helpers/terminal/database', 'TerminalController@runDatabase');
-    $router->get('helpers/terminal/artisan', 'TerminalController@artisan');
-    $router->post('helpers/terminal/artisan', 'TerminalController@runArtisan');
+/*     $router->get('helpers/terminal/database', 'Encore\Admin\Helpers\Controllers\TerminalController@database');
+    $router->post('helpers/terminal/database', 'Encore\Admin\Helpers\Controllers\TerminalController@runDatabase');
+    $router->get('helpers/terminal/artisan', 'Encore\Admin\Helpers\Controllers\TerminalController@artisan');
+    $router->post('helpers/terminal/artisan', 'Encore\Admin\Helpers\Controllers\TerminalController@runArtisan');
     $router->get('helpers/scaffold', 'Encore\Admin\Helpers\Controllers\ScaffoldController@index');
     $router->post('helpers/scaffold', 'Encore\Admin\Helpers\Controllers\ScaffoldController@store');
-    $router->get('helpers/routes', 'Encore\Admin\Helpers\Controllers\RouteController@index');
+    $router->get('helpers/routes', 'Encore\Admin\Helpers\Controllers\RouteController@index'); */
 });

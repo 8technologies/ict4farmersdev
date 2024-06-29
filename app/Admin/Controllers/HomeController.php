@@ -16,11 +16,51 @@ use Encore\Admin\Layout\Column;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Layout\Row;
 use Encore\Admin\Widgets\Box;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    public function artisan()
+    {
+        return Admin::content(function (Content $content) {
+            $content->header('Artisan terminal');
+            $content->row(view('laravel-admin-helpers::artisan', ['commands' => $this->organizedCommands()]));
+        });
+    }
+
+    protected function organizedCommands()
+    {
+        $commands = array_keys(Artisan::all());
+
+        $groups = $others = [];
+
+        foreach ($commands as $command) {
+            $parts = explode(':', $command);
+
+            if (isset($parts[1])) {
+                $groups[$parts[0]][] = $command;
+            } else {
+                $others[] = $command;
+            }
+        }
+
+        foreach ($groups as $key => $group) {
+            if (count($group) === 1) {
+                $others[] = $group[0];
+
+                unset($groups[$key]);
+            }
+        }
+
+        ksort($groups);
+        sort($others);
+
+        return compact('groups', 'others');
+    }
+
     public function stats(Content $content)
     {
 
@@ -75,7 +115,7 @@ class HomeController extends Controller
                     $column->append($box);
                 });
 
-                $row->column(3, function (Column $column) { 
+                $row->column(3, function (Column $column) {
                     //get all gardens
                     $gardens = User::find(Admin::user()->id)->enterprises;
 
@@ -85,7 +125,7 @@ class HomeController extends Controller
                     })->map(function ($item, $key) {
                         return $item . ' ' . Str::plural($key, $item);
                     })->implode(', ');
-                    
+
                     $box  = view('widgets.box-3', [
                         'title' => "My Enterprises",
                         'icon' => url('assets/images/admin/enterprise.png'),
@@ -131,7 +171,7 @@ class HomeController extends Controller
                         $_income = 0;
                         $_expense = 0;
                         $recs = FinancialRecord::whereBetween('created_at', [$min, $max])->get();
-                        foreach ($recs as $rec) { 
+                        foreach ($recs as $rec) {
                             if ($rec->amount < 0) {
                                 $_income += ((-1) * ((int)($rec->amount)));
                             } else {
@@ -326,39 +366,39 @@ class HomeController extends Controller
                         'events' => $events,
                         'vendor_requests' => $vendor_requests,
                     ]);
-            }
-            else if (
+            } else if (
                 Admin::user()->isRole('agent')
             ) {
 
-               //get all enterprises
-               $organisation = \App\Models\Organisation::find(Admin::user()->group_id);
-               $farmer_groups = \App\Models\FarmersGroup::where('organisation_id', $organisation->id)->pluck('id')->toArray();
-               $farmers = User::whereIn('group_id', $farmer_groups)->pluck('id')->toArray();
-               $farms = \App\Models\Farm::whereIn('administrator_id', $farmers)->get();
+                //get all enterprises
+                $organisation = \App\Models\Organisation::find(Admin::user()->group_id);
+                $farmer_groups = \App\Models\FarmersGroup::where('organisation_id', $organisation->id)->pluck('id')->toArray();
+                $farmers = User::whereIn('group_id', $farmer_groups)->pluck('id')->toArray();
+                $farms = \App\Models\Farm::whereIn('administrator_id', $farmers)->get();
                 $markers = '';
                 $icon_path = '';
-                foreach($farms as $farm){
-                    $status ='';
+                foreach ($farms as $farm) {
+                    $status = '';
                     //check has closed farm
-                    if(!$farm->running){
+                    if (!$farm->running) {
                         $status = 'Closed';
                         $icon_path = "'/assets/icons/pin-closed.png'";
-                    }else {
+                    } else {
                         $status = 'Operational';
                         $icon_path = "'/assets/icons/pin-open.png'";
                     }
 
-                    $markers .= 'new L.marker(['.$farm->latitude.','.$farm->longitude.'],{icon:L.icon({iconUrl:'.$icon_path.',
+                    $markers .= 'new L.marker([' . $farm->latitude . ',' . $farm->longitude . '],{icon:L.icon({iconUrl:' . $icon_path . ',
                         iconSize:     [40, 50], // size of the icon
                         iconAnchor:   [22, 94], // point of the icon which will correspond to marker\'s location
                         popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-                            })}).addTo(mymap).bindPopup("<a href=\"/admin/farms/'.$farm->id. '\">'.$farm->name.'</a><br>'.$status.'");';
+                            })}).addTo(mymap).bindPopup("<a href=\"/admin/farms/' . $farm->id . '\">' . $farm->name . '</a><br>' . $status . '");';
                 }
                 Admin::css('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
                 Admin::js('https://unpkg.com/leaflet@1.9.3/dist/leaflet.js');
 
-                Admin::script("
+                Admin::script(
+                    "
                     //use leafletjs
                     var mymap = L.map('mapid').setView([0.347596,32.582520], 8);
                         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA', {
@@ -366,13 +406,12 @@ class HomeController extends Controller
                         maxZoom: 18,
                         id: 'mapbox/streets-v11',
                         accessToken: 'pk.eyJ1IjoiZGFsaWhpbGxhcnkiLCJhIjoiY2s1c2ZhYnp1MDF2NDNsbDd0bTNjM3RzNCJ9._wzQ6YFFVtt5c_KAbsd1XA'
-                    }).addTo(mymap);". $markers
+                    }).addTo(mymap);" . $markers
                 );
                 $content->row('<div id="mapid" style="width: 100%; height: 500px;"></div>');
-                
+
                 return $content;
-            } 
-            else if (
+            } else if (
                 Admin::user()->isRole('farmer') ||
                 Admin::user()->isRole('basic-user')
             ) {
@@ -385,7 +424,7 @@ class HomeController extends Controller
                     ->view("admin.farmer.dashboard", [
                         'events' => $events
                     ]);
-            } 
+            }
         } else {
             return $content
                 ->view("admin.wizard.main");
