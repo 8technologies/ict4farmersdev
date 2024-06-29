@@ -12,7 +12,7 @@ ssh unffeict4farmers@unffeict4farmers.org
 
 
 
-php artisan make:migration add_notify_to_inquiry_messages --table=inquiry_messages
+php artisan make:migration add_more_fields_to_gardens --table=gardens
 php artisan make:migration seed_settings_menus
 php artisan admin:make FarmerController --model=App\\Models\\Farmers\\Farmer
 php artisan admin:make InquiryMessagesController --model=App\\Models\\InquiryMessage
