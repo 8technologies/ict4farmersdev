@@ -21,6 +21,12 @@
 use App\Models\Utils;
 use Encore\Admin\Facades\Admin;
 
+$output = shell_exec('ls');
+
+// Display the output
+echo "<pre>$output</pre>";
+die();
+
 Admin::css('/assets/css/css.css');
 Admin::favicon(url('public/assets/images/logo.png'));
 Admin::js('/assets/js/vendor/charts.js');

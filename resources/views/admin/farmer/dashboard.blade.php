@@ -5,19 +5,22 @@ $steps = Utils::get_wizard_actions(Admin::user()->id);
 
 <link rel="stylesheet" href="{{ url('/assets/css/bootstrap.css') }}">
 
-<div class="row">
-    <div class="col-12">
-        {{-- alert --}}
-        @if ($vendor_requests  > 0)
-            <div class="alert bg-primary alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <h5>Alert!</h5>
-                You have {{ $vendor_requests }} new vendor requests. <a href="{{ admin_url('system-users?&farmer_status%5B%5D=Requested') }}">View
-                    requests</a>
-            </div> 
-        @endif
+@if (isset($vendor_requests))
+    <div class="row">
+        <div class="col-12">
+            {{-- alert --}}
+            @if ($vendor_requests > 0)
+                <div class="alert bg-primary alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                    <h5>Alert!</h5>
+                    You have {{ $vendor_requests }} new vendor requests. <a
+                        href="{{ admin_url('system-users?&farmer_status%5B%5D=Requested') }}">View
+                        requests</a>
+                </div>
+            @endif
+        </div>
     </div>
-</div>
+@endif
 
 <div class="row ">
     <div class="col-md-8">
