@@ -61,10 +61,10 @@ Route::group([
     $router->get('maps', 'MapController@index')->name('maps');
 
 
-    $router->get('helpers/terminal/database', 'Encore\Admin\Helpers\Controllers\TerminalController@database');
-    $router->post('helpers/terminal/database', 'Encore\Admin\Helpers\Controllers\TerminalController@runDatabase');
-    $router->get('helpers/terminal/artisan', 'Encore\Admin\Helpers\Controllers\TerminalController@artisan');
-    $router->post('helpers/terminal/artisan', 'Encore\Admin\Helpers\Controllers\TerminalController@runArtisan');
+    $router->get('helpers/terminal/database', 'TerminalController@database');
+    $router->post('helpers/terminal/database', 'TerminalController@runDatabase');
+    $router->get('helpers/terminal/artisan', 'TerminalController@artisan');
+    $router->post('helpers/terminal/artisan', 'TerminalController@runArtisan');
     $router->get('helpers/scaffold', 'Encore\Admin\Helpers\Controllers\ScaffoldController@index');
     $router->post('helpers/scaffold', 'Encore\Admin\Helpers\Controllers\ScaffoldController@store');
     $router->get('helpers/routes', 'Encore\Admin\Helpers\Controllers\RouteController@index');
