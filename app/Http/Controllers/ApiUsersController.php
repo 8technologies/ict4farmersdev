@@ -373,12 +373,14 @@ class ApiUsersController
 
         $u->want_to_be_enroled_vendor = $r->want_to_be_enroled_vendor;
         if ($r->want_to_be_enroled_vendor == 'Yes') {
-            $u->business_name = $r->date_of_birth;
+            $u->business_name = $r->business_name;
             $u->location_id = $r->location_id;
             $u->about = $r->about;
             $u->business_address = $r->business_address;
             $u->business_category = $r->business_category;
             $u->business_phone_number = $r->business_phone_number;
+        } else {
+            $u->vendor_status = 'NOT A VENDOR';
         }
 
 
@@ -521,6 +523,8 @@ class ApiUsersController
             $u->latitude = $r->latitude;
             $u->longitude = $r->longitude;
             $u->about = $r->about;
+        } else {
+            $u->farmer_status = 'NOT A FARMER';
         }
 
         try {

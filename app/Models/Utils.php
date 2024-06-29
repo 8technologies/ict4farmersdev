@@ -10,6 +10,7 @@ use GuzzleHttp\Client;
 use Hamcrest\Arrays\IsArray;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ use Illuminate\Support\Str;
 use PhpParser\Node\Stmt\Else_;
 use Zebra_Image;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Schema;
 
 use function PHPUnit\Framework\fileExists;
 
@@ -1113,4 +1115,6 @@ class Utils
             throw $th;
         }
     }
+
+ 
 }

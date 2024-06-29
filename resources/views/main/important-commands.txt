@@ -26,3 +26,8 @@ ALTER TABLE `users` ADD `is_a_farmer` VARCHAR(55) NULL DEFAULT 'No';
 ALTER TABLE `users` ADD `is_a_vendor` VARCHAR(55) NULL DEFAULT 'No';
 ALTER TABLE `users` ADD `want_to_be_enroled_farmer` VARCHAR(55) NULL DEFAULT 'No';
 ALTER TABLE `users` ADD `want_to_be_enroled_vendor` VARCHAR(55) NULL DEFAULT 'No';
+
+PLESK6500A.TROUBLE-FREE.NET
+PLESK6500B.TROUBLE-FREE.NET
+
+flutter pub run change_app_package_name:main afriinventions.com
