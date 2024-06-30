@@ -16,11 +16,11 @@ class GardenActivity extends Model
         return Carbon::parse($value)->format('d-m-Y');
     }
 
-    public function getDueDateAttribute($value) 
+    public function getDueDateAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y');
     }
-    
+
     public function enterprise()
     {
         $o = Garden::find($this->garden_id);
@@ -30,23 +30,23 @@ class GardenActivity extends Model
         }
         return $this->belongsTo(Garden::class, 'garden_id');
     }
-    
+
     public function assigned_to()
     {
         $o = Administrator::find($this->person_responsible);
-        if($o == null){
+        if ($o == null) {
             $this->person_responsible = 1;
             $this->save();
         }
-        return $this->belongsTo(Administrator::class,'person_responsible');
+        return $this->belongsTo(Administrator::class, 'person_responsible');
     }
 
 
 
     public static function boot()
     {
-        parent::boot(); 
- 
+        parent::boot();
+
 
         self::created(function ($m) {
             $acts = GardenActivity::where('administrator_id', $m->administrator_id)->orderBy('due_date', 'Asc')->get();
@@ -66,7 +66,10 @@ class GardenActivity extends Model
         });
 
         self::updated(function ($model) {
-            // ... code here
+            $garden = Garden::find($model->garden_id);
+            if ($garden != null) {
+                $garden->do_update();
+            }
         });
 
         self::deleting(function ($model) {
@@ -74,7 +77,10 @@ class GardenActivity extends Model
         });
 
         self::deleted(function ($model) {
-            // ... code here
+            $garden = Garden::find($model->garden_id);
+            if ($garden != null) {
+                $garden->do_update();
+            }
         });
     }
 }

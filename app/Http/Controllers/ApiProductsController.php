@@ -500,38 +500,94 @@ class ApiProductsController
     }
     public function garden_activities_create(Request $r)
     {
+        $id = $r->administrator_id;
+
         $user = User::find($r->get('administrator_id'));
         if ($user == null) {
             return Utils::response(['message' => 'User ID is required.', 'status' => 0]);
         }
+
+        $isCreate = false;
+        $act = GardenActivity::find($r->get('id'));
         $garden_id = $r->get('garden_id');
         $g = Garden::find($garden_id);
 
+        if ($act == null) {
+            $isCreate = true;
+        }
+
+
+        if ($isCreate) {
+            if ($g == null) {
+                return Utils::response(['message' => 'Garden #' . $garden_id . ' not found.', 'status' => 0]);
+            }
+            $act = new GardenActivity();
+        }
+
+
+        if (!$isCreate) {
+            if ($g == null) {
+                $garden_id = $act->garden_id;
+                $g = Garden::find($act->garden_id);
+            }
+        }
         if ($g == null) {
             return Utils::response(['message' => 'Garden #' . $garden_id . ' not found.', 'status' => 0]);
         }
 
-        $act = new GardenActivity();
-        $act->name = $r->name;
-        $act->due_date = $r->due_date;
-        $act->details = $r->details;
-        $act->administrator_id = $g->administrator_id;
-        $act->person_responsible = ((int)($r->person_responsible));
-        //$g_activity->person_responsible = $g->;
-        $act->done_by = 0;
-        $act->is_generated = 0;
-        $act->is_done = 0;
-        $act->position = 0;
-        $act->garden_id = $g->id;
-        $act->done_status = 0;
-        $act->done_details = "";
-        $act->done_images = "";
+        if ($isCreate) {
+            $act->name = $r->name;
+            $act->due_date = $r->due_date;
+            $act->details = $r->details;
+            $act->administrator_id = $g->administrator_id;
+            $act->person_responsible = ((int)($r->person_responsible));
+            //$g_activity->person_responsible = $g->;
+            $act->done_by = 0;
+            $act->is_generated = 0;
+            $act->is_done = 'No';
+            $act->position = 0;
+            $act->garden_id = $g->id;
+            $act->done_status = 'Pending';
+            $act->done_details = "";
+            $act->done_images = "";
+        }
 
-        if ($act->save()) {
-            return Utils::response(['message' => 'Activity created successfully.', 'status' => 1]);
+        if (!$isCreate) {
+            $act->done_status = $r->done_status;
+            $act->done_details = $r->done_details;
+            $act->done_images = $r->done_images;
+            $act->is_done = $r->is_done;
+        }
+
+
+        if (
+            $act->done_status == '1' ||
+            $act->done_status == 'Pending' ||
+            $act->done_status == 'Completed' ||
+            $act->done_status == 'Done' ||
+            (strlen($act->done_status) > 1)
+        ) {
+            $act->is_done = 'Yes';
         } else {
+            $act->is_done = 'No';
+        }
+
+        $task = 'Create';
+        if (!$isCreate) {
+            $task = 'Update';
+        }
+
+        try {
+            $act->save();
+        } catch (Throwable $e) {
             return Utils::response(['message' => 'Failed to create garden activity. Please try again.', 'status' => 0]);
         }
+        $act = GardenActivity::find($act->id);
+        return Utils::response([
+            'data' => $act,
+            'message' => 'Activity ' . $task . 'd successfully.',
+            'status' => 1,
+        ]);
     }
 
     public function create_garden(Request $r)

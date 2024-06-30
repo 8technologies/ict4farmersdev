@@ -10,6 +10,45 @@ class Garden extends Model
 {
     use HasFactory;
 
+    //update the fillable fields
+    public function do_update()
+    {
+        $this->activities_total = GardenActivity::where([
+            'garden_id' => $this->id
+        ])->count();
+
+        $this->activities_pending = GardenActivity::where([
+            'garden_id' => $this->id,
+            'is_done' => 0
+        ])->count();
+
+        $this->activities_completed = GardenActivity::where([
+            'garden_id' => $this->id,
+            'is_done' => 1
+        ])->count();
+
+        $this->activities_completed_percentage = 0;
+        if ($this->activities_total > 0) {
+            $this->activities_completed_percentage = ($this->activities_completed / $this->activities_total) * 100;
+        }
+
+        //income_total
+        $this->income_total = FinancialRecord::where([
+            'garden_id' => $this->id,
+            'type' => 'income'
+        ])->sum('amount');
+
+        //expense_total
+        $this->expense_total = FinancialRecord::where([
+            'garden_id' => $this->id,
+            'type' => 'expense'
+        ])->sum('amount');
+
+        $this->balance = $this->income_total - $this->expense_total;
+        $this->save();
+    }
+
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y');
@@ -30,31 +69,42 @@ class Garden extends Model
         }
     }
 
+    //getter for location_text
+    public function getLocationTextAttribute()
+    {
+        $loc = Location::find($this->location_id);
+        if ($loc != null) {
+            return $loc->get_name();
+        } else {
+            return "-";
+        }
+    }
+
 
     public function location()
     {
         $o = Location::find($this->location_id);
-        if($o == null){
+        if ($o == null) {
             $this->location_id = 1;
             $this->save();
         }
-        return $this->belongsTo(Location::class,'location_id');
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     public function sector()
     {
         $o = CropCategory::find($this->crop_category_id);
-        if($o == null){
+        if ($o == null) {
             $this->crop_category_id = 1;
             $this->save();
         }
-        return $this->belongsTo(CropCategory::class,'crop_category_id');
+        return $this->belongsTo(CropCategory::class, 'crop_category_id');
     }
 
     //belongs to a farm
     public function farm()
     {
-        return $this->belongsTo(Farm::class,'farm_id');
+        return $this->belongsTo(Farm::class, 'farm_id');
     }
 
     //belongs to a user
@@ -73,15 +123,24 @@ class Garden extends Model
     //is infested by many pests
     public function pestcases()
     {
-        return $this->hasMany(PestCase::class,'garden_id');
+        return $this->hasMany(PestCase::class, 'garden_id');
     }
     //has many financial records
     public function financialrecords()
     {
-        return $this->hasMany(FinancialRecord::class,'garden_id');
+        return $this->hasMany(FinancialRecord::class, 'garden_id');
     }
 
     public function getCropCategoryNameAttribute()
+    {
+        if ($this->crop_category != null) {
+            return $this->crop_category->name;
+        } else {
+            return "-";
+        }
+    }
+    //getter for crop_category_text
+    public function getCropCategoryTextAttribute()
     {
         if ($this->crop_category != null) {
             return $this->crop_category->name;
@@ -102,7 +161,7 @@ class Garden extends Model
             'is_done' => 1
         ])->count();
     }
- 
+
     public function getProductionActivitiesRemainingAttribute()
     {
         return GardenActivity::where([
@@ -113,10 +172,12 @@ class Garden extends Model
 
     protected $appends = [
         'crop_category_name',
-        'production_activities_all', 
+        'production_activities_all',
         'production_activities_done',
         'production_activities_remaining',
         'location_name',
+        'crop_category_text',
+        'location_text',
     ];
 
     public function crop_category()
@@ -173,11 +234,11 @@ class Garden extends Model
                 '#FE9F23',
                 '#7C00FF',
                 '#FC4E51',
+                '#186986',
                 '#AA2754',
                 '#186986',
                 '#FFAE00',
                 '#44372E',
-                '#000000',
                 '#3E51A1',
             ];
             shuffle($my_colors);
