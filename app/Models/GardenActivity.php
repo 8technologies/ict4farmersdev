@@ -42,6 +42,22 @@ class GardenActivity extends Model
     }
 
 
+    //getter for administrator_text
+    public function getAdministratorTextAttribute()
+    {
+        $o = Administrator::find($this->person_responsible);
+        if ($o == null) {
+            $this->person_responsible = 1;
+            $this->save();
+            $o = Administrator::find($this->person_responsible);
+        }
+        if ($o == null) {
+            return 'N/A';
+        }
+        return $o->name;
+    }
+
+
 
     public static function boot()
     {
@@ -82,5 +98,23 @@ class GardenActivity extends Model
                 $garden->do_update();
             }
         });
+    }
+
+    //appends administrator_text
+    protected $appends = ['administrator_text', 'garden_text'];
+
+    //getter for garden_text
+    public function getGardenTextAttribute()
+    {
+        $o = Garden::find($this->garden_id);
+        if ($o == null) {
+            $this->garden_id = 1;
+            $this->save();
+            $o = Garden::find($this->garden_id);
+        }
+        if ($o == null) {
+            return 'N/A';
+        }
+        return $o->name;
     }
 }
