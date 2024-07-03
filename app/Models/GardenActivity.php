@@ -87,10 +87,7 @@ class GardenActivity extends Model
                 $garden->do_update();
             }
         });
-
-        self::deleting(function ($model) {
-            // ... code here
-        });
+ 
 
         self::deleted(function ($model) {
             $garden = Garden::find($model->garden_id);

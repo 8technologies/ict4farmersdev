@@ -16,7 +16,7 @@ class FarmerQuestion extends Model
             if ($m->body == null || $m->body == '') {
                 return false;
             }
-/*             $q = FarmerQuestion::where('body', $m->body)->first();
+            /*             $q = FarmerQuestion::where('body', $m->body)->first();
             if ($q != null) {
                 throw new \Exception('Question already asked by ' . $q->phone);
             } */
@@ -29,7 +29,7 @@ class FarmerQuestion extends Model
                     $m->district_model_id = $u->district_id;
                 }
             }
-            if($m->district_model_id ==  null || $m->district_model_id == ''){
+            if ($m->district_model_id ==  null || $m->district_model_id == '') {
                 $m->district_model_id = 0;
             }
         });
@@ -54,7 +54,7 @@ class FarmerQuestion extends Model
         if ($u == null) {
             return 'Unknown';
         }
-        return $u->name . ' (' . $u->phone . ')';
+        return $u->name;
     }
     public function getDistrictTextAttribute()
     {
@@ -77,7 +77,7 @@ class FarmerQuestion extends Model
     {
         return $this->farmer_question_answers()->count();
     }
-    
+
     public $extends = [
         'user_text',
         'user_photo',

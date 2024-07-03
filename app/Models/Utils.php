@@ -247,6 +247,21 @@ class Utils
     }
 
 
+    public static function file_upload($file)
+    {
+        if ($file == null) {
+            return '';
+        }
+        //get file extension
+        $file_extension = $file->getClientOriginalExtension();
+        $file_name = time() . "_" . rand(100000000, 1000000000) . "." . $file_extension;
+        $public_path = public_path() . "/storage";
+        $file->move($public_path, $file_name);
+        $url = '' . $file_name;
+        return $url;
+    }
+
+    
 
 
     public static function upload_images_2($files, $is_single_file = false)

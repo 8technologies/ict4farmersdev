@@ -33,6 +33,7 @@ Route::post('farms', [ApiProductsController::class, 'create_farm']);
 
 Route::post('garden-activities', [ApiProductsController::class, 'garden_activities_create']);
 Route::delete('garden-activities', [ApiProductsController::class, 'garden_activities_delete']);
+Route::delete('financial-record', [ApiProductsController::class, 'financial_record_delete']);
 Route::post('pest-cases', [ApiProductsController::class, 'pest_cases_create']);
 Route::post('questions', [ApiProductsController::class, 'question_create']);
 Route::post('garden-production-record', [ApiProductsController::class, 'garden_production_record_create']);

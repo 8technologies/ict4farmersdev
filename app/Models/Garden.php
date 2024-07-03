@@ -24,8 +24,9 @@ class Garden extends Model
 
         $this->activities_completed = GardenActivity::where([
             'garden_id' => $this->id,
-            'is_done' => 1
-        ])->count();
+        ])
+            ->where('is_done', '!=', 0)
+            ->count();
 
         $this->activities_completed_percentage = 0;
         if ($this->activities_total > 0) {

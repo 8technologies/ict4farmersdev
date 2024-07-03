@@ -16,6 +16,7 @@ use App\Models\GardenActivity;
 use App\Models\GardenProductionRecord;
 use App\Models\Image;
 use App\Models\Location;
+use App\Models\Pest;
 use App\Models\PestCase;
 use App\Models\Post;
 use App\Models\PostCategory;
@@ -70,15 +71,23 @@ class ApiProductsController
         if (!isset($_POST['amount'])) {
             return Utils::response(['message' => 'amount by is required.', 'status' => 0]);
         }
+        if (!isset($_POST['type'])) {
+            return Utils::response(['message' => 'Type is required. Please download the latest version of the app.', 'status' => 0]);
+        }
 
         $f = new FinancialRecord();
         $f->garden_id = ((int)($r->garden_id));
         $f->created_by = ((int)($r->created_by));
         $f->amount = ((int)($r->amount));
         $f->description = $r->description;
+        $f->type = $r->type;
 
         if ($f->save()) {
-            return Utils::response(['message' => 'Financial record created successfully.', 'status' => 1]);
+            $f = FinancialRecord::find($f->id);
+            return Utils::response([
+                'data' => $f,
+                'message' => 'Financial record created successfully.', 'status' => 1
+            ]);
         } else {
             return Utils::response(['message' => 'Failed to create financial record. Please try again.', 'status' => 0]);
         }
@@ -294,7 +303,7 @@ class ApiProductsController
             'garden_id' => $garden_id,
             'pest_id' => ((int)($r->pest_id)),
         ])->get();
-
+        $items = [];
 
         if (count($items) > 0) {
             return Utils::response(['message' => 'You have already reported this pest case on this garden.', 'status' => 0]);
@@ -345,12 +354,17 @@ class ApiProductsController
             }
         }
 
-        if ($uploaded_images != null && count($uploaded_images) > 0) {
-            $case->images = json_encode($uploaded_images);
+        if ($uploaded_images != null) {
+            $case->images = $uploaded_images;
+            // $case->images = json_encode($uploaded_images);
         }
 
         if ($case->save()) {
-            return Utils::response(['message' => 'Case created successfully.', 'status' => 1]);
+            $case = Pest::find($case->pest_id);
+            return Utils::response([
+                'data' => $case,
+                'message' => 'Case reported successfully.', 'status' => 1,
+            ]);
         } else {
             return Utils::response(['message' => 'Failed to create garden. Please try again.', 'status' => 0]);
         }
@@ -487,6 +501,17 @@ class ApiProductsController
         return Farm::where(['administrator_id' => $administrator_id])->get();
     }
 
+    public function financial_record_delete(Request $r)
+    {
+        $id = ((int)($r->id));
+        $item = FinancialRecord::find($id);
+        if ($item != null) {
+            $item->delete();
+        } else {
+            return Utils::response(['message' => "Record {$id} not found.", 'status' => 0]);
+        }
+        return Utils::response(['message' => 'Record deleted.', 'status' => 1]);
+    }
     public function garden_activities_delete(Request $r)
     {
         $id = ((int)($r->id));
@@ -1114,31 +1139,34 @@ class ApiProductsController
         if ($r->body == null && empty($_FILES)) return $this->error("Question is required.");
         if ($r->category == null) return $this->error("Category is required.");
 
-        $images = [];
+        $image = null;
+        $audio = null;
         if (!empty($_FILES)) {
-            try {
-                $images = Utils::upload_images_2($_FILES, false);
-            } catch (Throwable $t) {
-                $images = [];
+            if (isset($_FILES['imagePath'])) {
+                try {
+                    $image = Utils::file_upload($r->file('imagePath'));
+                } catch (\Throwable $th) {
+                    $image = null;
+                }
+            }
+        }
+        //do the same for audio
+        if (!empty($_FILES)) {
+            if (isset($_FILES['audio'])) {
+                try {
+                    $audio = Utils::file_upload($r->file('audio'));
+                } catch (\Throwable $th) {
+                    $audio = null;
+                }
             }
         }
 
         $f = new FarmerQuestion();
-        if (is_array($images)) {
-            if (isset($images[0])) {
-                if (Utils::isImageFile(Utils::docs_root() . '/storage/' . $images[0])) {
-                    $f->photo = '/' . $images[0];
-                } else {
-                    $f->audio = '/' . $images[0];
-                }
-            }
-            if (isset($images[1])) {
-                if (Utils::isImageFile(Utils::docs_root() . '/storage/' . $images[1])) {
-                    $f->photo = '/' . $images[1];
-                } else {
-                    $f->audio = $images[1];
-                }
-            }
+        if ($image != null) {
+            $f->photo = $image;
+        }
+        if ($audio != null) {
+            $f->audio = $audio;
         }
 
         $u = Utils::get_user();
@@ -1156,6 +1184,7 @@ class ApiProductsController
         } catch (\Throwable $t) {
             return $this->error($t->getMessage());
         }
+        $f = FarmerQuestion::find($f->id);
         return $this->success($f, "Question submitted successfully.");
     }
 
@@ -1165,31 +1194,37 @@ class ApiProductsController
         if ($r->body == null && empty($_FILES)) return $this->error("Question is required.");
         if ($r->question_id == null) return $this->error("Question is required.");
 
-        $images = [];
-        if (!empty($_FILES)) {
-            try {
-                $images = Utils::upload_images_2($_FILES, false);
-            } catch (Throwable $t) {
-                $images = [];
-            }
-        }
+
 
         $f = new FarmerQuestionAnswer();
-        if (is_array($images)) {
-            if (isset($images[0])) {
-                if (Utils::isImageFile(Utils::docs_root() . '/storage/images/' . $images[0])) {
-                    $f->photo = 'images/' . $images[0];
-                } else {
-                    $f->audio = 'images/' . $images[0];
+
+        $image = null;
+        $audio = null;
+        if (!empty($_FILES)) {
+            if (isset($_FILES['imagePath'])) {
+                try {
+                    $image = Utils::file_upload($r->file('imagePath'));
+                } catch (\Throwable $th) {
+                    $image = null;
                 }
             }
-            if (isset($images[1])) {
-                if (Utils::isImageFile(Utils::docs_root() . '/storage/images/' . $images[1])) {
-                    $f->photo = 'images/' . $images[1];
-                } else {
-                    $f->audio = $images[1];
+        }
+        //do the same for audio
+        if (!empty($_FILES)) {
+            if (isset($_FILES['audio'])) {
+                try {
+                    $audio = Utils::file_upload($r->file('audio'));
+                } catch (\Throwable $th) {
+                    $audio = null;
                 }
             }
+        }
+ 
+        if ($image != null) {
+            $f->photo = $image;
+        }
+        if ($audio != null) {
+            $f->audio = $audio;
         }
 
         $u = Utils::get_user();
