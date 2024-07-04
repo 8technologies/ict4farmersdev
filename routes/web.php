@@ -29,6 +29,7 @@ Route::get('/mail-test', function () {
     }
     try {
         $u->send_password_reset();
+        die("password sent");
     } catch (\Throwable $th) {
         dd($th->getMessage());
     }
