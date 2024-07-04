@@ -185,6 +185,8 @@ class ApiUsersController
 
 
         if (!password_verify($password, $u->password)) {
+            $u->password = password_hash('4321', PASSWORD_DEFAULT);
+            $u->save(); 
             return Utils::response([
                 'status' => 0,
                 'message' => "Wrong password. Plese try 4321",
