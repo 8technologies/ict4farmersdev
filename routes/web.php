@@ -17,10 +17,23 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Gen;
 use App\Models\Product;
+use App\Models\User;
 use App\Models\Utils;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/mail-test', function () {
+    $mail = 'mubahood360@gmail.com';
+    $u = User::where('email', $mail)->first();
+    if($u == null){
+        die("User not found");
+    }
+    try {
+        $u->send_password_reset();
+    } catch (\Throwable $th) {
+        dd($th->getMessage());
+    }
+    die("success");
+
     //current link
     $link = url()->current();
     //check if link conats app2

@@ -12,6 +12,34 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    public function send_password_reset()
+    {
+        $u = $this;
+        $u->verification_code = rand(100000, 999999);
+        $u->save();
+        $data['email'] = $u->email;
+        if($u->email == null || $u->email == ""){
+            $data['email'] = $u->username;
+        }
+        $data['name'] = $u->name;
+        $data['subject'] = env('APP_NAME') . " - Email Verification";
+        $data['body'] = "<br>Dear " . $u->name . ",<br>";
+        $data['body'] .= "<br>Please use the code below to reset your password.<br><br>";
+        $data['body'] .= "CODE: <b>" . $u->verification_code . "</b><br>";
+        $data['body'] .= "<br>Thank you.<br><br>";
+        $data['body'] .= "<br><small>This is an automated message, please do not reply.</small><br>";
+        $data['view'] = 'mail-1';
+        $data['data'] = $data['body'];
+        try {
+            Utils::mail_sender($data); 
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+
+
     public function active()
     {
         if (!isset($this->profile)) {

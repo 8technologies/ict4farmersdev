@@ -18,7 +18,9 @@ use Database\Factories\ProductFactory;
 Route::get('api/{model}', [ApiShopController::class, 'index']);
 Route::get('farmer-questions', [ApiProductsController::class, 'farmer_questions']);
 Route::get('farmer_question_answers', [ApiProductsController::class, 'farmer_question_answers']);
-Route::POST('farmer-questions-create', [ApiProductsController::class, 'farmer_questions_create']);
+Route::POST('request-password-reset', [ApiProductsController::class, 'request_password_reset']);
+Route::POST('password-reset', [ApiProductsController::class, 'password_reset']);
+//Route::POST("password-reset", [ApiProductsController::class, "login"]);
 Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']);
 
 /* Route::get('permissions', [ApiProductsController::class, 'permissions']);

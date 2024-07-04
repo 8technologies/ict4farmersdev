@@ -1189,6 +1189,55 @@ class ApiProductsController
     }
 
 
+    public function request_password_reset(Request $r)
+    {
+        $u = User::where('email', $r->username)->first();
+        if ($u == null) {
+            $u = User::where('username', $r->username)->first();
+        }
+        if ($u == null) {
+            return $this->error('User account not found.');
+        }
+
+        try {
+            $u->send_password_reset();
+        } catch (\Throwable $th) {
+            return $this->error('Failed to send password reset email because ' . $th->getMessage() . '.');
+        }
+
+        return $this->success($u, 'Password reset CODE sent to your email address ' . $u->email . '.');
+    }
+
+    public function password_reset(Request $r)
+    {
+        $u = User::where('email', $r->username)->first();
+        if ($u == null) {
+            $u = User::where('username', $r->username)->first();
+        }
+        if ($u == null) {
+            return $this->error('User account not found.');
+        }
+
+        if (!isset($r->code) || $r->code == null) return $this->error('Password reset CODE is required.');
+        $code = $r->code;
+        if ($code != $r->verification_code) {
+            return $this->error('Invalid password reset CODE.');
+        }
+
+        //if password is not set
+        if (!isset($r->password) || $r->password == null) return $this->error('Password is required.');
+
+        $password = password_hash($r->password, PASSWORD_DEFAULT);
+        $u->password = $password;
+        try {
+            $u->save();
+        } catch (\Throwable $th) {
+            return $this->error('Failed to reset password because ' . $th->getMessage() . '.');
+        }
+        return $this->success($u, 'Password reset successfully.');
+    }
+
+
     public function farmer_answers_create(Request $r)
     {
         if ($r->body == null && empty($_FILES)) return $this->error("Question is required.");
@@ -1219,7 +1268,7 @@ class ApiProductsController
                 }
             }
         }
- 
+
         if ($image != null) {
             $f->photo = $image;
         }
