@@ -33,7 +33,7 @@ Route::get('/mail-test', function () {
     } catch (\Throwable $th) {
         dd($th->getMessage());
     }
-    die("success");
+    die("success: from ".env('MAIL_FROM_ADDRESS'));
 
     //current link
     $link = url()->current();
