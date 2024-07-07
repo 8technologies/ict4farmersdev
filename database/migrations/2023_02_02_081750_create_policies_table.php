@@ -13,13 +13,14 @@ class CreatePoliciesTable extends Migration
      */
     public function up()
     {
-        Schema::create('policies', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('path')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('policies'))
+            Schema::create('policies', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->text('description')->nullable();
+                $table->string('path')->nullable();
+                $table->timestamps();
+            });
     }
 
     /**

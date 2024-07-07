@@ -13,19 +13,20 @@ class CreateCallModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('call_models', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->text('session_id')->nullable();
-            $table->string('caller_phone_number')->nullable();
-            $table->string('caller_country')->nullable();
-            $table->string('caller_caller')->nullable();
-            $table->string('language')->nullable();
-            $table->string('inquiry_category')->nullable();
-            $table->string('agent_phone_number')->nullable();
-            $table->string('recording_url')->nullable();
-            $table->string('call_duration')->nullable(); 
-        });
+        if (!Schema::hasTable('call_models'))
+            Schema::create('call_models', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->text('session_id')->nullable();
+                $table->string('caller_phone_number')->nullable();
+                $table->string('caller_country')->nullable();
+                $table->string('caller_caller')->nullable();
+                $table->string('language')->nullable();
+                $table->string('inquiry_category')->nullable();
+                $table->string('agent_phone_number')->nullable();
+                $table->string('recording_url')->nullable();
+                $table->string('call_duration')->nullable();
+            });
     }
 
     /**

@@ -13,18 +13,19 @@ class CreateInquiryMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('inquiry_messages', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->text('customer_id')->nullable();
-            $table->text('customer_name')->nullable();
-            $table->text('customer_email')->nullable();
-            $table->text('customer_phone')->nullable();
-            $table->text('subject')->nullable();
-            $table->text('message')->nullable();
-            $table->text('response')->nullable();
-            $table->string('status')->default('pending');
-        });
+        if (!Schema::hasTable('inquiry_messages'))
+            Schema::create('inquiry_messages', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->text('customer_id')->nullable();
+                $table->text('customer_name')->nullable();
+                $table->text('customer_email')->nullable();
+                $table->text('customer_phone')->nullable();
+                $table->text('subject')->nullable();
+                $table->text('message')->nullable();
+                $table->text('response')->nullable();
+                $table->string('status')->default('pending');
+            });
     }
 
     /**

@@ -13,14 +13,15 @@ class CreateCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-            $table->text('comment');
-            $table->foreignId('posted_by');
-            $table->morphs('commentable');
-            $table->boolean('is_accepted')->default(false);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('comments'))
+            Schema::create('comments', function (Blueprint $table) {
+                $table->id();
+                $table->text('comment');
+                $table->foreignId('posted_by');
+                $table->morphs('commentable');
+                $table->boolean('is_accepted')->default(false);
+                $table->timestamps();
+            });
     }
 
     /**

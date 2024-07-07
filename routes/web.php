@@ -22,12 +22,14 @@ use App\Models\Utils;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/migrate', function () {
+    echo "Migrating...<hr>";
+    echo "<pre>";
     try {
         Artisan::call('migrate');
         $message = Artisan::output();
         print_r($message);
     } catch (\Throwable $th) {
-        dd($th->getMessage());
+        print_r($th->getMessage());
     }
     die();
 });
