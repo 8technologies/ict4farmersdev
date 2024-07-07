@@ -13,15 +13,16 @@ class AddMoreFieldsToGardens extends Migration
      */
     public function up()
     {
-        Schema::table('gardens', function (Blueprint $table) {
-            $table->integer('balance')->default(0);
-            $table->integer('activities_total')->default(0);
-            $table->integer('activities_pending')->default(0);
-            $table->integer('activities_completed')->default(0);
-            $table->integer('activities_completed_percentage')->default(0);
-            $table->integer('income_total')->default(0);
-            $table->integer('expense_total')->default(0);
-        });
+        if (!Schema::hasColumn('gardens', 'balance')) 
+            Schema::table('gardens', function (Blueprint $table) {
+                $table->integer('balance')->default(0);
+                $table->integer('activities_total')->default(0);
+                $table->integer('activities_pending')->default(0);
+                $table->integer('activities_completed')->default(0);
+                $table->integer('activities_completed_percentage')->default(0);
+                $table->integer('income_total')->default(0);
+                $table->integer('expense_total')->default(0);
+            });
     }
 
     /**
