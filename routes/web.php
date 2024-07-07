@@ -21,10 +21,20 @@ use App\Models\User;
 use App\Models\Utils;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('/migrate', function () {
+    try {
+        Artisan::call('migrate');
+        $message = Artisan::output();
+        print_r($message);
+    } catch (\Throwable $th) {
+        dd($th->getMessage());
+    }
+    die();
+});
 Route::get('/mail-test', function () {
     $mail = 'mubahood360@gmail.com';
     $u = User::where('email', $mail)->first();
-    if($u == null){
+    if ($u == null) {
         die("User not found");
     }
     try {
@@ -32,7 +42,7 @@ Route::get('/mail-test', function () {
     } catch (\Throwable $th) {
         dd($th->getMessage());
     }
-    die("success: from ".env('MAIL_FROM_ADDRESS'));
+    die("success: from " . env('MAIL_FROM_ADDRESS'));
 
     //current link
     $link = url()->current();
