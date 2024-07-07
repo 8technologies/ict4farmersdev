@@ -12,7 +12,7 @@ ssh unffeict4farmers@unffeict4farmers.org
 
 
 
-php artisan make:migration change_type_in_financial_records --table=financial_records
+php artisan make:migration add_activities_completed_percentage --table=gardens
 php artisan make:migration seed_settings_menus
 php artisan admin:make FarmerController --model=App\\Models\\Farmers\\Farmer
 php artisan admin:make InquiryMessagesController --model=App\\Models\\InquiryMessage
