@@ -13,9 +13,10 @@ class AddNotifyToInquiryMessages extends Migration
      */
     public function up()
     {
-        Schema::table('inquiry_messages', function (Blueprint $table) {
-            $table->string('notify_customer')->default('No')->nullable();
-        });
+        if (!Schema::hasColumn('inquiry_messages', 'notify_customer'))
+            Schema::table('inquiry_messages', function (Blueprint $table) {
+                $table->string('notify_customer')->default('No')->nullable();
+            });
     }
 
     /**
