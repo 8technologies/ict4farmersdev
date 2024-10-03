@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    //protected table
+    protected $table = 'users';
+
 
     public function send_password_reset()
     {
@@ -157,6 +160,7 @@ class User extends Authenticatable
 
         self::created(function ($model) {
             $pro['user_id'] = $model->id;
+            self::finalize($model);
             //Profile::create($pro);
         });
 
@@ -196,7 +200,8 @@ class User extends Authenticatable
 
 
         self::updated(function ($model) {
-            // ... code here
+            //finalize
+            self::finalize($model);
         });
 
         self::deleting(function ($model) {
@@ -209,6 +214,83 @@ class User extends Authenticatable
     }
 
     //prepare
+    public static function finalize($m)
+    {
+
+        if ($m->user_type == 'farmer') {
+            $role = AdminRoleUser::where([
+                'user_id' => $m->id,
+                'role_id' => 5
+            ])->first();
+            //if $role
+            if ($role == null) {
+                $role = new AdminRoleUser();
+                $role->user_id = $m->id;
+                $role->role_id = 5;
+                $role->save();
+            }
+        } else if ($m->user_type == 'vendor') {
+            $role = AdminRoleUser::where([
+                'user_id' => $m->id,
+                'role_id' => 7
+            ])->first();
+            //if $role
+            if ($role == null) {
+                $role = new AdminRoleUser();
+                $role->user_id = $m->id;
+                $role->role_id = 7;
+                $role->save();
+            }
+        } else if ($m->user_type == 'agent') {
+            $role = AdminRoleUser::where([
+                'user_id' => $m->id,
+                'role_id' => 3
+            ])->first();
+            //if $role
+            if ($role == null) {
+                $role = new AdminRoleUser();
+                $role->user_id = $m->id;
+                $role->role_id = 3;
+                $role->save();
+            }
+        } else if ($m->user_type == 'admin') {
+            $role = AdminRoleUser::where([
+                'user_id' => $m->id,
+                'role_id' => 1
+            ])->first();
+            //if $role
+            if ($role == null) {
+                $role = new AdminRoleUser();
+                $role->user_id = $m->id;
+                $role->role_id = 1;
+                $role->save();
+            }
+        } else if ($m->user_type == 'worker') {
+            $role = AdminRoleUser::where([
+                'user_id' => $m->id,
+                'role_id' => 6
+            ])->first();
+            //if $role
+            if ($role == null) {
+                $role = new AdminRoleUser();
+                $role->user_id = $m->id;
+                $role->role_id = 6;
+                $role->save();
+            }
+        } else if ($m->user_type == 'organisation') {
+            $role = AdminRoleUser::where([
+                'user_id' => $m->id,
+                'role_id' => 4
+            ])->first();
+            //if $role
+            if ($role == null) {
+                $role = new AdminRoleUser();
+                $role->user_id = $m->id;
+                $role->role_id = 4;
+                $role->save();
+            }
+        }
+    }
     public static function prepare($m)
     {
 
@@ -241,6 +323,10 @@ class User extends Authenticatable
         $n = $m->first_name . " " . $m->last_name;
         if (strlen(trim($n)) > 1) {
             $m->name = trim($n);
+        }
+
+        if ($m->user_type == null || strlen($m->user_type) < 3) {
+            $m->user_type = 'farmer';
         }
 
         return $m;
@@ -326,4 +412,10 @@ class User extends Authenticatable
         }
         return $loc->get_name();
     }
+
+    //belongs to organisation_id
+    public function organisation()
+    {
+        return $this->belongsTo(Organisation::class, 'organisation_id');
+    } 
 }

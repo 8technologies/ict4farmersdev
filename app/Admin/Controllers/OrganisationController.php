@@ -18,7 +18,7 @@ class OrganisationController extends AdminController
      *
      * @var string
      */
-    protected $title = 'Organisation';
+    protected $title = 'Organisations';
 
     /**
      * Make a grid builder.
@@ -30,16 +30,22 @@ class OrganisationController extends AdminController
         $grid = new Grid(new Organisation());
         //sort by latest
         $grid->model()->latest();
+        $grid->disableBatchActions();
+        $grid->disableFilter();
+        $grid->quickSearch('name', 'address', 'phone', 'email', 'website', 'details');
         // $grid->column('id', __('Id'));
-        $grid->column('name', __('Name'));
-        $grid->column('details', __('Details'));
-        $grid->column('logo', __('Logo'))->image('', 100, 100);
-        $grid->column('address', __('Address'));
-        $grid->column('phone', __('Phone'));
-        $grid->column('email', __('Email'));
-        $grid->column('website', __('Website'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('logo', __('Logo'))->image('', 100, 100)->sortable();
+        $grid->column('name', __('Name'))->sortable();
+        $grid->column('details', __('Details'))->limit(30);
+        $grid->column('address', __('Address'))->sortable();
+        $grid->column('phone', __('Phone'))->sortable();
+        $grid->column('email', __('Email'))->sortable();
+        $grid->column('website', __('Website'))->sortable();
+        $grid->column('created_at', __('Registered'))
+            ->display(function ($created_at) {
+                return date('d-m-Y', strtotime($created_at));
+            })->sortable();
+        $grid->column('updated_at', __('Updated at'))->hide();
 
         return $grid;
     }

@@ -4,8 +4,10 @@ namespace App\Admin\Controllers;
 
 use App\Models\District;
 use App\Models\Location;
+use App\Models\Organisation;
 use App\Models\User;
 use Encore\Admin\Controllers\AdminController;
+use Encore\Admin\Facades\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -27,7 +29,21 @@ class SystemUsersController extends AdminController
      */
     protected function grid()
     {
+
+        // $user = User::find(18045);
+        /* $user->cover_photo = rand(10000, 50000) . '.jpg';
+        $user->save();
+        dd('done updating'); */
+
         $grid = new Grid(new User());
+        $u = Admin::user();
+        //if is admin, show all users
+        if ($u->user_type == 'admin') {
+            $grid->model()->latest(); 
+        } else { 
+            $grid->model()->where('organisation_id', $u->organisation_id)->latest();
+        }
+
         //filter
         $grid->filter(function ($filter) {
             $filter->disableIdFilter();
@@ -42,6 +58,9 @@ class SystemUsersController extends AdminController
             ]);
             $filter->equal('district', 'District')->select(District::all()->pluck('name', 'id'));
             $filter->equal('sub_county', 'Sub county')->select(Location::get_subcounties());
+
+            $orgs = Organisation::all()->pluck('name', 'id');
+            $filter->equal('organisation_id', 'Organisation')->select($orgs);
         });
         $grid->model()->orderBy('id', 'desc');
         $grid->disableBatchActions();
@@ -177,6 +196,14 @@ class SystemUsersController extends AdminController
         $grid->column('business_address', __('Business address'))->hide();
         $grid->column('business_category', __('Business category'))->hide();
         $grid->column('business_phone_number', __('Business phone number'))->hide();
+        //organisation_id
+        $grid->column('organisation_id', __('Organisation'))->display(function ($organisation_id) {
+            $org = Organisation::find($organisation_id);
+            if ($org != null) {
+                return $org->name;
+            }
+            return 'N/A';
+        })->sortable();
 
         return $grid;
     }
@@ -267,6 +294,8 @@ class SystemUsersController extends AdminController
     protected function form()
     {
         $form = new Form(new User());
+        $u = Admin::user();
+        
         $form->divider('BIO DATA');
         $form->text('first_name', __('First name'))->required();
         $form->text('last_name', __('Last name'))->required();
@@ -309,6 +338,9 @@ class SystemUsersController extends AdminController
                 'Rejected' => 'Rejected',
             ])->default('Pending')->required();
 
+
+
+
         $form->radio('vendor_status', __('Vendor Verification Status'))
             ->options([
                 'Pending' => 'Pending',
@@ -338,14 +370,44 @@ class SystemUsersController extends AdminController
 
         $form->divider('SYSTEM ACCOUNT');
 
+        if ($u->id == 1 && $u->user_type != 'admin') {
+            $u->user_type = 'admin';
+            $u->save();
+            $u = User::find($u->id);
+        }
+
+        $types = [
+            'farmer' => 'Farmer',
+            'vendor' => 'Vendor',
+            'agent' => 'Agent',
+            'worker' => 'Worker',
+        ];
+
+        $orgs = Organisation::all()->pluck('name', 'id');
+        $isAdmin = false;
+        if ($u->user_type == 'admin') {
+            $types['admin'] =  'Admin';
+            $isAdmin = true;
+        }
+
+        if (
+            $u->user_type == 'admin' ||
+            $u->user_type == 'agent'
+        ) {
+            $types['organisation'] = 'Organisation Admin';
+        }
+
+        if ($isAdmin) {
+            //organisation_id picker
+            $form->select('organisation_id', __('Organisation'))->options($orgs)->required();
+        } else {
+            $form->hidden('organisation_id')->default($u->organisation_id);
+        }
+        return $form;
+
         $form->radio('user_type', __('Main user role'))
-            ->options([
-                'farmer' => 'Farmer',
-                'vendor' => 'Vendor',
-                'admin' => 'Admin',
-                'agent' => 'Agent',
-                'worker' => 'Worker',
-            ])->default('farmer');
+            ->options($types)->default('farmer')
+            ->required();
 
         $form->radio('status', __('Status'))
             ->options([
@@ -356,7 +418,7 @@ class SystemUsersController extends AdminController
 
 
         $form->text('email', 'Email address')
-            ->creationRules(["unique:admin_users"]);
+            ->creationRules(["unique:users"]);
 
         if ($form->isCreating()) {
             $form->text('password', __('Password'))->required();

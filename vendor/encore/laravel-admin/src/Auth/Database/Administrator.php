@@ -22,6 +22,8 @@ class Administrator extends Model implements AuthenticatableContract
 
     protected $fillable = ['username', 'password', 'name', 'avatar'];
 
+    //protected table users
+    protected $table = 'users'; 
 
     
 

@@ -36,7 +36,7 @@ class UserSettingTest extends TestCase
             ->submitForm('Submit', $data)
             ->seePageIs('admin/auth/setting');
 
-        $this->seeInDatabase('admin_users', ['name' => $data['name']]);
+        $this->seeInDatabase('users', ['name' => $data['name']]);
     }
 
     public function testUpdateAvatar()
