@@ -107,6 +107,30 @@ class User extends Authenticatable
                 }
             }
 
+            $existing = User::where([
+                'username' => $m->username
+            ])->orWhere([
+                'phone_number' => $m->phone_number
+            ])->first();
+
+            if ($existing != null) {
+                if ($existing->id != $m->id) {
+                    throw new \Exception("This phone number $m->phone_number is already used by another account");
+                }
+            }
+
+            if ($m->email != null && strlen($m->email) > 3) {
+                $existing = User::where([
+                    'email' => $m->email
+                ])->first();
+                if ($existing != null) {
+                    if ($existing->id != $m->id) {
+                        throw new \Exception("This email $m->email is already used by another account");
+                    }
+                }
+            }
+
+
             if ($m->sub_county == null  || strlen($m->sub_county) < 1) {
                 $m->sub_county = $m->location_id;
             }
@@ -417,5 +441,5 @@ class User extends Authenticatable
     public function organisation()
     {
         return $this->belongsTo(Organisation::class, 'organisation_id');
-    } 
+    }
 }

@@ -20,6 +20,10 @@ Route::get('farmer-questions', [ApiProductsController::class, 'farmer_questions'
 Route::get('farmer_question_answers', [ApiProductsController::class, 'farmer_question_answers']);
 Route::POST('request-password-reset', [ApiProductsController::class, 'request_password_reset']);
 Route::POST('password-reset', [ApiProductsController::class, 'password_reset']);
+
+Route::POST('farmer-questions-create', [ApiProductsController::class, 'farmer_questions_create']);
+Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']); 
+
 //Route::POST("password-reset", [ApiProductsController::class, "login"]);
 Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']);
 
@@ -42,6 +46,7 @@ Route::post('garden-production-record', [ApiProductsController::class, 'garden_p
 Route::post('workers', [ApiProductsController::class, 'workers_create']);
 Route::post('financial-records', [ApiProductsController::class, 'financial_records_create']);
 Route::get('workers', [ApiProductsController::class, 'workers']);
+Route::get('vendors', [ApiProductsController::class, 'vendors']);
 Route::get('wizard-items', [ApiProductsController::class, 'wizard_items']);
 Route::get('app-version', function () {
     return [[

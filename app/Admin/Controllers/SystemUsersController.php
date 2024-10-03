@@ -39,8 +39,8 @@ class SystemUsersController extends AdminController
         $u = Admin::user();
         //if is admin, show all users
         if ($u->user_type == 'admin') {
-            $grid->model()->latest(); 
-        } else { 
+            $grid->model()->latest();
+        } else {
             $grid->model()->where('organisation_id', $u->organisation_id)->latest();
         }
 
@@ -295,7 +295,6 @@ class SystemUsersController extends AdminController
     {
         $form = new Form(new User());
         $u = Admin::user();
-        
         $form->divider('BIO DATA');
         $form->text('first_name', __('First name'))->required();
         $form->text('last_name', __('Last name'))->required();
@@ -403,7 +402,6 @@ class SystemUsersController extends AdminController
         } else {
             $form->hidden('organisation_id')->default($u->organisation_id);
         }
-        return $form;
 
         $form->radio('user_type', __('Main user role'))
             ->options($types)->default('farmer')
@@ -417,8 +415,7 @@ class SystemUsersController extends AdminController
             ])->default('Pending');
 
 
-        $form->text('email', 'Email address')
-            ->creationRules(["unique:users"]);
+        $form->text('email', 'Email address');
 
         if ($form->isCreating()) {
             $form->text('password', __('Password'))->required();

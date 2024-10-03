@@ -60,8 +60,19 @@ public function getImagesAttribute($images)
         return $this->belongsTo(Garden::class, 'garden_id');
     }
 
+    //getter for garden_text
+    public function getGardenTextAttribute()
+    {
+        $g = Garden::find($this->garden_id);
+        if ($g == null) {
+            return "-";
+        }
+        return $g->name;
+    } 
+
 
     protected $appends = [
         'garden_name',
+        'garden_text',
     ];
 }

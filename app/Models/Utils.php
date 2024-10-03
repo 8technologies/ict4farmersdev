@@ -325,9 +325,22 @@ class Utils
             }
         }
         if ($u == null) {
+            if (isset($_POST['user'])) {
+                $user_id = $_POST['user'];
+                $u = Administrator::find($user_id);
+            }
+        }
+        if ($u == null) {
             $headers = getallheaders();
             if (isset($headers['user_id'])) {
                 $user_id = $headers['user_id'];
+                $u = Administrator::find($user_id);
+            }
+        }
+        if ($u == null) {
+            $headers = getallheaders();
+            if (isset($headers['user'])) {
+                $user_id = $headers['user'];
                 $u = Administrator::find($user_id);
             }
         }

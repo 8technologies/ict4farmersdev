@@ -53,11 +53,20 @@ class ApiProductsController
 
     public function workers(Request $r)
     {
-        if (!isset($_GET['owner_id'])) {
-            return [];
-        }
-        $administrator_id = ((int)($_GET['owner_id']));
-        return Administrator::where(['owner_id' => $administrator_id])->get();
+        $u = Utils::get_user();
+        if ($u == null) return $this->error("User not found.");
+
+        $users =  User::where(['owner_id' => $u->administrator_id])->limit(100)->get();
+        return Utils::response(['message' => 'Success.', 'status' => 1, 'data' => $users]);
+    }
+
+    public function vendors(Request $r)
+    {
+
+        $users =  User::where(['vendor_status' => 'Approved'])
+            ->latest()
+            ->limit(100)->get();
+        return Utils::response(['message' => 'Success.', 'status' => 1, 'data' => $users]);
     }
 
     public function financial_records_create(Request $r)
@@ -86,7 +95,8 @@ class ApiProductsController
             $f = FinancialRecord::find($f->id);
             return Utils::response([
                 'data' => $f,
-                'message' => 'Financial record created successfully.', 'status' => 1
+                'message' => 'Financial record created successfully.',
+                'status' => 1
             ]);
         } else {
             return Utils::response(['message' => 'Failed to create financial record. Please try again.', 'status' => 0]);
@@ -363,7 +373,8 @@ class ApiProductsController
             $case = Pest::find($case->pest_id);
             return Utils::response([
                 'data' => $case,
-                'message' => 'Case reported successfully.', 'status' => 1,
+                'message' => 'Case reported successfully.',
+                'status' => 1,
             ]);
         } else {
             return Utils::response(['message' => 'Failed to create garden. Please try again.', 'status' => 0]);
@@ -462,13 +473,12 @@ class ApiProductsController
 
     public function get_garden_production_record(Request $r)
     {
-        if (!isset($_GET['user_id'])) {
-            return [];
-        }
+        $u = Utils::get_user();
+        if ($u == null) return $this->error("User not found.");
         $administrator_id = ((int)($_GET['user_id']));
-        return GardenProductionRecord::where(['administrator_id' => $administrator_id])
-            ->orWhere(['created_by_id' => $administrator_id])
+        $gardens = GardenProductionRecord::where(['administrator_id' => $administrator_id])
             ->get();
+        return Utils::response(['message' => 'Success.', 'status' => 1, 'data' => $gardens]);
     }
 
 

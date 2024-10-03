@@ -156,7 +156,7 @@ class Gen extends Model
     
   
   
-    static Future&lt;List&lt;$this->class_name&gt;&gt; getLocalData({String where: "1"}) async {
+    static Future&lt;List&lt;$this->class_name&gt;&gt; getLocalData({String where = "1"}) async {
 
       List&lt$this->class_name&gt data = [];
       if (!(await $this->class_name.initTable())) {
