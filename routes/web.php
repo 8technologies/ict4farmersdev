@@ -22,6 +22,16 @@ use App\Models\Utils;
 use Illuminate\Support\Facades\Artisan;
 
 Route::get('/migrate', function () {
+
+    $i = 1;
+    foreach (Product::all() as $key => $p) {
+        echo $i . ". " . $p->local_id . "<br>";
+
+        $i++;
+        if ($i > 1000) {
+            die();
+        }
+    }
     echo "Migrating...<hr>";
     try {
         Artisan::call('migrate');

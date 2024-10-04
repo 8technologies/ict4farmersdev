@@ -22,7 +22,7 @@ Route::POST('request-password-reset', [ApiProductsController::class, 'request_pa
 Route::POST('password-reset', [ApiProductsController::class, 'password_reset']);
 
 Route::POST('farmer-questions-create', [ApiProductsController::class, 'farmer_questions_create']);
-Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']); 
+Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']);
 
 //Route::POST("password-reset", [ApiProductsController::class, "login"]);
 Route::POST('farmer-answers-create', [ApiProductsController::class, 'farmer_answers_create']);

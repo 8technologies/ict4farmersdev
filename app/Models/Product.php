@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Dflydev\DotAccessData\Util;
 use Encore\Admin\Auth\Database\Administrator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use phpDocumentor\Reflection\Types\This;
@@ -369,7 +371,7 @@ class Product extends Model
         $cat = Category::find($this->sub_category_id);
         if ($cat == null) {
             return "";
-        } else { 
+        } else {
             $name = $cat->name;
         }
         return $name;
@@ -562,5 +564,18 @@ class Product extends Model
             $this->thumbnail = 'no_image.jpg';
             $this->save();
         }
+    }
+
+    //getter for local_id
+    public function getLocalIdAttribute($local_id)
+    {
+        if ($local_id == null || strlen($local_id) < 15) {
+            $local_id = Utils::get_unique_text();
+            $sql = "update products set local_id = '$local_id' where id = " . $this->id;
+            //execute sql
+            DB::update($sql);
+            return $local_id;
+        }
+        return $local_id;
     }
 }

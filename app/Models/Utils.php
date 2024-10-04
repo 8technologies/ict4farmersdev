@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -27,6 +28,14 @@ class Utils
 {
 
 
+    public static function get_unique_text()
+    {
+        $resp = time();
+        $resp .= '-' . rand(100000, 10000000);
+        $resp .= '-' . rand(100000, 10000000);
+        $resp .= '-' . uniqid();
+        return $resp;
+    }
     public static function system_boot()
     {
         self::run_migrations();
@@ -34,6 +43,12 @@ class Utils
 
     public static function run_migrations()
     {
+        //php artisan migrate
+        try {
+            Artisan::call('migrate');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         /* 
                     $table->integer('')->default(0);
             $table->('')->default(0);
@@ -261,7 +276,7 @@ class Utils
         return $url;
     }
 
-    
+
 
 
     public static function upload_images_2($files, $is_single_file = false)
@@ -813,9 +828,7 @@ class Utils
 
 
 
-    public static function login_user($data)
-    {
-    }
+    public static function login_user($data) {}
     public static function get_locations()
     {
         $locations = [];

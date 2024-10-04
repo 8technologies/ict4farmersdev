@@ -264,7 +264,7 @@ class ProductController extends AdminController
             $form->display('user_id', __('Owner ID'));
         }
 
-        $form->textarea('description', __('Product Description'));
+        $form->quill('description', __('Product Description'));
         //in_stock status
 
 
