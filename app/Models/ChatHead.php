@@ -24,5 +24,37 @@ class ChatHead extends Model
             ->count();
     }
 
-    protected $appends = ['customer_unread_messages_count', 'product_owner_unread_messages_count'];
+    //getter for last_message_body
+    public function getLastMessageBodyAttribute()
+    {
+        $m = ChatMessage::where('chat_head_id', $this->id)
+            ->orderBy('id', 'desc')
+            ->first();
+        if ($m == null) {
+            return "";
+        }
+        return $m->body;
+    }
+    
+    //getter for last_message_time
+    public function getLastMessageTimeAttribute()
+    {
+        $m = ChatMessage::where('chat_head_id', $this->id)
+            ->orderBy('id', 'desc')
+            ->first();
+        if ($m == null) {
+            return "";
+        }
+        return $m->created_at;
+    }
+
+
+
+    //last_seen
+    protected $appends = [
+        'customer_unread_messages_count',
+        'product_owner_unread_messages_count',
+        'last_message_body',
+        'last_message_time'
+    ];
 }

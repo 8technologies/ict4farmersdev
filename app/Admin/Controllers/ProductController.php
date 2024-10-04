@@ -82,9 +82,9 @@ class ProductController extends AdminController
 
 
         //$grid->column('updated_at', __('Updated at'));
-        $grid->column('id', __('Photo'))->display(function ($id) {
-            return '<img width="40" src="' . $this->get_thumbnail() . '" ?>';
-        })->sortable()->width(80);
+        $grid->column('id', __('Photo'))->sortable(); 
+        //feature_photo
+        $grid->column('name', __('Product'))->image('', 40, 40);
 
         $grid->column('name', __('Product'))->display(function ($id) {
             return $this->get_name_short();

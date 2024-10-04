@@ -92,24 +92,36 @@ class Product extends Model
         $m->price_1 = $m->price;
         $m->price_2 = $m->price;
 
-        if ($m->feature_photo != null && strlen($m->feature_photo) > 2) {
-            $imagePath = env('STORAGE_BASE_PATH') . '/' . $m->feature_photo;
-            //check if file exists
-            if (!file_exists($imagePath)) {
-                $m->feature_photo = 'no_image.jpg';
-                $m->thumbnail = 'no_image.jpg';
-            } else {
-                $opt_path = env('STORAGE_BASE_PATH') . '/thumb_' . $m->feature_photo;
-                $original_path = env('STORAGE_BASE_PATH') . '/' . $m->feature_photo;
-                $thumbnail = Utils::create_thumbail(
-                    array(
-                        "source" =>  $original_path,
-                        "target" => $opt_path,
-                    )
-                );
-                $m->thumbnail = 'thumb_' . $m->feature_photo;
+
+        $last_seg = $m->feature_photo;
+        $segs = explode('/', $m->feature_photo);
+        if (is_array($segs)) {
+            try {
+                $last_seg = last($segs);
+            } catch (\Throwable $th) {
+                $last_seg = null;
             }
         }
+
+        if ($last_seg == null || strlen($last_seg) < 2) {
+            $last_seg = $m->feature_photo;
+        }
+
+        $imagePath = public_path('storage') . '/' . $last_seg;
+        if (!file_exists($imagePath)) {
+            $m->feature_photo = 'no_image.jpg';
+            $m->thumbnail = 'no_image.jpg';
+        } else {
+            $opt_path = public_path('storage') . '/thumb_' . $m->feature_photo;
+            $original_path = public_path('storage') . '/' . $m->feature_photo;
+            $thumbnail = Utils::create_thumbail(
+                array(
+                    "source" =>  $original_path,
+                    "target" => $opt_path,
+                )
+            );
+            $m->thumbnail = 'thumb_' . $m->feature_photo;
+        } 
 
         return $m;
     }
@@ -570,11 +582,15 @@ class Product extends Model
     public function getLocalIdAttribute($local_id)
     {
         if ($local_id == null || strlen($local_id) < 15) {
-            $local_id = Utils::get_unique_text();
-            $sql = "update products set local_id = '$local_id' where id = " . $this->id;
-            //execute sql
-            DB::update($sql);
-            return $local_id;
+            if ($this->id != null) {
+                if ($this->id > 0) {
+                    $local_id = Utils::get_unique_text();
+                    $sql = "update products set local_id = '$local_id' where id = " . $this->id;
+                    //execute sql
+                    DB::update($sql);
+                    return $local_id;
+                }
+            }
         }
         return $local_id;
     }

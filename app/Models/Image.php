@@ -61,14 +61,28 @@ class Image extends Model
             $this->delete();
             return $this->src;
         }
-        $path = env('STORAGE_BASE_PATH') . '/' . $this->src;
+        $last_seg = $this->src;
+        $segs = explode('/', $this->src);
+        if (is_array($segs)) {
+            try {
+                $last_seg = last($segs);
+            } catch (\Throwable $th) {
+                $last_seg = null;
+            }
+        }
+
+        if ($last_seg == null || strlen($last_seg) < 2) {
+            $last_seg = $this->src;
+        }
+
+        $path = public_path('storage') . '/' . $last_seg;
         //filename
         if (!file_exists($path)) {
             $this->delete();
             return;
         }
         $filename = basename($this->src);
-        $path_optimized = env('STORAGE_BASE_PATH') . '/thumb_' . $filename;
+        $path_optimized = public_path('storage') . '/thumb_' . $filename;
         $thumbnail = Utils::create_thumbail(
             array(
                 "source" =>  $path,

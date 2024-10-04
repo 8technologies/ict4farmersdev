@@ -143,7 +143,12 @@ class ApiShopController extends Controller
             $chat_head->last_message_body = '';
             $chat_head->last_message_time = Carbon::now();
             $chat_head->last_message_status = 'sent';
-            $chat_head->save();
+            try {
+                $chat_head->save();
+                $chat_head = ChatHead::find($chat_head->id);
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         }
 
         return $this->success($chat_head, 'Success');
@@ -366,6 +371,25 @@ class ApiShopController extends Controller
             $pro = new Product();
         }
 
+        $local_id = $r->local_id;
+
+
+        if ($r->local_id == null || strlen($r->local_id) < 5) {
+            return $this->error('Local is required. Upadate the App.');
+        }
+
+
+        if ($pro == null) {
+            $pro = Product::where([
+                'local_id' => $local_id
+            ])->first();
+            if ($pro != null) {
+                $isEdit = true;
+            } else {
+                $pro = new Product();
+            }
+        }
+
         if ($r->name == null || strlen($r->name) < 3) {
             return $this->error('Name is missing.');
         }
@@ -397,7 +421,7 @@ class ApiShopController extends Controller
         $pro->description = $r->description;
         $pro->price_1 = $r->price_1;
         $pro->price_2 = $r->price_2;
-        $pro->local_id = $r->id;
+        $pro->local_id = $r->local_id;
         $pro->summary = $r->data;
         $pro->sub_category = $r->sub_category_id;
         $pro->type = $r->type;
@@ -417,36 +441,33 @@ class ApiShopController extends Controller
         $pro->rates = 1;
         $pro->in_stock = 1;
         $imgs = Image::where([
-            'parent_id' => $pro->local_id
+            'parent_id' => $local_id
         ])->get();
-        if ($isEdit) {
-            if ($pro->feature_photo == 'no_image.jpg' || strlen($pro->feature_photo) < 3) {
-                foreach ($pro->pics as $key => $img) {
-                    $pro->feature_photo = $img->src;
-                }
-            }
+        if ($imgs->count() > 0) {
+            $pro->feature_photo = $imgs[0]->src;
         } else {
-
-            if ($imgs->count() > 0) {
-                $pro->feature_photo = $imgs[0]->src;
-            } else {
-                $pro->feature_photo = 'no_image.jpg';
-            }
+            $pro->feature_photo = 'no_image.jpg';
         }
-        if ($pro->save()) {
+
+        try {
+            $pro->save();
             foreach ($imgs as $key => $img) {
                 $img->product_id = $pro->id;
                 $img->save();
             }
-            $pro->processThumbnail();
+            try {
+                $pro->processThumbnail();
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
             $msg = "Submitted uploaded successfully!";
             if ($isEdit) {
                 $msg = "Submitted updated successfully!";
             }
             $pro = Product::find($pro->id);
             return $this->success($pro, $message = $msg, 200);
-        } else {
-            return $this->error('Failed to upload product.');
+        } catch (\Throwable $th) {
+            return $this->error('Failed to upload product because of ' . $th->getMessage());
         }
     }
 
@@ -511,33 +532,32 @@ class ApiShopController extends Controller
         $msg = "";
         foreach ($images as $src) {
 
-            if ($request->parent_endpoint == 'edit') {
-                $img = Image::find($request->local_parent_id);
-                if ($img) {
-                    return Utils::response([
-                        'status' => 0,
-                        'message' => "Original photo not found",
-                    ]);
-                }
-                $img->src =  $src;
-                $img->thumbnail =  null;
-                $img->save();
-                return Utils::response([
-                    'status' => 1,
-                    'data' => json_encode($img),
-                    'message' => "File updated.",
-                ]);
+            $local_parent_id = null;
+            if ($request->local_parent_id != null && strlen($request->local_parent_id) > 3) {
+                $local_parent_id = $request->local_parent_id;
             }
-
+            if ($local_parent_id == null) {
+                if ($request->parent_id != null && strlen($request->parent_id) > 3) {
+                    $local_parent_id = $request->parent_id;
+                }
+            }
+            if ($local_parent_id == null) {
+                if ($request->product_id != null && strlen($request->product_id) > 3) {
+                    $local_parent_id = $request->product_id;
+                }
+            }
 
             $img = new Image();
             $img->administrator_id =  $administrator_id;
+            $img->user_id = $administrator_id;
             $img->src =  $src;
-            $img->thumbnail =  null;
+            $img->thumbnail =  $src;
             $img->parent_endpoint =  $request->parent_endpoint;
-            $img->parent_id =  (int)($request->parent_id);
+            $img->p_type =  $request->parent_endpoint;
+            $img->parent_id =  $local_parent_id;
+            $img->product_id =  null;
             $img->size = 0;
-            $img->note = '';
+            $img->note = $request->note;
             if (
                 isset($request->note)
             ) {
@@ -545,31 +565,26 @@ class ApiShopController extends Controller
                 $msg .= "Note not set. ";
             }
 
-
-            $online_parent_id = ((int)($request->online_parent_id));
-            if (
-                $online_parent_id > 0
-            ) {
-                $animal = Product::find($online_parent_id);
-                if ($animal != null) {
-                    $img->parent_endpoint =  'Product';
-                    $img->parent_id =  $animal->id;
-                } else {
-                    $msg .= "parent_id NOT not found => {$request->online_parent_id}.";
+            //if parent_endpoint is Product
+            if ($request->parent_endpoint == 'Product') {
+                $pro = Product::where([
+                    'local_id' => $local_parent_id
+                ])->first();
+                if ($pro != null) {
+                    $img->product_id =  $pro->id;
+                    if ($pro->feature_photo == null || strlen($pro->feature_photo) < 4) {
+                        $pro->feature_photo = $src;
+                        $pro->save();
+                    }
                 }
-            } else {
-                $msg .= "Online_parent_id NOT set. => {$online_parent_id} ";
             }
-
-
             $img->save();
-            $img = Image::find($img->id);
             $_images[] = $img;
         }
         //Utils::process_images_in_backround();
         return Utils::response([
             'status' => 1,
-            'data' => $img,
+            'data' => $_images,
             'message' => "File uploaded successfully.",
         ]);
     }
