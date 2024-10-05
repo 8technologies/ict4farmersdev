@@ -93,6 +93,7 @@ return array(
     'App\\Http\\Middleware\\TrustHosts' => $baseDir . '/app/Http/Middleware/TrustHosts.php',
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Models\\AdminRoleUser' => $baseDir . '/app/Models/AdminRoleUser.php',
     'App\\Models\\AgentProfile' => $baseDir . '/app/Models/AgentProfile.php',
     'App\\Models\\Attribute' => $baseDir . '/app/Models/Attribute.php',
     'App\\Models\\Banner' => $baseDir . '/app/Models/Banner.php',

@@ -12,7 +12,7 @@ ssh unffeict4farmers@unffeict4farmers.org
 
 
 
-php artisan make:migration add_organisation_id_to_users --table=users
+php artisan make:migration add_common_district_to_pests --table=pests
 php artisan make:migration seed_settings_menus
 php artisan admin:make FarmerController --model=App\\Models\\Farmers\\Farmer
 php artisan admin:make InquiryMessagesController --model=App\\Models\\InquiryMessage
