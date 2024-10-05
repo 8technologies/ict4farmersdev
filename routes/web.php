@@ -23,12 +23,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/migrate', function () {
     
-    if(file_exists('/Applications/MAMP/htdocs/ict4farmersdev/public/storage/1728065707-372412.jpg')){
-        die("exits");
-    }else{
-        die("not exits");
-
-    }
+    
 
     $i = 1;
     foreach (Product::all() as $key => $p) {
@@ -38,7 +33,7 @@ Route::get('/migrate', function () {
         if ($i > 1000) {
             die();
         }
-    }
+    } 
     echo "Migrating...<hr>";
     try {
         Artisan::call('migrate');
