@@ -13,7 +13,7 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
 
 class GardenController extends AdminController
 {
@@ -45,7 +45,8 @@ class GardenController extends AdminController
                 $actions->disableEdit();
             });*/
         } else {
-            $farmer_enterprises = \App\Models\User::find(Admin::user()->id)->enterprises;
+            Log::info("Showing farmer enterprises for user " . Admin::user()->id);
+            $grid->model()->where('administrator_id', Admin::user()->id);
             $grid->disableRowSelector();
         }
 
@@ -145,6 +146,7 @@ class GardenController extends AdminController
         // $form->number('size', __('Size in Acres'))
         //     ->help("E.g, 1 acre, 2 acres, 3 acres, etc.")
         //     ->rules('required|numeric|min:1');
+        $form->hidden('administrator_id')->value($u->id);
 
         $form->date('plant_date', __('Start date'))
             ->help("Select the date when this enterprise started.")->required()->rules('before_or_equal:today');

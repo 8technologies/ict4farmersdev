@@ -57,6 +57,7 @@ class CallCenterAdminController extends AdminController
         });
 
         $grid->disableCreateButton();
+        $grid->disableActions();
 
         return $grid;
     }
