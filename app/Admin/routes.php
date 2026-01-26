@@ -1,8 +1,9 @@
 <?php
 
+// use App\Admin\Controllers\InnovationsController;
 use Illuminate\Routing\Router;
 use App\Http\Controllers\CallCenter\CallCenterController;
-
+use Encore\Admin\Grid\Filter\In;
 
 Admin::routes();
 
@@ -48,6 +49,7 @@ Route::group([
     $router->resource('web-app', BannerWebController::class);
     $router->resource('pricings', PricingController::class);
     $router->resource('markets', MarketController::class);
+    $router->resource('innovations-hub', InnovationsController::class);
 
 
     // $router->get('/call_center_voice', [CallCenterController::class, 'call_center_voice']);
