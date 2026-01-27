@@ -324,6 +324,13 @@ class ApiShopController extends Controller
             'user' => $user_id
         ])->get();
 
+        $items = $items->map(function ($item) {
+            $item = Product::prepare($item);
+            $item->category_text = $item->category_name;
+            $item->category = (string) $item->sub_category_id;
+            return $item;
+        });
+
         return $this->success($items, 'Success');
     }
 
@@ -428,6 +435,9 @@ class ApiShopController extends Controller
         $pro->p_type = $r->p_type;
         $pro->keywords = $r->keywords;
         $pro->metric = $r->metric;
+        if (isset($r->city_id) && ((int)($r->city_id)) > 0) {
+            $pro->city_id = (int)($r->city_id);
+        }
         $pro->status = 0;
         if ($u->vendor_status == 'Approved') {
             $pro->status = 1;
