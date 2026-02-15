@@ -80,6 +80,7 @@ class CallCenterAdminController extends AdminController
                 'Luganda' => 'Luganda',
                 'Runyakitara' => 'Runyakitara',
                 'Swahili' => 'Swahili',
+                'Lugisu' => 'Lugisu',
             ]);
             $search_param->equal('inquiry_category', __("Category"))->select([
                 'Coffee' => 'Coffee',

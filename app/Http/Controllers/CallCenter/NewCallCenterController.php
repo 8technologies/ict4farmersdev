@@ -153,6 +153,7 @@ class NewCallCenterController extends Controller
             '2' => 'Luganda',
             '3' => 'Runyakitara',
             '4' => 'Swahili',
+            '6' => 'Lugisu',
         ];
 
         return $map[(string) $digit] ?? null;
@@ -277,6 +278,9 @@ class NewCallCenterController extends Controller
                 '' => ['agent1.farmercallcenter@ug.sip2.africastalking.com'],
             ],
             'Swahili' => [
+                '' => ['agent1.farmercallcenter@ug.sip2.africastalking.com'],
+            ],
+            'Lugisu' => [
                 '' => ['agent1.farmercallcenter@ug.sip2.africastalking.com'],
             ],
         ];

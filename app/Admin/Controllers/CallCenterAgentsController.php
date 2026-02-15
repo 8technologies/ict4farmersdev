@@ -97,6 +97,7 @@ class CallCenterAgentsController extends AdminController
             'Luganda' => 'Luganda',
             'Runyakitara' => 'Runyakitara',
             'Swahili' => 'Swahili',
+            'Lugisu' => 'Lugisu',
         ])->required();
         $form->tags('inquiry_category', __("Inquiry Category"))->options([
             'Coffee' => 'Coffee',
